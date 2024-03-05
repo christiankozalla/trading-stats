@@ -1,0 +1,29 @@
+.icon {
+  display: inline-block;
+  height: 16px;
+  width: 16px;
+}
+
+.icon-house {
+  content: url('./icons/icon-house.svg');
+}
+
+.icon-gear {
+  content: url('./icons/icon-gear.svg');
+}
+
+.icon-person {
+  content: url('./icons/icon-person.svg');
+}
+
+.icon-menu {
+  content: url('./icons/icon-menu.svg');
+}
+
+.icon-login {
+  content: url('./icons/icon-login.svg');
+}
+
+.icon-logout {
+  content: url('./icons/icon-logout.svg');
+}

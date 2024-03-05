@@ -1,0 +1,27 @@
+/* Order matters */
+@layer reset, primevue;
+
+/* @layer global {
+  .font-bold {
+    font-weight: 700;
+  }
+} */
+
+
+/* Reset CSS */
+@layer reset {
+  body {
+    margin: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Images and videos are constrained to the parent width
+   * while preserving their intrinsic aspect-ratio
+   */
+  img,
+  video {
+    max-width: 100%;
+    height: auto;
+  }
+}
