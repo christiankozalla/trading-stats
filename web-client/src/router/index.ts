@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router';
-import HomeView from '../views/HomeView.vue';
+import Home from '../views/Home.vue';
 import { pb } from '@/api-client';
 
 declare module 'vue-router' {
@@ -13,7 +13,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/',
     name: 'home',
-    component: HomeView,
+    component: Home,
     meta: {
       requiresAuth: true
     }
@@ -24,7 +24,7 @@ const routes: RouteRecordRaw[] = [
     // route level code-splitting
     // this generates a separate chunk (SettingsView.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import('../views/SettingsView.vue'),
+    component: () => import('../views/Settings.vue'),
     meta: {
       requiresAuth: true
     }
@@ -36,7 +36,7 @@ const routes: RouteRecordRaw[] = [
     meta: {
       requiresAuth: false
     }
-  }
+  },
 ];
 
 const protectedRoutes = routes.filter((r) => r.meta?.requiresAuth === true);
