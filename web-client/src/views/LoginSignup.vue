@@ -48,8 +48,19 @@ async function signup(event: Event) {
           .create<User>(new FormData(event.target as HTMLFormElement));
 
         if (userDataResponse) {
-          await router.push('/');
+          const hasBeenSent = await pb.collection('users').requestVerification(email);
+          if (hasBeenSent)
+            toast.add({
+              severity: 'success',
+              summary: 'Signup Successful',
+              detail: 'Please verify your email address!',
+              life: 15000
+            });
         }
+
+        // log the user in after signup
+        // verification can be done within 7 days - unverified older users will be deleted
+        await login(event);
       } catch (e) {
         if (e instanceof ClientResponseError) {
           toast.add({
