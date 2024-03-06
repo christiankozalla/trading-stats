@@ -12,6 +12,7 @@
 
   align-items: center;
   gap: var(--inline-spacing);
+  margin-right: 24px;
 }
 
 .logo-image {
