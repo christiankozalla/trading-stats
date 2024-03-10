@@ -2,10 +2,6 @@ import PocketBase from 'pocketbase';
 
 const pb = new PocketBase(import.meta.env.POCKETBASE_BASE_URL || 'http://localhost:8090');
 
-console.log('api client isValid', pb.authStore.isValid);
-console.log('api client isAuthRecord', pb.authStore.isAuthRecord);
-console.log('api client record/record', pb.authStore.model);
-
 interface CreateUserData {
   email: string;
   password: string;
