@@ -21,6 +21,7 @@ pb.authStore.onChange((token, model) => {
   <Loader />
 
   <RouterView />
+  <Toast position="bottom-center" />
 </template>
 
 <style scoped></style>

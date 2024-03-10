@@ -60,7 +60,7 @@ async function signup(event: Event) {
 
         // log the user in after signup
         // verification can be done within 7 days - unverified older users will be deleted
-        await login(event);
+        await login(event), { redirectOnSuccess: false };
       } catch (e) {
         if (e instanceof ClientResponseError) {
           toast.add({
@@ -77,7 +77,7 @@ async function signup(event: Event) {
   }
 }
 
-async function login(event: Event) {
+async function login(event: Event, { redirectOnSuccess = true } = {}) {
   event.preventDefault();
   formErrors.value = {};
 
@@ -102,7 +102,7 @@ async function login(event: Event) {
           .collection('users')
           .authWithPassword<User>(email, password);
 
-        if (userDataResponse) {
+        if (userDataResponse && redirectOnSuccess) {
           await router.push('/');
         }
       } catch (e) {
@@ -197,9 +197,8 @@ function changeAuthType(event: TabMenuChangeEvent) {
         />
         {{ formErrors.passwordConfirm }}
       </div>
-      <Button label="Submit" type="submit"></Button>
+      <Button label="Submit" type="submit" style="width: 100%"></Button>
     </form>
-    <Toast position="bottom-center" />
   </div>
 </template>
 
