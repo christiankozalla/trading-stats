@@ -1,16 +1,13 @@
-import PocketBase from 'pocketbase';
+import PocketBase, { type RecordModel } from 'pocketbase';
 
 const pb = new PocketBase(import.meta.env.POCKETBASE_BASE_URL || 'http://localhost:8090');
 
-interface CreateUserData {
-  email: string;
-  password: string;
-  passwordConfirm: string;
-  name?: string;
-  username?: string;
-}
+export type TradingAccount = {
+  name: string
+} & RecordModel
 
-export interface User {
+
+export type User = {
   avatar: string;
   collectionId: string;
   collectionName: string;
@@ -24,4 +21,4 @@ export interface User {
   verified: boolean;
 }
 
-export { pb,  };
+export { pb };

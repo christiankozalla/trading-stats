@@ -19,6 +19,14 @@ const routes: RouteRecordRaw[] = [
     }
   },
   {
+    path: '/import',
+    name: 'import',
+    component: () => import('../views/Import.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
     path: '/settings',
     name: 'settings',
     // route level code-splitting
@@ -36,7 +44,7 @@ const routes: RouteRecordRaw[] = [
     meta: {
       requiresAuth: false
     }
-  },
+  }
 ];
 
 const protectedRoutes = routes.filter((r) => r.meta?.requiresAuth === true);

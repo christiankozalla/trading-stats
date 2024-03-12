@@ -18,7 +18,7 @@ import TabMenu from 'primevue/tabmenu';
 import ProgressSpinner from 'primevue/progressspinner';
 import Toast from 'primevue/toast';
 import ToastService from 'primevue/toastservice';
-
+import Dropdown from 'primevue/dropdown';
 
 const app = createApp(App);
 
@@ -33,7 +33,7 @@ app.component('Menubar', Menubar);
 app.component('TabMenu', TabMenu);
 app.component('ProgressSpinner', ProgressSpinner);
 app.component('Toast', Toast);
-
+app.component('Dropdown', Dropdown);
 
 app.use(router);
 

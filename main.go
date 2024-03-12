@@ -4,6 +4,8 @@ import (
 	"log"
 	"os"
 
+	"trading-statistics/eventhandlers"
+
 	"github.com/pocketbase/pocketbase"
 	"github.com/pocketbase/pocketbase/apis"
 	"github.com/pocketbase/pocketbase/core"
@@ -25,6 +27,8 @@ func main() {
 		e.Router.GET("/*", apis.StaticDirectoryHandler(os.DirFS("./pb_public"), indexFallback))
 		return nil
 	})
+
+	app.OnRecordAfterCreateRequest("trade_log_files").Add(eventhandlers.CreateTradeRecordsFromLogFiles(app))
 
 	if err := app.Start(); err != nil {
 		log.Fatal(err)

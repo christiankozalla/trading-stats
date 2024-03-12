@@ -27,3 +27,8 @@
 .icon-logout {
   content: url('./icons/icon-logout.svg');
 }
+
+.icon-upload {
+  content: url('./icons/icon-upload.svg');
+}
+

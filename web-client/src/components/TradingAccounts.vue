@@ -1,36 +1,23 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { pb } from '@/api-client';
-import { ClientResponseError, type ListResult, type RecordModel } from 'pocketbase';
+import { pb, type TradingAccount } from '@/api-client';
+import { useTradingAccountsStore } from '@/stores/tradingAccounts';
 
-type TradingAccount = {
-  name: string
-} & RecordModel
+const tradingAccountsStore = useTradingAccountsStore();
 
-const tradingAccounts = ref<ListResult<TradingAccount>>();
-
-onMounted(() => {
-  pb.collection<TradingAccount>('trading_accounts')
-    .getList()
-    .then((res) => {
-      tradingAccounts.value = res;
-    })
-    .catch((e) => {
-      if (e instanceof ClientResponseError) {
-        console.log('createTradingAccount error', e.data);
-      }
-    });
+onMounted(async () => {
+  await tradingAccountsStore.get();
 });
 
 async function createTradingAccount(event: Event) {
-  try {
-    const formData = new FormData(event.target as HTMLFormElement);
-    formData.append('user', pb.authStore.model?.id);
-    const newTradingAcc = await pb.collection('trading_accounts').create<TradingAccount>(formData);
-
-    tradingAccounts.value?.items.push(newTradingAcc);
-  } catch (e) {
-    if (e instanceof ClientResponseError) {
+  const formData = new FormData(event.target as HTMLFormElement);
+  formData.append('user', pb.authStore.model?.id);
+  pb.collection('trading_accounts')
+    .create<TradingAccount>(formData)
+    .then((newTradingAcc) => {
+      tradingAccountsStore.add(newTradingAcc);
+    })
+    .catch((e) => {
       //   toast.add({
       //     severity: 'error',
       //     summary: 'CRUD error',
@@ -38,15 +25,14 @@ async function createTradingAccount(event: Event) {
       //     life: 5000
       //   });
       console.log('createTradingAccount error', e.data);
-    }
-  }
+    });
 }
 </script>
 
 <template>
   <h2>Trading Accounts</h2>
-  <ul v-if="tradingAccounts && tradingAccounts.items.length">
-    <li v-for="tradingAcc in tradingAccounts.items" :key="tradingAcc.id">
+  <ul v-if="tradingAccountsStore.accounts.length">
+    <li v-for="tradingAcc in tradingAccountsStore.accounts" :key="tradingAcc.id">
       {{ tradingAcc.name }}
       {{ tradingAcc.created }}
     </li>

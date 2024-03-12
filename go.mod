@@ -1,4 +1,4 @@
-module trading-statistics-backend
+module trading-statistics
 
 go 1.21.6
 

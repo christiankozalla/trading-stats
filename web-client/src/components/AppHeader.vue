@@ -31,6 +31,11 @@ const items = ref<MenuItem[]>([
     icon: 'icon icon-house'
   },
   {
+    label: 'Import',
+    url: '/import',
+    icon: 'icon icon-upload'
+  },
+  {
     label: 'Settings',
     url: '/settings',
     icon: 'icon icon-gear'
