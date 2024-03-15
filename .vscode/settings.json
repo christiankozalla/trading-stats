@@ -1,5 +1,8 @@
 {
   "files.autoSave": "off",
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "explicit"
+  },
   "[html]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
