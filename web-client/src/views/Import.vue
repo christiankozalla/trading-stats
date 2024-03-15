@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted } from 'vue';
 import { pb } from '@/api-client';
 import { useTradingAccountsStore } from '@/stores/tradingAccounts';
 
 const tradingAccountsStore = useTradingAccountsStore();
-const filePath = ref();
+const fileNames = ref<string[]>([]);
 const selectedTradingAccount = ref<string | null>(null);
 
 onMounted(async () => {
@@ -21,8 +21,8 @@ async function uploadLogFile(event: Event) {
     // toast.add()
   }
 
-  formData.append("user", pb.authStore.model.id)
-  formData.append("account", selectedTradingAccount.value);
+  formData.append('user', pb.authStore.model.id);
+  formData.append('account', selectedTradingAccount.value);
   const response = await pb
     .collection('trade_log_files')
     .create(formData)
@@ -31,6 +31,13 @@ async function uploadLogFile(event: Event) {
     });
 
   console.log('success', response);
+}
+
+function onFileInputChange(event: Event) {
+  const files = (event.target as HTMLInputElement).files;
+  if (files?.length) {
+    fileNames.value = Array.from(files).map((f) => f.name);
+  }
 }
 </script>
 
@@ -44,10 +51,16 @@ async function uploadLogFile(event: Event) {
       placeholder="Select a trading account"
     />
     <InputText type="date" name="date" />
+    <div v-if="fileNames?.length">
+      Files to be uploaded
+      <ul>
+        <li v-for="fileName in fileNames" :key="fileName">{{ fileName }}</li>
+      </ul>
+    </div>
     <label for="file" class="p-button p-component"
       ><span style="color: white" class="p-button-icon p-button-icon-left icon icon-upload"></span
       ><span class="p-button-label">{{
-        filePath ? filePath.split('\\').at(-1) : 'Import File'
+        fileNames.length > 0 ? 'Change Files' : 'Choose Files'
       }}</span></label
     >
     <InputText
@@ -55,10 +68,10 @@ async function uploadLogFile(event: Event) {
       name="file"
       id="file"
       class="file"
-      v-model="filePath"
-      @change="() => console.log(filePath)"
+      @change="onFileInputChange"
+      multiple
     />
-    <Button type="submit" label="submit"></Button>
+    <Button type="submit" label="Submit"></Button>
   </form>
 </template>
 

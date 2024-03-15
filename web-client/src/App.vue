@@ -17,11 +17,13 @@ pb.authStore.onChange((token, model) => {
 </script>
 
 <template>
-  <AppHeader />
-  <Loader />
+  <main>
+    <AppHeader />
+    <Loader />
 
-  <RouterView />
-  <Toast position="bottom-center" />
+    <RouterView />
+    <Toast position="bottom-center" />
+  </main>
 </template>
 
 <style scoped></style>

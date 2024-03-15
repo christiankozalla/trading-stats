@@ -19,6 +19,8 @@ import ProgressSpinner from 'primevue/progressspinner';
 import Toast from 'primevue/toast';
 import ToastService from 'primevue/toastservice';
 import Dropdown from 'primevue/dropdown';
+import DataTable from 'primevue/datatable';
+import Column from 'primevue/column';
 
 const app = createApp(App);
 
@@ -34,6 +36,8 @@ app.component('TabMenu', TabMenu);
 app.component('ProgressSpinner', ProgressSpinner);
 app.component('Toast', Toast);
 app.component('Dropdown', Dropdown);
+app.component('DataTable', DataTable);
+app.component('Column', Column);
 
 app.use(router);
 

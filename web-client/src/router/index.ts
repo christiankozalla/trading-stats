@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router';
-import Home from '../views/Home.vue';
+import Overview from '../views/Overview.vue';
 import { pb } from '@/api-client';
 
 declare module 'vue-router' {
@@ -12,8 +12,8 @@ declare module 'vue-router' {
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
-    name: 'home',
-    component: Home,
+    name: 'overview',
+    component: Overview,
     meta: {
       requiresAuth: true
     }
@@ -29,9 +29,6 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/settings',
     name: 'settings',
-    // route level code-splitting
-    // this generates a separate chunk (SettingsView.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
     component: () => import('../views/Settings.vue'),
     meta: {
       requiresAuth: true

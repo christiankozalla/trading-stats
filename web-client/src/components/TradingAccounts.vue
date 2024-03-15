@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { onMounted } from 'vue';
 import { pb, type TradingAccount } from '@/api-client';
 import { useTradingAccountsStore } from '@/stores/tradingAccounts';
 
