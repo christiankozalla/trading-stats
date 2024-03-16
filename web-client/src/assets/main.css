@@ -7,7 +7,6 @@
   }
 } */
 
-
 /* Reset CSS */
 @layer reset {
   body {
@@ -23,5 +22,9 @@
   video {
     max-width: 100%;
     height: auto;
+  }
+
+  p {
+    margin: 0;
   }
 }
