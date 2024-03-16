@@ -1,15 +1,25 @@
 <script setup lang="ts">
-import { computed } from 'vue';
 import { useCollection } from '@/composables/useCollection';
+import TradesTable from '@/components/TradesTable.vue';
+import { type Trade } from '@/api-client';
+import { type RecordModel } from 'pocketbase';
 
 const trades = useCollection('view_trades');
 
-const tradeItems = computed(() => {
-  return (trades.collection?.items || []).map((trade) => ({
-    ...trade,
-    ProfitLoss: formatCurrency(trade.ProfitLoss * getMultiplier(trade.Symbol))
-  }));
+const tradesMapper = (trade: Trade & RecordModel) => ({
+  ...trade,
+  ProfitLoss: formatCurrency(
+    trade.ProfitLoss * getMultiplier(trade.Symbol as keyof typeof ticksToCurrency)
+  )
 });
+
+function getMultiplier(symbol: keyof typeof ticksToCurrency): number {
+  return ticksToCurrency[symbol] || 0;
+}
+
+function formatCurrency(value: number) {
+  return value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+}
 
 const ticksToCurrency = {
   'CLF4.NYMEX': 1000,
@@ -24,16 +34,19 @@ const ticksToCurrency = {
   'CLV4.NYMEX': 1000,
   'CLX4.NYMEX': 1000,
   'CLZ4.NYMEX': 1000,
-  'NQH4.CME': 2
+  'NQF4.CME': 2,
+  'NQG4.CME': 2,
+  'NQH4.CME': 2,
+  'NQJ4.CME': 2,
+  'NQK4.CME': 2,
+  'NQM4.CME': 2,
+  'NQN4.CME': 2,
+  'NQQ4.CME': 2,
+  'NQU4.CME': 2,
+  'NQV4.CME': 2,
+  'NQX4.CME': 2,
+  'NQZ4.CME': 2
 };
-
-function getMultiplier(symbol: keyof typeof ticksToCurrency): number {
-  return ticksToCurrency[symbol] || 0;
-}
-
-function formatCurrency(value: number) {
-  return value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
-}
 </script>
 
 <template>
@@ -43,40 +56,5 @@ function formatCurrency(value: number) {
     Three charts side by side Aggregate PnL vs Date Cumulative PnL vs Date Aggregate Volume vs Date
   </section>
 
-  <section v-if="trades.collection?.items">
-    <DataTable
-      :value="tradeItems"
-      sortField="DateTime"
-      :sortOrder="-1"
-      paginator
-      :rows="trades.collection.perPage"
-    >
-      <template #paginatorstart>
-        <Button
-          type="button"
-          icon="icon icon-refresh"
-          @click="trades.next"
-          style="padding: 4px 8px"
-          label="Load&nbsp;more"
-        />
-      </template>
-      <Column field="t1_DateTime" header="Date" sortable>
-        <template #body="props">
-          {{
-            new Date(props.data.t1_DateTime).toLocaleDateString('de-DE', {
-              year: 'numeric',
-              month: '2-digit',
-              day: '2-digit'
-            })
-          }}
-        </template>
-      </Column>
-      <Column field="Symbol" header="Symbol" />
-      <Column field="ProfitLoss" header="PnL" sortable>
-        <template #body="props">
-          {{ formatCurrency(props.data.ProfitLoss) }}
-        </template>
-      </Column>
-    </DataTable>
-  </section>
+  <TradesTable :trades="trades" :mapper-fn="tradesMapper" />
 </template>
