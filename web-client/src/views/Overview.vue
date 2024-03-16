@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useCollection } from '@/composables/useCollection';
 import TradesTable from '@/components/TradesTable.vue';
+import DataPanel from '@/components/DataPanel.vue';
 import { type Trade } from '@/api-client';
 import { type RecordModel } from 'pocketbase';
 
@@ -50,7 +51,24 @@ const ticksToCurrency = {
 </script>
 
 <template>
-  <section>Three cards side by side Avg. PnL/Day Total PnL Avg. Vol/Day</section>
+  <section>
+    Three cards side by side Total PnL Avg. Vol/Day
+    <DataPanel>
+      <template #left>
+        <p>Avg. PnL/Day</p>
+      </template>
+      <template #right> Win Days 10 Loss Days 1 </template>
+    </DataPanel>
+
+    <DataPanel>
+      <p>Total PnL</p>
+      <p>$40.923 from $13</p>
+    </DataPanel>
+    <DataPanel>
+      <template #left> Avg. Vol/Day </template>
+      <template #right> PnL/Vol $75.47 Ratio </template>
+    </DataPanel>
+  </section>
 
   <section>
     Three charts side by side Aggregate PnL vs Date Cumulative PnL vs Date Aggregate Volume vs Date

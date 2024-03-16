@@ -21,6 +21,7 @@ import ToastService from 'primevue/toastservice';
 import Dropdown from 'primevue/dropdown';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
+import Panel from 'primevue/panel';
 
 const app = createApp(App);
 
@@ -38,6 +39,7 @@ app.component('Toast', Toast);
 app.component('Dropdown', Dropdown);
 app.component('DataTable', DataTable);
 app.component('Column', Column);
+app.component('Panel', Panel);
 
 app.use(router);
 
