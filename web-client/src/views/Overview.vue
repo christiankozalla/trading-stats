@@ -1,9 +1,9 @@
 <script setup lang="ts">
+import { type RecordModel } from 'pocketbase';
 import { useCollection } from '@/composables/useCollection';
 import TradesTable from '@/components/TradesTable.vue';
 import DataPanel from '@/components/DataPanel.vue';
 import { type Trade } from '@/api-client';
-import { type RecordModel } from 'pocketbase';
 
 const trades = useCollection('view_trades');
 
@@ -57,16 +57,18 @@ const ticksToCurrency = {
       <template #left>
         <p>Avg. PnL/Day</p>
       </template>
-      <template #right> Win Days 10 Loss Days 1 </template>
+      <template #right> <p>Win Days 10 Loss Days 1</p></template>
     </DataPanel>
 
     <DataPanel>
-      <p>Total PnL</p>
-      <p>$40.923 from $13</p>
+      <div>
+        <p>Total PnL</p>
+        <p>$40.923 from $13</p>
+      </div>
     </DataPanel>
     <DataPanel>
-      <template #left> Avg. Vol/Day </template>
-      <template #right> PnL/Vol $75.47 Ratio </template>
+      <template #left> <p>Avg. Vol/Day</p> </template>
+      <template #right> <p>PnL/Vol $75.47 Ratio</p></template>
     </DataPanel>
   </section>
 
