@@ -3,10 +3,13 @@ import { RouterView, useRouter } from 'vue-router';
 import AppHeader from '@/components/AppHeader.vue';
 import Loader from '@/components/Loader.vue';
 import { useAuthStore } from '@/stores/auth';
+import { useTradingAccountsStore } from '@/stores/tradingAccounts';
 import { pb, type User } from '@/api-client';
 
 const router = useRouter();
 const authStore = useAuthStore();
+const tradingAccountsStore = useTradingAccountsStore();
+
 const fireImmediately = true;
 pb.authStore.onChange((token, model) => {
   authStore.model = model as User;
@@ -14,6 +17,14 @@ pb.authStore.onChange((token, model) => {
     router.push('/login-signup');
   }
 }, fireImmediately);
+
+pb.beforeSend = function (originalUrl, options) {
+  const url = new URL(originalUrl);
+
+  url.searchParams.set('accountId', tradingAccountsStore.selected || '');
+
+  return { url: url.toString(), options };
+};
 </script>
 
 <template>
@@ -21,7 +32,7 @@ pb.authStore.onChange((token, model) => {
     <AppHeader />
     <Loader />
 
-    <RouterView />
+    <RouterView :key="tradingAccountsStore.selected" />
     <Toast position="bottom-center" />
   </main>
 </template>

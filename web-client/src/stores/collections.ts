@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
+import { useToast } from 'primevue/usetoast';
 import {
   type RecordListOptions,
   type ListResult,
@@ -8,9 +9,10 @@ import {
 } from 'pocketbase';
 import { pb, type Collections } from '@/api-client';
 import { useLoaderStore } from './loader';
-import { useToast } from 'primevue/usetoast';
+import { useTradingAccountsStore } from './tradingAccounts';
 
 const useCollectionsStore = defineStore('collections', () => {
+  const tradingAccountsStore = useTradingAccountsStore();
   const loaderStore = useLoaderStore();
   const toast = useToast();
 
@@ -26,7 +28,8 @@ const useCollectionsStore = defineStore('collections', () => {
     try {
       const list = await pb.collection(collection).getList(page, perPage, options);
       const existing = state.value[collection];
-      if (existing) {
+      // make sure existing store collection data is from same account
+      if (existing && existing.items[0]?.accountId === tradingAccountsStore.selected) {
         existing.items.push(...list.items);
         existing.page = list.page;
         existing.totalItems = list.totalItems;
@@ -37,6 +40,7 @@ const useCollectionsStore = defineStore('collections', () => {
 
       return state.value[collection];
     } catch (e) {
+      console.error('error fetching collection ', collection);
       if (e instanceof ClientResponseError) {
         toast.add({
           severity: 'error',
@@ -53,10 +57,8 @@ const useCollectionsStore = defineStore('collections', () => {
   async function get(collection: Collections, { nextPage } = { nextPage: false }) {
     if (nextPage) {
       return getList(collection, (state.value[collection]?.page || 0) + 1);
-    } else if (state.value[collection]) {
-      return state.value[collection];
     } else {
-      return await getList(collection);
+      return getList(collection);
     }
   }
 

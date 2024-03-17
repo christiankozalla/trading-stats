@@ -1,15 +1,11 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref } from 'vue';
 import { pb } from '@/api-client';
 import { useTradingAccountsStore } from '@/stores/tradingAccounts';
 
 const tradingAccountsStore = useTradingAccountsStore();
 const fileNames = ref<string[]>([]);
 const selectedTradingAccount = ref<string | null>(null);
-
-onMounted(async () => {
-  await tradingAccountsStore.get();
-});
 
 async function uploadLogFile(event: Event) {
   const formData = new FormData(event.target as HTMLFormElement);

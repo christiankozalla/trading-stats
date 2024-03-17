@@ -4,6 +4,7 @@ import type { MenuItem } from 'primevue/menuitem';
 import LogoTitle from '@/components/LogoTitle.vue';
 import { pb } from '@/api-client';
 import { useAuthStore } from '@/stores/auth';
+import TradingAccountSelector from '@/components/TradingAccountSelector.vue';
 
 const menu = ref();
 const authStore = useAuthStore();
@@ -76,6 +77,7 @@ function toggleMenu(event: MouseEvent) {
       </template>
       <template #end>
         <div v-if="authStore.isAuthenticated">
+          <TradingAccountSelector />
           <Button
             @click="toggleMenu"
             :pt="{
@@ -121,6 +123,7 @@ function toggleMenu(event: MouseEvent) {
   padding: 5px;
   border-radius: 50%;
   border: none;
+  margin-left: 12px;
 }
 .background-color-hover {
   transition: background-color 300ms ease;

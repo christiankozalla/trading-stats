@@ -1,30 +1,44 @@
 import { defineStore } from 'pinia';
-import { computed, ref } from 'vue';
+import { computed, ref, onMounted, watch } from 'vue';
 import { pb, type TradingAccount } from '@/api-client';
+
+type AccountId = string;
+
+const accountIdKey = 'selectedTradingAccountId';
 
 const useTradingAccountsStore = defineStore('tradingAccounts', () => {
   const state = ref<TradingAccount[]>([]);
   const accounts = computed(() => state.value);
+  const selected = ref<AccountId>();
 
-  async function get(page?: number) {
+  onMounted(async () => {
+    const storedSelectedId = localStorage.getItem(accountIdKey);
+    if (storedSelectedId) {
+      selected.value = storedSelectedId;
+    }
+
+    await get();
+  });
+
+  watch(selected, (newValue) => {
+    if (newValue) {
+      localStorage.setItem(accountIdKey, newValue);
+    } else {
+      localStorage.removeItem(accountIdKey);
+    }
+  });
+
+  async function get() {
     pb.collection('trading_accounts')
-      .getList(page)
+      .getFullList()
       .then((res) => {
-        state.value.push(...res.items);
-        if (state.value.length === res.totalItems) return;
-        if (res.page < res.totalPages) {
-          return get(res.page + 1);
-        }
+        console.log('full list', res);
+        state.value.push(...res);
       })
       .catch((e) => {
         console.log('createTradingAccount error', e.data);
       });
   }
-
-  state.value.forEach((ta) => {
-    ta.name
-    ta.id
-  })
 
   function add(...tradingAccounts: TradingAccount[]) {
     state.value.push(...tradingAccounts);
@@ -32,7 +46,7 @@ const useTradingAccountsStore = defineStore('tradingAccounts', () => {
 
   return {
     accounts,
-    get,
+    selected,
     add
   };
 });

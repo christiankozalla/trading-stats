@@ -1,13 +1,8 @@
 <script setup lang="ts">
-import { onMounted } from 'vue';
 import { pb, type TradingAccount } from '@/api-client';
 import { useTradingAccountsStore } from '@/stores/tradingAccounts';
 
 const tradingAccountsStore = useTradingAccountsStore();
-
-onMounted(async () => {
-  await tradingAccountsStore.get();
-});
 
 async function createTradingAccount(event: Event) {
   const formData = new FormData(event.target as HTMLFormElement);
