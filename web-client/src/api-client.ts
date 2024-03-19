@@ -34,9 +34,11 @@ export type Trade = {
   FillPrice_close: number;
   FillPrice_open: number;
   ProfitLoss: number;
+  Multiplier: number;
   Quantity_close: number;
   Quantity_open: number;
   Symbol: string;
+  ShortSymbol: string;
   account: string;
   collectionId: string;
   collectionName: string;

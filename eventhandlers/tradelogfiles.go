@@ -4,6 +4,7 @@ import (
 	"encoding/csv"
 	"io"
 	"log"
+	"strings"
 
 	"github.com/pocketbase/pocketbase"
 	"github.com/pocketbase/pocketbase/core"
@@ -52,6 +53,23 @@ func CreateTradeRecordsFromLogFiles(app *pocketbase.PocketBase) hook.Handler[*co
 				trade := make(map[string]any)
 				for i, value := range record {
 					trade[header[i]] = value
+				}
+
+				// adds multiplier to calculate cash ($) from ticks
+				// because ProfitLoss is given in ticks, each tick has different value for each future
+				// hence the multiplier
+				globexCode, ok := trade["Symbol"].(string)
+				if ok {
+					if strings.Contains(globexCode, ".") {
+						parts := strings.Split(globexCode, ".")
+						globexCode = parts[0][:len(parts[0])-2]
+					} else if len(globexCode) >= 2 {
+						globexCode = globexCode[:len(globexCode)-2]
+					}
+
+					multiplier := globexCodeToMultiplierMap[globexCode]
+					trade["Multiplier"] = multiplier
+					trade["ShortSymbol"] = globexCode
 				}
 
 				trade["user"] = userId

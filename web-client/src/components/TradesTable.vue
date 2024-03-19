@@ -41,7 +41,7 @@ const items = computed(() => {
           }}
         </template>
       </Column>
-      <Column field="Symbol" header="Symbol" />
+      <Column field="ShortSymbol" header="Symbol" />
       <Column field="ProfitLoss" header="PnL" sortable />
     </DataTable>
   </section>
