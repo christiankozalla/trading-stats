@@ -9,6 +9,9 @@ import (
 	"github.com/pocketbase/pocketbase"
 	"github.com/pocketbase/pocketbase/apis"
 	"github.com/pocketbase/pocketbase/core"
+	"github.com/pocketbase/pocketbase/plugins/migratecmd"
+
+	_ "trading-statistics/migrations"
 )
 
 func main() {
@@ -21,6 +24,11 @@ func main() {
 		true,
 		"fallback the request to index.html on missing static path (eg. when pretty urls are used with SPA)",
 	)
+
+	migratecmd.MustRegister(app, app.RootCmd, migratecmd.Config{
+		// enable auto creation of migration files when making collection changes in the Admin UI
+		Automigrate: os.Getenv("AUTOMIGRATE") == "true",
+	})
 
 	// serves static files from the provided public dir (if exists)
 	app.OnBeforeServe().Add(func(e *core.ServeEvent) error {
