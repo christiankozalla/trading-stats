@@ -2,31 +2,53 @@
 import { ref } from 'vue';
 import { pb } from '@/api-client';
 import { useTradingAccountsStore } from '@/stores/tradingAccounts';
+import { useToast } from 'primevue/usetoast';
 
+const toast = useToast();
 const tradingAccountsStore = useTradingAccountsStore();
 const fileNames = ref<string[]>([]);
-const selectedTradingAccount = ref<string | null>(null);
 
 async function uploadLogFile(event: Event) {
   const formData = new FormData(event.target as HTMLFormElement);
-  if (!selectedTradingAccount.value) {
+  if (!tradingAccountsStore.selected) {
+    toast.add({
+      severity: 'info',
+      summary: 'Trading account required',
+      detail: 'Please select/create a trading account before importing.',
+      life: 5000
+    });
     return;
-    // toast.add()
   } else if (!pb.authStore.model) {
+    toast.add({
+      severity: 'warn',
+      summary: 'Authentication error',
+      detail: 'You are not logged in properly.',
+      life: 5000
+    });
     return;
-    // toast.add()
   }
 
   formData.append('user', pb.authStore.model.id);
-  formData.append('account', selectedTradingAccount.value);
+  formData.append('account', tradingAccountsStore.selected);
   const response = await pb
     .collection('trade_log_files')
     .create(formData)
     .catch((e) => {
-      console.log('uploadLogFile error', e.data);
+      toast.add({
+        severity: 'error',
+        summary: 'Import error',
+        detail: e.data.message,
+        life: 5000
+      });
     });
-
-  console.log('success', response);
+    if (response) {
+      toast.add({
+        severity: "success",
+        summary: "Import successful",
+        life: 5000
+      });
+      fileNames.value = [];
+    }
 }
 
 function onFileInputChange(event: Event) {
@@ -39,14 +61,6 @@ function onFileInputChange(event: Event) {
 
 <template>
   <form @submit.prevent="uploadLogFile">
-    <Dropdown
-      v-model="selectedTradingAccount"
-      optionLabel="name"
-      optionValue="id"
-      :options="tradingAccountsStore.accounts"
-      placeholder="Select a trading account"
-    />
-    <InputText type="date" name="date" />
     <div v-if="fileNames?.length">
       Files to be uploaded
       <ul>
