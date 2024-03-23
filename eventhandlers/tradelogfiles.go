@@ -146,7 +146,6 @@ type Trade struct {
 }
 
 func createTradeRecords(app *pocketbase.PocketBase, e *core.RecordCreateEvent) error {
-	userId := e.Record.GetString("user")
 	accountId := e.Record.GetString("account")
 
 	trades := []Trade{}
@@ -177,11 +176,9 @@ func createTradeRecords(app *pocketbase.PocketBase, e *core.RecordCreateEvent) e
 		AND
 			openTrades.OpenClose = 'Open'
 		AND
-			closeTrades.OpenClose = 'Close'
-		ORDER BY DateTime_close DESC;
+			closeTrades.OpenClose = 'Close';
 	`).Bind(dbx.Params{
 		"accountId": accountId,
-		"userId":    userId,
 	}).All(&trades)
 	if err != nil {
 		log.Fatal(err)
