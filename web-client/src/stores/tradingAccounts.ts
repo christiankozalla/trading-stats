@@ -32,7 +32,6 @@ const useTradingAccountsStore = defineStore('tradingAccounts', () => {
     pb.collection('trading_accounts')
       .getFullList()
       .then((res) => {
-        console.log('full list', res);
         state.value.push(...res);
       })
       .catch((e) => {
