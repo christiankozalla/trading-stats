@@ -5,13 +5,14 @@ import Loader from '@/components/Loader.vue';
 import { useAuthStore } from '@/stores/auth';
 import { useTradingAccountsStore } from '@/stores/tradingAccounts';
 import { pb, type User } from '@/api-client';
+import { onBeforeUnmount } from 'vue';
 
 const router = useRouter();
 const authStore = useAuthStore();
 const tradingAccountsStore = useTradingAccountsStore();
 
 const fireImmediately = true;
-pb.authStore.onChange((token, model) => {
+const removeAuthStoreOnChangeListener = pb.authStore.onChange((token, model) => {
   authStore.model = model as User;
   if (!authStore.isAuthenticated) {
     router.push('/login-signup');
@@ -25,6 +26,10 @@ pb.beforeSend = function (originalUrl, options) {
 
   return { url: url.toString(), options };
 };
+
+onBeforeUnmount(() => {
+  removeAuthStoreOnChangeListener();
+});
 </script>
 
 <template>

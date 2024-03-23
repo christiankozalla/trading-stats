@@ -5,13 +5,12 @@ import (
 	"os"
 
 	"trading-statistics/eventhandlers"
+	_ "trading-statistics/migrations"
 
 	"github.com/pocketbase/pocketbase"
 	"github.com/pocketbase/pocketbase/apis"
 	"github.com/pocketbase/pocketbase/core"
 	"github.com/pocketbase/pocketbase/plugins/migratecmd"
-
-	_ "trading-statistics/migrations"
 )
 
 func main() {

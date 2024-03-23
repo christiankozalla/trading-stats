@@ -2,13 +2,19 @@ import PocketBase, { type RecordService, type RecordModel } from 'pocketbase';
 
 interface TypedPocketBase extends PocketBase {
   collection(idOrName: string): RecordService;
-  collection(idOrName: 'view_trades'): RecordService<Trade>;
+  collection(idOrName: 'trades'): RecordService<Trade>;
   collection(idOrName: 'trading_accounts'): RecordService<TradingAccount>;
+  collection(idOrName: 'profit_loss'): RecordService<ProfitLoss>;
 }
 
 export const pb = new PocketBase(
   import.meta.env.POCKETBASE_BASE_URL || 'http://localhost:8090'
 ) as TypedPocketBase;
+
+export type ProfitLoss = {
+  DateTime_close: string;
+  ProfitLoss_dollar: number;
+} & RecordModel;
 
 export type TradingAccount = {
   name: string;
@@ -47,4 +53,4 @@ export type Trade = {
   user: string;
 } & RecordModel;
 
-export type Collections = 'trades' | 'users' | 'view_trades' | 'trade_log_files';
+export type Collections = 'trades' | 'users' | 'raw_trades' | 'trade_log_files' | 'profit_loss';

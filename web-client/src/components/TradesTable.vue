@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { type useCollection } from '@/composables/useCollection';
+import { type usePaginatedCollection } from '@/composables/usePaginatedCollection';
 
 const props = defineProps<{
-  trades: ReturnType<typeof useCollection>;
+  trades: ReturnType<typeof usePaginatedCollection>;
   mapperFn: (trade: any) => any;
 }>();
 
