@@ -15,8 +15,38 @@ import {
   LinearScale,
   BarElement
 } from 'chart.js';
+import { DateTime } from 'luxon';
 import { Line, Bar, type ChartProps } from 'vue-chartjs';
 import { useLoaderStore } from '@/stores/loader';
+
+// helpers
+const sum = (array: number[]) => array.reduce((sum, curr) => sum + curr, 0);
+const displayMoney = (n: number) => `${n.toFixed(1)} $`;
+
+function groupDataByWeek(data: Record<string, number[]>) {
+  const groupedData: Record<string, { data: number[]; sum: number }> = {};
+
+  for (const dateString in data) {
+    const date = DateTime.fromISO(dateString);
+    const weekStart = date.startOf('week').toISODate();
+    if (weekStart) {
+      if (!groupedData[weekStart]) {
+        groupedData[weekStart] = { data: [], sum: 0 };
+      }
+      groupedData[weekStart].data.push(...data[dateString]);
+      groupedData[weekStart].sum = sum(data[dateString]);
+    }
+  }
+  // example for accessing the latest week
+  // const latestWeekString = DateTime.now().startOf('week')
+  // const latestWeekData = groupedData[latestWeekString]
+  return groupedData;
+}
+
+type ProfitLossExtended = ProfitLoss & { Date_close: string };
+
+const currentWeekStart = DateTime.local().startOf('week').toISODate();
+const previousWeekStart = DateTime.local().startOf('week').minus({ weeks: 1 }).toISODate();
 
 const loaderStore = useLoaderStore();
 ChartJS.register(
@@ -29,12 +59,12 @@ ChartJS.register(
   Tooltip,
   Legend
 );
-const profitLoss = ref<(ProfitLoss & { Date_close: string })[]>();
+const profitLoss = ref<ProfitLossExtended[]>();
 
 onMounted(() => {
   loaderStore.startLoading();
   pb.collection('profit_loss')
-    .getFullList({ sort: '-DateTime_close' })
+    .getFullList({ sort: 'DateTime_close' })
     .then(
       (records) =>
         (profitLoss.value = records.map(
@@ -42,7 +72,7 @@ onMounted(() => {
             ({
               ...record,
               Date_close: new Date(record.DateTime_close).toISOString().substring(0, 10)
-            }) as ProfitLoss & { Date_close: string }
+            }) as ProfitLossExtended
         ))
     )
     .finally(() => loaderStore.stopLoading());
@@ -60,6 +90,8 @@ const pnlData = computed(() => {
     labels: [],
     datasets: []
   };
+  let weekly: ReturnType<typeof groupDataByWeek> = {};
+  let avgPerDay = 0;
   if (profitLoss.value) {
     const cumulativeData: Record<DateString, number> = {};
     const saldoData: Record<DateString, number[]> = {};
@@ -74,16 +106,23 @@ const pnlData = computed(() => {
       }
     }
     cumulative.labels = Object.keys(cumulativeData);
-    cumulative.datasets.push({ label: 'Cumulative PnL', data: Object.values(cumulativeData) });
+    cumulative.datasets.push({ label: 'Cumulative PnL $', data: Object.values(cumulativeData) });
     saldo.labels = Object.keys(saldoData);
+    const saldoBars = Object.values(saldoData).map(sum);
     saldo.datasets.push({
-      label: 'Change PnL',
-      data: Object.values(saldoData).map((changes) => changes.reduce((sum, curr) => sum + curr, 0))
+      label: 'Daily Change PnL $',
+      data: saldoBars,
+      backgroundColor: saldoBars.map((bar) => (bar >= 0 ? 'green' : 'red'))
     });
+    weekly = groupDataByWeek(saldoData);
+    avgPerDay = total / saldoBars.length;
   }
   return {
     cumulative,
-    saldo
+    saldo,
+    weekly,
+    total,
+    avgPerDay
   };
 });
 
@@ -100,32 +139,112 @@ function formatCurrency(value: number) {
 </script>
 
 <template>
-  <section>
-    <Line v-if="!loaderStore.isLoading" :data="pnlData.cumulative" />
-    <Bar v-if="!loaderStore.isLoading" :data="pnlData.saldo" />
-    Three cards side by side Total PnL Avg. Vol/Day
+  <section v-if="!loaderStore.isLoading" class="data-panels">
     <DataPanel>
       <template #left>
-        <p>Avg. PnL/Day</p>
+        <p>
+          <strong>Total PnL</strong> <br />
+          {{ displayMoney(pnlData.total) }}
+        </p>
       </template>
-      <template #right> <p>Win Days 10 Loss Days 1</p></template>
+      <template #right>
+        <p>
+          <strong>Win Days</strong>
+          {{ pnlData.saldo.datasets[0].data?.filter((n) => typeof n === 'number' && n > 0).length }}
+          <br />
+          <strong>Loss Days</strong>
+          {{ pnlData.saldo.datasets[0].data?.filter((n) => typeof n === 'number' && n < 0).length }}
+        </p>
+      </template>
     </DataPanel>
+    <DataPanel>
+      <template #left>
+        <p>
+          <strong>Avg. PnL/Day</strong> <br />
+          {{ displayMoney(pnlData.avgPerDay) }}
+        </p>
+      </template>
+      <template #right>
+        <p>
+          <strong>Avg. PnL/Week</strong> <br />
+          {{ displayMoney(Object.values(pnlData.weekly).reduce((sum, curr) => sum + curr.sum, 0)) }}
+        </p>
+      </template>
+    </DataPanel>
+    <DataPanel>
+      <template #left>
+        <p>
+          <strong> Current Week's PnL </strong><br />
+          {{ currentWeekStart }}:
+          {{ pnlData.weekly[currentWeekStart]?.sum || 'No data' }}
+        </p>
+      </template>
+      <template #right>
+        <p>
+          <strong>Last Week's PnL </strong><br />
+          {{ previousWeekStart }}:
+          {{ pnlData.weekly[previousWeekStart]?.sum || 'No data' }}
+        </p>
+      </template>
+    </DataPanel>
+  </section>
 
-    <DataPanel>
-      <div>
-        <p>Total PnL</p>
-        <p>$40.923 from $13</p>
-      </div>
-    </DataPanel>
-    <DataPanel>
-      <template #left> <p>Avg. Vol/Day</p> </template>
-      <template #right> <p>PnL/Vol $75.47 Ratio</p></template>
-    </DataPanel>
+  <section v-if="!loaderStore.isLoading" class="charts">
+    <div>
+      <Line :data="pnlData.cumulative" />
+    </div>
+    <div>
+      <Bar :data="pnlData.saldo" />
+    </div>
   </section>
 
   <section>
-    Three charts side by side Aggregate PnL vs Date Cumulative PnL vs Date Aggregate Volume vs Date
+    <TradesTable :trades="trades" :mapper-fn="tradesMapper" />
   </section>
-
-  <TradesTable :trades="trades" :mapper-fn="tradesMapper" />
 </template>
+
+<style scoped>
+section {
+  margin: 24px;
+}
+
+.data-panels {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: 3fr 3fr 5fr;
+  grid-auto-rows: auto;
+}
+
+:deep(.p-component) {
+  font-size: 0.8rem;
+}
+
+.charts {
+  display: flex;
+  gap: 12px;
+}
+
+.charts div {
+  width: calc(50% - 12px);
+}
+
+@media (max-width: 500px) {
+  .data-panels {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 960px) {
+  .data-panels {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .data-panels > *:last-child {
+    grid-column: span 2;
+  }
+
+  .charts {
+    display: block;
+  }
+}
+</style>
