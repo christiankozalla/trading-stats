@@ -15,38 +15,49 @@ import {
   LinearScale,
   BarElement
 } from 'chart.js';
-import { DateTime } from 'luxon';
 import { Line, Bar, type ChartProps } from 'vue-chartjs';
 import { useLoaderStore } from '@/stores/loader';
 
 // helpers
 const sum = (array: number[]) => array.reduce((sum, curr) => sum + curr, 0);
 const displayMoney = (n: number) => `${n.toFixed(1)} $`;
+const toISODate = (date: string | Date) => {
+  if (typeof date === 'string') {
+    return new Date(date).toISOString().substring(0, 10);
+  } else return date.toISOString().substring(0, 10);
+};
+
+function startOfWeek(dateInput: string | Date): string {
+  const date = new Date(dateInput);
+  const dayOfWeek = date.getDay(); // 0 for Sunday, 1 for Monday, etc.
+  const daysSinceMonday = (dayOfWeek + 6) % 7; // Number of days to subtract to get to Monday
+  date.setDate(date.getDate() - daysSinceMonday);
+  return toISODate(date);
+}
 
 function groupDataByWeek(data: Record<string, number[]>) {
   const groupedData: Record<string, { data: number[]; sum: number }> = {};
 
   for (const dateString in data) {
-    const date = DateTime.fromISO(dateString);
-    const weekStart = date.startOf('week').toISODate();
-    if (weekStart) {
-      if (!groupedData[weekStart]) {
-        groupedData[weekStart] = { data: [], sum: 0 };
-      }
-      groupedData[weekStart].data.push(...data[dateString]);
-      groupedData[weekStart].sum = sum(data[dateString]);
+    const weekStart = toISODate(startOfWeek(dateString));
+    if (!groupedData[weekStart]) {
+      groupedData[weekStart] = { data: [], sum: 0 };
     }
+    groupedData[weekStart].data.push(...data[dateString]);
+    groupedData[weekStart].sum = sum(data[dateString]);
   }
   // example for accessing the latest week
   // const latestWeekString = DateTime.now().startOf('week')
   // const latestWeekData = groupedData[latestWeekString]
   return groupedData;
 }
+// end helpers
 
 type ProfitLossExtended = ProfitLoss & { Date_close: string };
 
-const currentWeekStart = DateTime.local().startOf('week').toISODate();
-const previousWeekStart = DateTime.local().startOf('week').minus({ weeks: 1 }).toISODate();
+const sevenDaysInMilliseconds = 7 * 24 * 60 * 60 * 1000;
+const currentWeekStart = toISODate(startOfWeek(new Date()));
+const previousWeekStart = toISODate(startOfWeek(new Date(new Date().getTime() - sevenDaysInMilliseconds)));
 
 const loaderStore = useLoaderStore();
 ChartJS.register(
@@ -71,7 +82,7 @@ onMounted(() => {
           (record) =>
             ({
               ...record,
-              Date_close: new Date(record.DateTime_close).toISOString().substring(0, 10)
+              Date_close: toISODate(record.DateTime_close)
             }) as ProfitLossExtended
         ))
     )
