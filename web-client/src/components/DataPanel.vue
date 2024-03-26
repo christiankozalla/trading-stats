@@ -14,6 +14,7 @@
 .datapanel-content > * {
   display: inline-block;
   width: 50%;
+  vertical-align: top;
 }
 
 .datapanel-content > *:nth-child(1) {
