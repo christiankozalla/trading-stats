@@ -7,9 +7,8 @@ interface TypedPocketBase extends PocketBase {
   collection(idOrName: 'profit_loss'): RecordService<ProfitLoss>;
 }
 
-export const pb = new PocketBase(
-  import.meta.env.POCKETBASE_BASE_URL || 'http://localhost:8090'
-) as TypedPocketBase;
+// import.meta.env.BASE_URL is provided by Vite (default "/") which works, because Vue and Pocketbase run on the same domain
+export const pb = new PocketBase(import.meta.env.BASE_URL) as TypedPocketBase;
 
 export type ProfitLoss = {
   DateTime_close: string;
