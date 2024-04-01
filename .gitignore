@@ -1,6 +1,8 @@
 pb_data
 pb_public
 
+dist
+
 its
 
 *.activitylog.txt
