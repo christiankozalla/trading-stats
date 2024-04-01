@@ -6,15 +6,15 @@ function isObject(value: unknown): value is object {
   return type === 'object' && value !== null;
 }
 
-const SUPPORTED_LOCALES = ['de', 'en'] as const;
+export const SUPPORTED_LOCALES = ['de', 'en'] as const;
 
-type Locales = (typeof SUPPORTED_LOCALES)[number];
+export type Locale = (typeof SUPPORTED_LOCALES)[number];
 
 const useI18nStore = defineStore('i18n', () => {
-  const currentLocale = ref<Locales>();
-  const messages: Record<Locales, null | Record<string, unknown>> = { de: null, en: null };
+  const currentLocale = ref<Locale>();
+  const messages: Record<Locale, null | Record<string, unknown>> = { de: null, en: null };
 
-  async function setLocale(newLocale: Locales) {
+  async function setLocale(newLocale: Locale) {
     document.querySelector('html')?.setAttribute('lang', newLocale);
 
     if (!messages[newLocale]) {

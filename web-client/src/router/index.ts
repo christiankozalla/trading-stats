@@ -1,7 +1,11 @@
-import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router';
+import {
+  createRouter,
+  createWebHistory,
+  type RouteRecordRaw,
+} from 'vue-router';
 import Overview from '../views/Overview.vue';
 import { pb } from '@/api-client';
-import { useI18nStore } from '@/stores/i18n';
+import { useI18nStore, SUPPORTED_LOCALES, type Locale } from '@/stores/i18n';
 
 declare module 'vue-router' {
   interface RouteMeta {
@@ -12,7 +16,7 @@ declare module 'vue-router' {
 
 const routes: RouteRecordRaw[] = [
   {
-    path: '/:locale/',
+    path: '/:locale',
     name: 'overview',
     component: Overview,
     meta: {
@@ -52,20 +56,51 @@ const router = createRouter({
   routes
 });
 
-router.beforeEach(async (to) => {
-  const i18n = useI18nStore();
+function getSupportedBrowserLocale(): Locale | undefined {
+  const browserLocale = navigator.language.split('-')[0];
+  if (isSupportedLocale(browserLocale)) {
+    return browserLocale;
+  }
+}
 
-  const currrentLocaleFromPath = to.path.slice(1, 3);
-  if (!i18n.currentLocale || currrentLocaleFromPath !== i18n.currentLocale) {
-    // TODO: what happens if another locale is present in path? -> 404 before requesting locale
-    return await i18n.setLocale(currrentLocaleFromPath as 'en' | 'de');
+function isSupportedLocale(locale: string): locale is Locale {
+  return (SUPPORTED_LOCALES as readonly string[]).includes(locale);
+}
+
+router.beforeEach(async (to, _from, next) => {
+  // if the user is not requesting a path with a locale
+  // a.) get the users standard language, see whether we support it and send the user there
+  // a.2) if we do not support the users favorite locale, send them to /en
+
+  const i18n = useI18nStore();
+  const localeParam = to.params.locale;
+
+  if (Array.isArray(localeParam)) {
+    throw new Error(`Multiple locale params in route: ${localeParam.join()}`);
+  }
+
+  if (!localeParam || !isSupportedLocale(localeParam)) {
+    const supportedBrowserLocale = getSupportedBrowserLocale();
+    if (supportedBrowserLocale) {
+      // Redirect to the same route after setting the supported browser locale
+      to.params.locale = supportedBrowserLocale;
+    } else {
+      // If the browser locale is not supported, redirect to the default locale
+      to.params.locale = 'en';
+    }
+    next(to);
+  } else if (isSupportedLocale(localeParam)) {
+    if (!i18n.currentLocale || localeParam !== i18n.currentLocale) {
+      await i18n.setLocale(localeParam);
+    }
+    next();
   }
 });
 
-router.beforeEach((to) => {
+router.beforeEach((to, _from, next) => {
   if (protectedRoutes.some((route) => route.name === to.name) && !pb.authStore.isValid) {
-    return { name: 'login-signup' };
-  }
+    return next({ name: 'login-signup', params: { ...to.params, locale: 'en' } });
+  } else next();
 });
 
 export default router;
