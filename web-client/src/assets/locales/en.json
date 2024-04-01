@@ -1,0 +1,11 @@
+{
+    "pnl": {
+        "total": "Total PnL",
+        "win-days": "Win Days",
+        "loss-days": "Loss Days",
+        "avg-per-day": "Avg. PnL/Day",
+        "avg-per-week": "Avg. PnL/Week",
+        "current-week": "Current Week's PnL",
+        "last-week": "Last Week's PnL"
+    }
+}

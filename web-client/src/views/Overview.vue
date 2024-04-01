@@ -17,6 +17,9 @@ import {
 } from 'chart.js';
 import { Line, Bar, type ChartProps } from 'vue-chartjs';
 import { useLoaderStore } from '@/stores/loader';
+import { useI18nStore } from '@/stores/i18n';
+
+const { t } = useI18nStore();
 
 // helpers
 const sum = (array: number[]) => array.reduce((sum, curr) => sum + curr, 0);
@@ -57,7 +60,9 @@ type ProfitLossExtended = ProfitLoss & { Date_close: string };
 
 const sevenDaysInMilliseconds = 7 * 24 * 60 * 60 * 1000;
 const currentWeekStart = toISODate(startOfWeek(new Date()));
-const previousWeekStart = toISODate(startOfWeek(new Date(new Date().getTime() - sevenDaysInMilliseconds)));
+const previousWeekStart = toISODate(
+  startOfWeek(new Date(new Date().getTime() - sevenDaysInMilliseconds))
+);
 
 const loaderStore = useLoaderStore();
 ChartJS.register(
@@ -154,30 +159,36 @@ function formatCurrency(value: number) {
     <DataPanel>
       <template #left>
         <p>
-          <strong>Total PnL</strong> <br />
-          {{ displayMoney(pnlData.total) }}
+          <strong>{{ t('pnl.total') }}</strong> <br />
+          {{ pnlData.total ? displayMoney(pnlData.total) : 'No data' }}
         </p>
       </template>
       <template #right>
         <p>
-          <strong>Win Days</strong>
-          {{ pnlData.saldo.datasets[0].data?.filter((n) => typeof n === 'number' && n > 0).length }}
+          <strong>{{ t('pnl.win-days') }}</strong>
+          {{
+            pnlData.saldo.datasets[0]?.data?.filter((n) => typeof n === 'number' && n > 0).length ||
+            'No data'
+          }}
           <br />
-          <strong>Loss Days</strong>
-          {{ pnlData.saldo.datasets[0].data?.filter((n) => typeof n === 'number' && n < 0).length }}
+          <strong>{{ t('pnl.loss-days') }}</strong>
+          {{
+            pnlData.saldo.datasets[0]?.data?.filter((n) => typeof n === 'number' && n < 0).length ||
+            'No data'
+          }}
         </p>
       </template>
     </DataPanel>
     <DataPanel>
       <template #left>
         <p>
-          <strong>Avg. PnL/Day</strong> <br />
+          <strong>{{ t('pnl.avg-per-day') }}</strong> <br />
           {{ displayMoney(pnlData.avgPerDay) }}
         </p>
       </template>
       <template #right>
         <p>
-          <strong>Avg. PnL/Week</strong> <br />
+          <strong>{{ t('pnl.avg-per-week')}}</strong> <br />
           {{ displayMoney(Object.values(pnlData.weekly).reduce((sum, curr) => sum + curr.sum, 0)) }}
         </p>
       </template>
@@ -185,14 +196,14 @@ function formatCurrency(value: number) {
     <DataPanel>
       <template #left>
         <p>
-          <strong> Current Week's PnL </strong><br />
+          <strong> {{ t('pnl.current-week') }}</strong><br />
           {{ currentWeekStart }}:
           {{ pnlData.weekly[currentWeekStart]?.sum || 'No data' }}
         </p>
       </template>
       <template #right>
         <p>
-          <strong>Last Week's PnL </strong><br />
+          <strong>{{ t('pnl.last-week') }}</strong><br />
           {{ previousWeekStart }}:
           {{ pnlData.weekly[previousWeekStart]?.sum || 'No data' }}
         </p>
@@ -256,6 +267,15 @@ section {
 
   .charts {
     display: block;
+  }
+
+  .charts div {
+    width: 100%;
+  }
+
+  .charts div canvas {
+    width: 100% !important;
+    height: auto !important;
   }
 }
 </style>

@@ -15,7 +15,7 @@ const fireImmediately = true;
 const removeAuthStoreOnChangeListener = pb.authStore.onChange((token, model) => {
   authStore.model = model as User;
   if (!authStore.isAuthenticated) {
-    router.push('/login-signup');
+    router.push('login-signup');
   }
 }, fireImmediately);
 

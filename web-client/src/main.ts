@@ -19,6 +19,8 @@ import Column from 'primevue/column';
 const app = createApp(App);
 
 app.use(createPinia());
+app.use(router);
+
 app.use(PrimeVue);
 app.use(ToastService);
 
@@ -55,7 +57,5 @@ app.component('Menu', Menu);
 app.component('Menubar', Menubar);
 app.component('Column', Column);
 app.component('ProgressSpinner', ProgressSpinner);
-
-app.use(router);
 
 app.mount('#app');

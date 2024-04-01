@@ -35,3 +35,7 @@
 .icon-refresh {
   content: url('./icons/icon-refresh.svg');
 }
+
+.icon-language {
+  content: url('./icons//icon-language.svg');
+}

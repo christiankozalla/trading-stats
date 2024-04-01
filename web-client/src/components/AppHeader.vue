@@ -1,44 +1,54 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import type { MenuItem } from 'primevue/menuitem';
 import LogoTitle from '@/components/LogoTitle.vue';
 import { pb } from '@/api-client';
 import { useAuthStore } from '@/stores/auth';
 import TradingAccountSelector from '@/components/TradingAccountSelector.vue';
+import { useI18nStore } from '@/stores/i18n';
+import { useRoute, useRouter } from 'vue-router';
 
+const router = useRouter();
+const route = useRoute();
 const menu = ref();
 const authStore = useAuthStore();
+const i18n = useI18nStore();
 
-const mainNav: MenuItem[] = [
+const mainNav = computed<MenuItem[]>(() => [
   {
     label: 'Notes',
-    url: '/notes',
+    url: `/${i18n.currentLocale}/notes`,
     icon: ''
   },
   {
     label: 'Import/Export',
-    url: '/import-export',
+    url: `/${i18n.currentLocale}/import-export`,
     icon: ''
   }
-];
+]);
 
-const items = ref<MenuItem[]>([
+const items = computed<MenuItem[]>(() => [
   {
     separator: true
   },
   {
     label: 'Home',
-    url: '/',
+    url: `/${i18n.currentLocale}`,
     icon: 'icon icon-house'
   },
   {
     label: 'Import',
-    url: '/import',
+    url: `/${i18n.currentLocale}/import`,
     icon: 'icon icon-upload'
   },
   {
+    label: i18n.currentLocale === 'de' ? 'English language' : 'Deutsche Sprache',
+    command: changeLocale,
+    icon: 'icon icon-language'
+  },
+  {
     label: 'Settings',
-    url: '/settings',
+    url: `/${i18n.currentLocale}/settings`,
     icon: 'icon icon-gear'
   },
   {
@@ -52,6 +62,12 @@ const items = ref<MenuItem[]>([
 
 function toggleMenu(event: MouseEvent) {
   menu.value.toggle(event);
+}
+
+async function changeLocale() {
+  const otherLocale = i18n.currentLocale === 'de' ? 'en' : 'de';
+  const newPath = route.path.replace(/^(\/de|\/en)/, `/${otherLocale}`);
+  await router.push(newPath);
 }
 </script>
 
