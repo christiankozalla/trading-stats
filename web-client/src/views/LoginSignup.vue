@@ -103,7 +103,7 @@ async function login(event: Event, { redirectOnSuccess = true } = {}) {
           .authWithPassword<User>(email, password);
 
         if (userDataResponse && redirectOnSuccess) {
-          await router.push('/');
+          await router.push({ name: 'overview' });
         }
       } catch (e) {
         if (e instanceof ClientResponseError) {

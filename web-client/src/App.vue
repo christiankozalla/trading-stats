@@ -1,21 +1,27 @@
 <script setup lang="ts">
-import { RouterView, useRouter } from 'vue-router';
+import { RouterView, useRouter, useRoute } from 'vue-router';
 import AppHeader from '@/components/AppHeader.vue';
 import Loader from '@/components/Loader.vue';
 import { useAuthStore } from '@/stores/auth';
 import { useTradingAccountsStore } from '@/stores/tradingAccounts';
 import { pb, type User } from '@/api-client';
 import { onBeforeUnmount } from 'vue';
+import { supportedOrFallbackLocale } from '@/router/helpers';
 
 const router = useRouter();
+const route = useRoute();
 const authStore = useAuthStore();
 const tradingAccountsStore = useTradingAccountsStore();
 
-const fireImmediately = true;
-const removeAuthStoreOnChangeListener = pb.authStore.onChange((token, model) => {
+// set to false for not, because if fires immediately then it always fires before navigation guards for root route /, even if /en/someting-else was requested
+const fireImmediately = false;
+const removeAuthStoreOnChangeListener = pb.authStore.onChange(async (token, model) => {
   authStore.model = model as User;
   if (!authStore.isAuthenticated) {
-    router.push('login-signup');
+    await router.push({
+      name: 'login-signup',
+      params: { locale: supportedOrFallbackLocale(route.params.locale) }
+    });
   }
 }, fireImmediately);
 
