@@ -1,11 +1,8 @@
-import {
-  createRouter,
-  createWebHistory,
-  type RouteRecordRaw,
-} from 'vue-router';
+import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router';
 import Overview from '../views/Overview.vue';
 import { pb } from '@/api-client';
-import { useI18nStore, SUPPORTED_LOCALES, type Locale } from '@/stores/i18n';
+import { useI18nStore } from '@/stores/i18n';
+import { isSupportedLocale, supportedOrFallbackLocale } from './helpers';
 
 declare module 'vue-router' {
   interface RouteMeta {
@@ -16,7 +13,7 @@ declare module 'vue-router' {
 
 const routes: RouteRecordRaw[] = [
   {
-    path: '/:locale',
+    path: '/:locale', // could use regex pattern like: '/:locale(de|en)'
     name: 'overview',
     component: Overview,
     meta: {
@@ -25,7 +22,6 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: '/:locale/import',
-    name: 'import',
     component: () => import('../views/Import.vue'),
     meta: {
       requiresAuth: true
@@ -33,7 +29,6 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: '/:locale/settings',
-    name: 'settings',
     component: () => import('../views/Settings.vue'),
     meta: {
       requiresAuth: true
@@ -47,6 +42,10 @@ const routes: RouteRecordRaw[] = [
       requiresAuth: false
     }
   }
+  // {
+  //   path: '/:pathMatch(.*)', // Catch all 404
+  //   redirect: '/404' // Redirect to default locale if route not found
+  // }
 ];
 
 const protectedRoutes = routes.filter((r) => r.meta?.requiresAuth === true);
@@ -55,17 +54,6 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes
 });
-
-function getSupportedBrowserLocale(): Locale | undefined {
-  const browserLocale = navigator.language.split('-')[0];
-  if (isSupportedLocale(browserLocale)) {
-    return browserLocale;
-  }
-}
-
-function isSupportedLocale(locale: string): locale is Locale {
-  return (SUPPORTED_LOCALES as readonly string[]).includes(locale);
-}
 
 router.beforeEach(async (to, _from, next) => {
   // if the user is not requesting a path with a locale
@@ -80,26 +68,29 @@ router.beforeEach(async (to, _from, next) => {
   }
 
   if (!localeParam || !isSupportedLocale(localeParam)) {
-    const supportedBrowserLocale = getSupportedBrowserLocale();
-    if (supportedBrowserLocale) {
-      // Redirect to the same route after setting the supported browser locale
-      to.params.locale = supportedBrowserLocale;
-    } else {
-      // If the browser locale is not supported, redirect to the default locale
-      to.params.locale = 'en';
+    const chosenLocale = supportedOrFallbackLocale(localeParam);
+    if (!i18n.currentLocale || chosenLocale !== i18n.currentLocale) {
+      await i18n.setLocale(chosenLocale);
     }
-    next(to);
+    next(`/${chosenLocale}${to.fullPath}`);
   } else if (isSupportedLocale(localeParam)) {
     if (!i18n.currentLocale || localeParam !== i18n.currentLocale) {
       await i18n.setLocale(localeParam);
     }
     next();
+  } else {
+    console.log('should not happen!', localeParam);
+    next();
   }
 });
 
 router.beforeEach((to, _from, next) => {
+  if (Array.isArray(to.params.locale)) {
+    throw new Error(`Multiple locale params in route: ${to.params.locale.join()}`);
+  }
   if (protectedRoutes.some((route) => route.name === to.name) && !pb.authStore.isValid) {
-    return next({ name: 'login-signup', params: { ...to.params, locale: 'en' } });
+    const locale = supportedOrFallbackLocale(to.params.locale);
+    next(`/${locale}/login-signup`); // or next({ name: 'login-signup', params: { locale }})
   } else next();
 });
 
