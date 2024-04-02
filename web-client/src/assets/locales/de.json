@@ -1,11 +1,11 @@
 {
-    "pnl": {
-        "total": "Gesamt PnL",
-        "win-days": "Gewinnertage",
-        "loss-days": "Verlierertage",
-        "avg-per-day": "⌀ PnL/Tag",
-        "avg-per-week": "⌀ PnL/Woche",
-        "current-week": "Aktuelle Woche PnL",
-        "last-week": "Letzte Woche PnL"
-    }
+  "pnl": {
+    "total": "Gesamt PnL",
+    "win-days": "Gewinnertage",
+    "loss-days": "Verlierertage",
+    "avg-per-day": "⌀ PnL/Tag",
+    "avg-per-week": "⌀ PnL/Woche",
+    "current-week": "Aktuelle Woche PnL",
+    "last-week": "Letzte Woche PnL"
+  }
 }

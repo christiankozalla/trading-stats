@@ -188,7 +188,7 @@ function formatCurrency(value: number) {
       </template>
       <template #right>
         <p>
-          <strong>{{ t('pnl.avg-per-week')}}</strong> <br />
+          <strong>{{ t('pnl.avg-per-week') }}</strong> <br />
           {{ displayMoney(Object.values(pnlData.weekly).reduce((sum, curr) => sum + curr.sum, 0)) }}
         </p>
       </template>
@@ -196,14 +196,16 @@ function formatCurrency(value: number) {
     <DataPanel>
       <template #left>
         <p>
-          <strong> {{ t('pnl.current-week') }}</strong><br />
+          <strong> {{ t('pnl.current-week') }}</strong
+          ><br />
           {{ currentWeekStart }}:
           {{ pnlData.weekly[currentWeekStart]?.sum || 'No data' }}
         </p>
       </template>
       <template #right>
         <p>
-          <strong>{{ t('pnl.last-week') }}</strong><br />
+          <strong>{{ t('pnl.last-week') }}</strong
+          ><br />
           {{ previousWeekStart }}:
           {{ pnlData.weekly[previousWeekStart]?.sum || 'No data' }}
         </p>

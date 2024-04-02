@@ -41,14 +41,14 @@ async function uploadLogFile(event: Event) {
         life: 5000
       });
     });
-    if (response) {
-      toast.add({
-        severity: "success",
-        summary: "Import successful",
-        life: 5000
-      });
-      fileNames.value = [];
-    }
+  if (response) {
+    toast.add({
+      severity: 'success',
+      summary: 'Import successful',
+      life: 5000
+    });
+    fileNames.value = [];
+  }
 }
 
 function onFileInputChange(event: Event) {
