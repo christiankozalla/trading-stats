@@ -2,8 +2,7 @@
 import { ref, computed } from 'vue';
 import type { MenuItem } from 'primevue/menuitem';
 import LogoTitle from '@/components/LogoTitle.vue';
-import { pb } from '@/api-client';
-import { useAuthStore } from '@/stores/auth';
+import { pb, isAuthenticated } from '@/api-client';
 import TradingAccountSelector from '@/components/TradingAccountSelector.vue';
 import { useI18nStore } from '@/stores/i18n';
 import { useRoute, useRouter } from 'vue-router';
@@ -11,7 +10,6 @@ import { useRoute, useRouter } from 'vue-router';
 const router = useRouter();
 const route = useRoute();
 const menu = ref();
-const authStore = useAuthStore();
 const i18n = useI18nStore();
 
 const mainNav = computed<MenuItem[]>(() => [
@@ -92,7 +90,7 @@ async function changeLocale() {
         <LogoTitle />
       </template>
       <template #end>
-        <div v-if="authStore.isAuthenticated">
+        <div v-if="isAuthenticated">
           <TradingAccountSelector />
           <Button
             @click="toggleMenu"

@@ -1,9 +1,8 @@
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router';
 import Overview from '../views/Overview.vue';
-import { pb, type User } from '@/api-client';
+import { pb } from '@/api-client';
 import { useI18nStore } from '@/stores/i18n';
 import { isSupportedLocale, supportedOrFallbackLocale } from './helpers';
-import { useAuthStore } from '@/stores/auth';
 
 declare module 'vue-router' {
   interface RouteMeta {

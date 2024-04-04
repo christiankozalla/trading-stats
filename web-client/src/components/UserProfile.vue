@@ -1,18 +1,19 @@
 <script setup lang="ts">
-import { useAuthStore } from '@/stores/auth';
-
-const authStore = useAuthStore();
+import { pb, isAuthenticated } from '@/api-client';
 </script>
 
 <template>
-  <div v-if="authStore.isAuthenticated && authStore.model">
+  <div v-if="isAuthenticated && pb.authStore.model">
     <ul>
-      <li>Name: {{ authStore.model.name }}</li>
-      <li>Username: {{ authStore.model.username }}</li>
-      <li>Avatar: {{ authStore.model.avatar }}</li>
-      <li>Created: {{ authStore.model.created }}</li>
-      <li>Email: {{ authStore.model.email }}</li>
-      <li>Verified: {{ authStore.model.verified }}</li>
+      <li>Name: {{ pb.authStore.model.name }}</li>
+      <li>Username: {{ pb.authStore.model.username }}</li>
+      <li>Avatar: {{ pb.authStore.model.avatar }}</li>
+      <li>Created: {{ pb.authStore.model.created }}</li>
+      <li>Email: {{ pb.authStore.model.email }}</li>
+      <li>Verified: {{ pb.authStore.model.verified }}</li>
     </ul>
+  </div>
+  <div v-else>
+    Not authenticated
   </div>
 </template>
