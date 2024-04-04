@@ -1,9 +1,8 @@
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router';
 import Overview from '../views/Overview.vue';
-import { pb, type User } from '@/api-client';
+import { pb } from '@/api-client';
 import { useI18nStore } from '@/stores/i18n';
 import { isSupportedLocale, supportedOrFallbackLocale } from './helpers';
-import { useAuthStore } from '@/stores/auth';
 
 declare module 'vue-router' {
   interface RouteMeta {
@@ -56,25 +55,6 @@ const router = createRouter({
   routes
 });
 
-let removeAuthStoreOnChangeListener: () => void | undefined;
-
-router.beforeResolve((to, _from, next) => {
-  if (!removeAuthStoreOnChangeListener) {
-    const authStore = useAuthStore();
-    const fireImmediately = true;
-    removeAuthStoreOnChangeListener = pb.authStore.onChange(async (token, model) => {
-      authStore.model = model as User;
-      if (!authStore.isAuthenticated) {
-        next({
-          name: 'login-signup',
-          params: { locale: supportedOrFallbackLocale(to.params.locale) }
-        });
-      } else next();
-    }, fireImmediately);
-  } else {
-    next();
-  }
-});
 
 router.beforeEach(async (to, _from, next) => {
   // if the user is not requesting a path with a locale
