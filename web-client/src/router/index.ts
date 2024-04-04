@@ -55,7 +55,6 @@ const router = createRouter({
   routes
 });
 
-
 router.beforeEach(async (to, _from, next) => {
   // if the user is not requesting a path with a locale
   // a.) get the users standard language, see whether we support it and send the user there
