@@ -56,26 +56,6 @@ const router = createRouter({
   routes
 });
 
-let removeAuthStoreOnChangeListener: () => void | undefined;
-
-router.beforeResolve((to, _from, next) => {
-  if (!removeAuthStoreOnChangeListener) {
-    const authStore = useAuthStore();
-    const fireImmediately = true;
-    removeAuthStoreOnChangeListener = pb.authStore.onChange(async (token, model) => {
-      authStore.model = model as User;
-      if (!authStore.isAuthenticated) {
-        next({
-          name: 'login-signup',
-          params: { locale: supportedOrFallbackLocale(to.params.locale) }
-        });
-      } else next();
-    }, fireImmediately);
-  } else {
-    next();
-  }
-});
-
 router.beforeEach(async (to, _from, next) => {
   // if the user is not requesting a path with a locale
   // a.) get the users standard language, see whether we support it and send the user there
