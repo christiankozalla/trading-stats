@@ -1,5 +1,30 @@
 <script setup lang="ts">
 import { pb, isAuthenticated } from '@/api-client';
+import { ClientResponseError } from 'pocketbase';
+import { useToast } from 'primevue/usetoast';
+
+const toast = useToast();
+async function requestPasswordReset() {
+  try {
+    if (pb.authStore.model?.email) {
+      const success = await pb.collection('users').requestPasswordReset(pb.authStore.model.email);
+      if (success) {
+        toast.add({
+          severity: 'success',
+          summary: 'Passwort-Reset gestartet',
+          detail: 'Du hast eine Email erhalten.'
+        });
+      }
+    }
+  } catch (e) {
+    if (e instanceof ClientResponseError)
+      toast.add({
+        severity: 'error',
+        summary: 'Passwort-Reset Fehler',
+        detail: e.data.message
+      });
+  }
+}
 </script>
 
 <template>
@@ -10,6 +35,7 @@ import { pb, isAuthenticated } from '@/api-client';
       <li>Avatar: {{ pb.authStore.model.avatar }}</li>
       <li>Created: {{ pb.authStore.model.created }}</li>
       <li>Email: {{ pb.authStore.model.email }}</li>
+      <li><Button @click="requestPasswordReset" label="Passwort zurücksetzen" /></li>
       <li>Verified: {{ pb.authStore.model.verified }}</li>
     </ul>
   </div>
