@@ -12,19 +12,6 @@ const route = useRoute();
 const menu = ref();
 const i18n = useI18nStore();
 
-const mainNav = computed<MenuItem[]>(() => [
-  {
-    label: 'Notes',
-    url: `/${i18n.currentLocale}/notes`,
-    icon: ''
-  },
-  {
-    label: 'Import/Export',
-    url: `/${i18n.currentLocale}/import-export`,
-    icon: ''
-  }
-]);
-
 const items = computed<MenuItem[]>(() => [
   {
     separator: true
@@ -71,61 +58,46 @@ async function changeLocale() {
 
 <template>
   <header>
-    <Menubar
-      :model="mainNav"
-      :pt="{
-        root: {
-          class: ['menubar']
-        },
-        menuitem: {
-          style: {
-            margin: 0,
-            'margin-right': '12px',
-            'margin-left': '12px'
+    <LogoTitle />
+    <div v-if="isAuthenticated">
+      <TradingAccountSelector />
+      <Button
+        @click="toggleMenu"
+        :pt="{
+          root: {
+            class: ['menu-button background-color-hover']
           }
-        }
-      }"
-    >
-      <template #start>
-        <LogoTitle />
-      </template>
-      <template #end>
-        <div v-if="isAuthenticated">
-          <TradingAccountSelector />
-          <Button
-            @click="toggleMenu"
-            :pt="{
-              root: {
-                class: ['menu-button background-color-hover']
-              }
-            }"
-            icon="icon icon-person"
-            text
-            aria-haspopup="true"
-            aria-label="Access user profile and settings"
-            aria-controls="overlay_menu"
-          />
-          <Menu ref="menu" id="overlay_menu" :model="items" :popup="true">
-            <template #start>
-              <div v-if="pb.authStore.model?.name" class="font-bold menuitem-padding">
-                {{ pb.authStore.model?.name }}
-              </div>
-              <div v-if="pb.authStore.model?.email" class="menuitem-padding">
-                {{ pb.authStore.model?.email }}
-              </div>
-            </template>
-          </Menu>
-        </div>
-      </template>
-    </Menubar>
+        }"
+        icon="icon icon-person"
+        text
+        aria-haspopup="true"
+        aria-label="Access user profile and settings"
+        aria-controls="overlay_menu"
+      />
+      <Menu ref="menu" id="overlay_menu" :model="items" :popup="true">
+        <template #start>
+          <div v-if="pb.authStore.model?.name" class="font-bold menuitem-padding">
+            {{ pb.authStore.model?.name }}
+          </div>
+          <div v-if="pb.authStore.model?.email" class="menuitem-padding">
+            {{ pb.authStore.model?.email }}
+          </div>
+        </template>
+      </Menu>
+    </div>
   </header>
 </template>
 
 <style scoped>
-.menubar {
+header {
   border: none;
   border-bottom: 1px solid var(--surface-border);
   border-radius: 0;
+  padding: 4px 12px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .menuitem-padding {

@@ -11,7 +11,6 @@ import PrimeVue from 'primevue/config';
 
 // Manually importing because usage of unplugin-vue-components infinitely triggers file-watcher pattern in modd.conf
 import Menu from 'primevue/menu';
-import Menubar from 'primevue/menubar';
 import ProgressSpinner from 'primevue/progressspinner';
 import ToastService from 'primevue/toastservice';
 import Column from 'primevue/column';
@@ -39,7 +38,6 @@ app.component('Button', Button);
 app.component('Dropdown', Dropdown);
 app.component('Panel', Panel);
 app.component('Menu', Menu);
-app.component('Menubar', Menubar);
 app.component('Column', Column);
 app.component('ProgressSpinner', ProgressSpinner);
 
