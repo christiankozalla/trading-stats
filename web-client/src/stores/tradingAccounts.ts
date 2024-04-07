@@ -10,9 +10,10 @@ const useTradingAccountsStore = defineStore('tradingAccounts', () => {
   const state = ref<TradingAccount[]>([]);
   const accounts = computed(() => state.value);
   const selected = ref<AccountId>();
+  const scopedKey = `${accountIdKey}-${pb.authStore.model?.id}`;
 
   onMounted(async () => {
-    const storedSelectedId = localStorage.getItem(accountIdKey);
+    const storedSelectedId = localStorage.getItem(scopedKey);
     if (storedSelectedId) {
       selected.value = storedSelectedId;
     }
@@ -22,21 +23,22 @@ const useTradingAccountsStore = defineStore('tradingAccounts', () => {
 
   watch(selected, (newValue) => {
     if (newValue) {
-      localStorage.setItem(accountIdKey, newValue);
+      localStorage.setItem(scopedKey, newValue);
     } else {
-      localStorage.removeItem(accountIdKey);
+      localStorage.removeItem(scopedKey);
     }
   });
 
   async function get() {
-    pb.collection('trading_accounts')
-      .getFullList()
-      .then((res) => {
-        state.value.push(...res);
-      })
-      .catch((e) => {
-        console.log('createTradingAccount error', e.data);
-      });
+    return true;
+    // pb.collection('trading_accounts')
+    //   .getFullList()
+    //   .then((res) => {
+    //     state.value.push(...res);
+    //   })
+    //   .catch((e) => {
+    //     console.log('tradingAccounts error', e.data);
+    //   });
   }
 
   function add(...tradingAccounts: TradingAccount[]) {
