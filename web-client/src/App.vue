@@ -8,11 +8,13 @@ import { pb } from '@/api-client';
 const tradingAccountsStore = useTradingAccountsStore();
 
 pb.beforeSend = function (originalUrl, options) {
-  const url = new URL(originalUrl);
-
-  url.searchParams.set('accountId', tradingAccountsStore.selected || '');
-
-  return { url: url.toString(), options };
+  if (tradingAccountsStore.selected) {
+    const url = new URL(originalUrl);
+    url.searchParams.set('accountId', tradingAccountsStore.selected);
+    return { url: url.toString(), options };
+  } else {
+    return { url: originalUrl };
+  }
 };
 </script>
 
