@@ -30,15 +30,14 @@ const useTradingAccountsStore = defineStore('tradingAccounts', () => {
   });
 
   async function get() {
-    return true;
-    // pb.collection('trading_accounts')
-    //   .getFullList()
-    //   .then((res) => {
-    //     state.value.push(...res);
-    //   })
-    //   .catch((e) => {
-    //     console.log('tradingAccounts error', e.data);
-    //   });
+    pb.collection('trading_accounts')
+      .getFullList()
+      .then((res) => {
+        state.value.push(...res);
+      })
+      .catch((e) => {
+        console.log('tradingAccounts error', e.data);
+      });
   }
 
   function add(...tradingAccounts: TradingAccount[]) {
