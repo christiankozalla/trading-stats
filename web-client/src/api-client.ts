@@ -16,8 +16,9 @@ export const isAuthenticated = ref<boolean>(false);
 pb.authStore.onChange((token) => {
   if (!token) {
     const currentLocale = supportedOrFallbackLocale(window.location.pathname.slice(1, 3));
+    const nextPath = `/${currentLocale}/login-signup`;
     isAuthenticated.value = false;
-    window.location.pathname = `/${currentLocale}/login-signup`;
+    if (window.location.pathname !== nextPath) window.location.pathname = nextPath;
   } else {
     if (isAuthenticated.value !== true) isAuthenticated.value = true;
   }
