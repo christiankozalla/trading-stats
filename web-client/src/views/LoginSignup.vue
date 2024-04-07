@@ -25,20 +25,9 @@ async function signup(event: Event) {
   const email = formData.get('email') as string | null;
   const password = formData.get('password') as string | null;
   const passwordConfirm = formData.get('passwordConfirm') as string | null;
+  const validated = validateSignupData(email, password, passwordConfirm);
 
-  if (!email) {
-    formErrors.value.email = 'Please enter your email address.';
-  } else if (!password) {
-    formErrors.value.password = 'Please enter your password.';
-  } else if (password.length < 8) {
-    formErrors.value.password = 'Your password is too short. Please enter 8 characters.';
-  } else if (password.length > 72) {
-    formErrors.value.password = 'Your password is too long.';
-  } else if (!passwordConfirm) {
-    formErrors.value.passwordConfirm = 'Please confirm your password.';
-  } else if (password !== passwordConfirm) {
-    formErrors.value.passwordConfirm = 'Passwords do not match.';
-  } else {
+  if (validated.email && validated.password && validated.passwordConfirm) {
     if (event.target) {
       try {
         loaderStore.startLoading();
@@ -48,7 +37,7 @@ async function signup(event: Event) {
           .create<User>(new FormData(event.target as HTMLFormElement));
 
         if (userDataResponse) {
-          const hasBeenSent = await pb.collection('users').requestVerification(email);
+          const hasBeenSent = await pb.collection('users').requestVerification(validated.email);
           if (hasBeenSent)
             toast.add({
               severity: 'success',
@@ -85,22 +74,16 @@ async function login(event: Event, { redirectOnSuccess = true } = {}) {
   const email = formData.get('email') as string | null;
   const password = formData.get('password') as string | null;
 
-  if (!email) {
-    formErrors.value.email = 'Please enter your email address.';
-  } else if (!password) {
-    formErrors.value.password = 'Please enter your password.';
-  } else if (password.length < 8) {
-    formErrors.value.password = 'Your password is too short. Please enter 8 characters.';
-  } else if (password.length > 72) {
-    formErrors.value.password = 'Your password is too long.';
-  } else {
+  const validated = validateLoginData(email, password);
+
+  if (validated.email && validated.password) {
     if (event.target) {
       try {
         loaderStore.startLoading();
 
         const userDataResponse = await pb
           .collection('users')
-          .authWithPassword<User>(email, password);
+          .authWithPassword<User>(validated.email, validated.password);
 
         if (userDataResponse && redirectOnSuccess) {
           await router.push({ name: 'overview' });
@@ -110,7 +93,7 @@ async function login(event: Event, { redirectOnSuccess = true } = {}) {
           toast.add({
             severity: 'error',
             summary: 'Login error',
-            detail: e.data.message,
+            detail: `${e.data.message} Check email and password.`,
             life: 5000
           });
         }
@@ -119,6 +102,63 @@ async function login(event: Event, { redirectOnSuccess = true } = {}) {
       }
     }
   }
+}
+
+function validateSignupData(
+  email: string | null,
+  password: string | null,
+  passwordConfirm: string | null
+) {
+  const validated: Record<string, string> = {};
+  const isInvalidEmail = email && !/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(email);
+
+  if (!email) {
+    formErrors.value.email = 'Please enter your email address.';
+  } else if (isInvalidEmail) {
+    formErrors.value.email = 'Please enter a valid email address.';
+  } else {
+    validated.email = email;
+  }
+  if (!password) {
+    formErrors.value.password = 'Please enter your password.';
+  } else if (password.length < 8) {
+    formErrors.value.password = 'Your password is too short. Please enter 8 characters.';
+  } else if (password.length > 72) {
+    formErrors.value.password = 'Your password is too long.';
+  } else {
+    validated.password = password;
+  }
+  if (!passwordConfirm) {
+    formErrors.value.passwordConfirm = 'Please confirm your password.';
+  } else if (password !== passwordConfirm) {
+    formErrors.value.passwordConfirm = 'Passwords do not match.';
+  } else {
+    validated.passwordConfirm = passwordConfirm;
+  }
+  return validated;
+}
+
+function validateLoginData(email: string | null, password: string | null) {
+  const validated: Record<string, string> = {};
+  const isInvalidEmail = email && !/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(email);
+
+  if (!email) {
+    formErrors.value.email = 'Please enter your email address.';
+  } else if (isInvalidEmail) {
+    formErrors.value.email = 'Please enter a valid email address.';
+  } else {
+    validated.email = email;
+  }
+  if (!password) {
+    formErrors.value.password = 'Please enter your password.';
+  } else if (password.length < 8) {
+    formErrors.value.password = 'Your password is too short. Please enter 8 characters.';
+  } else if (password.length > 72) {
+    formErrors.value.password = 'Your password is too long.';
+  } else {
+    validated.password = password;
+  }
+  return validated;
 }
 
 function onSubmit(event: Event) {
@@ -171,7 +211,9 @@ function changeAuthType(event: TabMenuChangeEvent) {
       <div>
         <label for="email">Email:</label>
         <InputText id="email" name="email" required />
-        {{ formErrors.email }}
+        <small
+          ><i>{{ formErrors.email }}</i></small
+        >
       </div>
       <div>
         <label for="password">Password:</label>
@@ -183,7 +225,9 @@ function changeAuthType(event: TabMenuChangeEvent) {
           minlength="8"
           maxlength="72"
         />
-        {{ formErrors.password }}
+        <small
+          ><i>{{ formErrors.password }}</i></small
+        >
       </div>
       <div v-if="authType === 'signup'">
         <label for="passwordConfirm">Confirm Password:</label>
@@ -195,7 +239,9 @@ function changeAuthType(event: TabMenuChangeEvent) {
           minlength="8"
           maxlength="72"
         />
-        {{ formErrors.passwordConfirm }}
+        <small
+          ><i>{{ formErrors.passwordConfirm }}</i></small
+        >
       </div>
       <Button label="Submit" type="submit" style="width: 100%"></Button>
     </form>
@@ -227,5 +273,9 @@ label {
 label + input {
   width: 100%;
   max-width: 100%;
+}
+
+small {
+  color: var(--red-400);
 }
 </style>
