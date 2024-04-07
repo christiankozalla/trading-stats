@@ -2,7 +2,7 @@ import 'primevue/resources/themes/aura-light-indigo/theme.css';
 import './assets/main.css';
 import './assets/icons.css';
 
-import { createApp, defineAsyncComponent } from 'vue';
+import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 
 import App from './App.vue';
@@ -15,6 +15,13 @@ import Menubar from 'primevue/menubar';
 import ProgressSpinner from 'primevue/progressspinner';
 import ToastService from 'primevue/toastservice';
 import Column from 'primevue/column';
+import InputText from 'primevue/inputtext';
+import TabMenu from 'primevue/tabmenu';
+import Toast from 'primevue/toast';
+import DataTable from 'primevue/datatable';
+import Button from 'primevue/button';
+import Dropdown from 'primevue/dropdown';
+import Panel from 'primevue/panel';
 
 const app = createApp(App);
 
@@ -24,35 +31,13 @@ app.use(router);
 app.use(PrimeVue);
 app.use(ToastService);
 
-app.component(
-  'InputText',
-  defineAsyncComponent(() => import('primevue/inputtext'))
-);
-app.component(
-  'TabMenu',
-  defineAsyncComponent(() => import('primevue/tabmenu'))
-);
-app.component(
-  'Toast',
-  defineAsyncComponent(() => import('primevue/toast'))
-);
-app.component(
-  'DataTable',
-  defineAsyncComponent(() => import('primevue/datatable'))
-);
-app.component(
-  'Button',
-  defineAsyncComponent(() => import('primevue/button'))
-);
-app.component(
-  'Dropdown',
-  defineAsyncComponent(() => import('primevue/dropdown'))
-);
-app.component(
-  'Panel',
-  defineAsyncComponent(() => import('primevue/panel'))
-);
-
+app.component('InputText', InputText);
+app.component('TabMenu', TabMenu);
+app.component('Toast', Toast);
+app.component('DataTable', DataTable);
+app.component('Button', Button);
+app.component('Dropdown', Dropdown);
+app.component('Panel', Panel);
 app.component('Menu', Menu);
 app.component('Menubar', Menubar);
 app.component('Column', Column);

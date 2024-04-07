@@ -13,7 +13,5 @@ import { pb, isAuthenticated } from '@/api-client';
       <li>Verified: {{ pb.authStore.model.verified }}</li>
     </ul>
   </div>
-  <div v-else>
-    Not authenticated
-  </div>
+  <div v-else>Not authenticated</div>
 </template>
