@@ -21,7 +21,7 @@ pb.authStore.onChange((token) => {
   } else {
     if (isAuthenticated.value !== true) isAuthenticated.value = true;
   }
-});
+}, true); // fires immediately
 
 export type ProfitLoss = {
   DateTime_close: string;
