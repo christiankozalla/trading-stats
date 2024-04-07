@@ -110,7 +110,7 @@ function validateSignupData(
   passwordConfirm: string | null
 ) {
   const validated: Record<string, string> = {};
-  const isInvalidEmail = email && !/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(email);
+  const isInvalidEmail = email && !/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/.test(email);
 
   if (!email) {
     formErrors.value.email = 'Please enter your email address.';
@@ -140,7 +140,7 @@ function validateSignupData(
 
 function validateLoginData(email: string | null, password: string | null) {
   const validated: Record<string, string> = {};
-  const isInvalidEmail = email && !/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(email);
+  const isInvalidEmail = email && !/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/.test(email);
 
   if (!email) {
     formErrors.value.email = 'Please enter your email address.';
