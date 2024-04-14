@@ -24,10 +24,14 @@ const useCollectionsStore = defineStore('collections', () => {
     perPage?: number,
     options?: RecordListOptions
   ) {
+    const existing = state.value[collection];
+    if (existing && (page || 0) >= existing?.totalPages) {
+      return existing;
+    }
+
     loaderStore.startLoading();
     try {
       const list = await pb.collection(collection).getList(page, perPage, options);
-      const existing = state.value[collection];
       // make sure existing store collection data is from same account
       if (existing && existing.items[0]?.accountId === tradingAccountsStore.selected) {
         existing.items.push(...list.items);
