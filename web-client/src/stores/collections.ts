@@ -16,51 +16,69 @@ const useCollectionsStore = defineStore('collections', () => {
   const loaderStore = useLoaderStore();
   const toast = useToast();
 
-  const state = ref<Partial<Record<Collections, ListResult<RecordModel>>>>({});
+  const state = ref<
+    Partial<{ [TradingAccountId: string]: Record<Collections, ListResult<RecordModel>> }>
+  >({});
 
   async function getList(
-    collection: Collections,
+    collectionId: Collections,
     page?: number,
     perPage?: number,
     options?: RecordListOptions
   ) {
-    const existing = state.value[collection];
-    if (existing && (page || 0) >= existing?.totalPages) {
-      return existing;
-    }
-
-    loaderStore.startLoading();
-    try {
-      const list = await pb.collection(collection).getList(page, perPage, options);
-      // make sure existing store collection data is from same account
-      if (existing && existing.items[0]?.accountId === tradingAccountsStore.selected) {
-        existing.items.push(...list.items);
-        existing.page = list.page;
-        existing.totalItems = list.totalItems;
-        existing.totalPages = list.totalPages;
-      } else {
-        state.value[collection] = list;
+    const tradingAcccountId = tradingAccountsStore.selected;
+    if (!tradingAcccountId) {
+      console.warn(
+        `Cannot fetch collection: ${collectionId} because no trading account is selected`
+      );
+    } else {
+      const existing = state.value[tradingAcccountId]?.[collectionId];
+      if (existing && (page || 0) >= existing?.totalPages) {
+        return existing;
       }
 
-      return state.value[collection];
-    } catch (e) {
-      console.error('error fetching collection ', collection);
-      if (e instanceof ClientResponseError) {
-        toast.add({
-          severity: 'error',
-          summary: 'Failed to fetch collection',
-          detail: e.data.message,
-          life: 5000
-        });
+      loaderStore.startLoading();
+      try {
+        const list = await pb.collection(collectionId).getList(page, perPage, options);
+        // make sure existing store collection data is from same account
+        if (existing) {
+          existing.items.push(...list.items);
+          existing.page = list.page;
+          existing.totalItems = list.totalItems;
+          existing.totalPages = list.totalPages;
+        } else {
+          const existingTradingAccountNamespace = state.value[tradingAcccountId];
+          if (existingTradingAccountNamespace) {
+            existingTradingAccountNamespace[collectionId] = list;
+          } else {
+            state.value[tradingAcccountId] = {
+              [collectionId]: list
+            } as Record<Collections, ListResult<RecordModel>>;
+          }
+        }
+
+        return state.value[collectionId];
+      } catch (e) {
+        console.error('error fetching collection ', collectionId);
+        if (e instanceof ClientResponseError) {
+          toast.add({
+            severity: 'error',
+            summary: 'Failed to fetch collection',
+            detail: e.data.message,
+            life: 5000
+          });
+        }
+      } finally {
+        loaderStore.stopLoading();
       }
-    } finally {
-      loaderStore.stopLoading();
     }
   }
 
   async function get(collection: Collections, { nextPage } = { nextPage: false }) {
-    if (nextPage) {
-      return getList(collection, (state.value[collection]?.page || 0) + 1);
+    const tradingAcccountId = tradingAccountsStore.selected;
+
+    if (nextPage && tradingAcccountId) {
+      return getList(collection, (state.value[tradingAcccountId]?.[collection]?.page || 0) + 1);
     } else {
       return getList(collection);
     }
