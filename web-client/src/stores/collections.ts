@@ -77,7 +77,11 @@ const useCollectionsStore = defineStore('collections', () => {
   async function get(collection: Collections, { nextPage } = { nextPage: false }) {
     const tradingAcccountId = tradingAccountsStore.selected;
 
-    if (nextPage && tradingAcccountId) {
+    if (!tradingAcccountId) {
+      return null;
+    }
+
+    if (nextPage) {
       return getList(collection, (state.value[tradingAcccountId]?.[collection]?.page || 0) + 1);
     } else {
       return getList(collection);
