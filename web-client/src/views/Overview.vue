@@ -23,7 +23,7 @@ const { t } = useI18nStore();
 
 // helpers
 const sum = (array: number[]) => array.reduce((sum, curr) => sum + curr, 0);
-const displayMoney = (n: number) => `${n.toFixed(1)} $`;
+const displayMoney = (v?: number | null) => (!v ? 'No data' : `${v.toFixed(1)} $`);
 const toISODate = (date: string | Date) => {
   if (typeof date === 'string') {
     return new Date(date).toISOString().substring(0, 10);
@@ -107,7 +107,8 @@ const pnlData = computed(() => {
     datasets: []
   };
   let weekly: ReturnType<typeof groupDataByWeek> = {};
-  let avgPerDay = 0;
+  let avgPerDay: number | null = null;
+  let avgPerWeek: number | null = null;
   if (profitLoss.value) {
     const cumulativeData: Record<DateString, number> = {};
     const saldoData: Record<DateString, number[]> = {};
@@ -131,14 +132,16 @@ const pnlData = computed(() => {
       backgroundColor: saldoBars.map((bar) => (bar >= 0 ? 'green' : 'red'))
     });
     weekly = groupDataByWeek(saldoData);
-    avgPerDay = total / saldoBars.length;
+    avgPerDay = saldoBars.length ? total / saldoBars.length : null;
+    avgPerWeek = Object.values(weekly).reduce((sum, curr) => sum + curr.sum, 0) || null;
   }
   return {
     cumulative,
     saldo,
     weekly,
     total,
-    avgPerDay
+    avgPerDay,
+    avgPerWeek
   };
 });
 
@@ -160,7 +163,7 @@ function formatCurrency(value: number) {
       <template #left>
         <p>
           <strong>{{ t('pnl.total') }}</strong> <br />
-          {{ pnlData.total ? displayMoney(pnlData.total) : 'No data' }}
+          {{ displayMoney(pnlData.total) }}
         </p>
       </template>
       <template #right>
@@ -189,7 +192,7 @@ function formatCurrency(value: number) {
       <template #right>
         <p>
           <strong>{{ t('pnl.avg-per-week') }}</strong> <br />
-          {{ displayMoney(Object.values(pnlData.weekly).reduce((sum, curr) => sum + curr.sum, 0)) }}
+          {{ displayMoney(pnlData.avgPerWeek) }}
         </p>
       </template>
     </DataPanel>
@@ -199,7 +202,7 @@ function formatCurrency(value: number) {
           <strong> {{ t('pnl.current-week') }}</strong
           ><br />
           {{ currentWeekStart }}:
-          {{ pnlData.weekly[currentWeekStart]?.sum || 'No data' }}
+          {{ displayMoney(pnlData.weekly[currentWeekStart]?.sum) }}
         </p>
       </template>
       <template #right>
@@ -207,7 +210,7 @@ function formatCurrency(value: number) {
           <strong>{{ t('pnl.last-week') }}</strong
           ><br />
           {{ previousWeekStart }}:
-          {{ pnlData.weekly[previousWeekStart]?.sum || 'No data' }}
+          {{ displayMoney(pnlData.weekly[previousWeekStart]?.sum) }}
         </p>
       </template>
     </DataPanel>
