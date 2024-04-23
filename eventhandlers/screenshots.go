@@ -18,6 +18,8 @@ import (
 	"github.com/pocketbase/pocketbase/tools/filesystem"
 )
 
+var MAX_WIDTH_IN_PIXELS = 800
+
 // This is a pre-processor for user-provided images
 // the screenshots collection has an image column with a max-size of 2MB
 // 2MB applies to the initial file provided by the user, before pre-processing
@@ -40,36 +42,29 @@ func ResizeImages(e *core.RecordCreateEvent) error {
 	defer src.Close()
 
 	// Decode the image
-	img, format, err := image.Decode(src)
+	img, _, err := image.Decode(src)
 
 	if err != nil {
 		log.Printf("Error decoding image: %v\n", err)
 		return errors.New("invalid image format")
 	}
 
-	log.Println("decoded image", format)
+	// Resize the image concurrently
+	resizedImg := make(chan image.Image)
+	go resizeImage(img, MAX_WIDTH_IN_PIXELS, resizedImg)
 
-	// Resize the image
-	resizedImg := resizeImage(img, 800)
+	// Encode the resized image to webp format concurrently
+	webpResult := make(chan []byte)
+	go encodeToWebP(<-resizedImg, webpResult)
 
-	// Encode the resized image to webp format
-	var resizedImgWebpBuf bytes.Buffer
-	// opts, err := encoder.NewLosslessEncoderOptions(encoder.PresetDefault, 6)
-	opts, err := encoder.NewLossyEncoderOptions(encoder.PresetDefault, 90)
+	webpBytes := <-webpResult
 
-	if err != nil {
-		log.Println("error creating webp encoding options")
-		return errors.New("error creating webp encoding options")
+	if webpBytes == nil {
+		return errors.New("error encoding image to WebP")
 	}
 
-	err = webp.Encode(&resizedImgWebpBuf, resizedImg, opts)
-
-	if err != nil {
-		return err
-	}
 	newFileName := strings.TrimSuffix(file.Name, filepath.Ext(file.Name)) + ".webp"
-	webpFile, err := filesystem.NewFileFromBytes(resizedImgWebpBuf.Bytes(), newFileName)
-
+	webpFile, err := filesystem.NewFileFromBytes(webpBytes, newFileName)
 	log.Println("created webp file", webpFile.Name, webpFile.OriginalName, webpFile.Size)
 
 	if err != nil {
@@ -83,6 +78,27 @@ func ResizeImages(e *core.RecordCreateEvent) error {
 	return nil
 }
 
-func resizeImage(img image.Image, maxWidth int) image.Image {
-	return imaging.Resize(img, maxWidth, 0, imaging.Lanczos) // preserving the aspect-ratio
+func resizeImage(img image.Image, maxWidth int, resizedImg chan<- image.Image) {
+	resizedImg <- imaging.Resize(img, maxWidth, 0, imaging.Lanczos) // preserving the aspect-ratio
+}
+
+func encodeToWebP(img image.Image, result chan<- []byte) {
+	var resizedImgWebpBuf bytes.Buffer
+	opts, err := encoder.NewLossyEncoderOptions(encoder.PresetDefault, 90)
+
+	if err != nil {
+		log.Println("error creating webp encoding options")
+		result <- nil
+		return
+	}
+
+	err = webp.Encode(&resizedImgWebpBuf, img, opts)
+
+	if err != nil {
+		log.Printf("Error encoding image to WebP: %v\n", err)
+		result <- nil
+		return
+	}
+
+	result <- resizedImgWebpBuf.Bytes()
 }
