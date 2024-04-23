@@ -71,7 +71,6 @@ async function uploadScreenshot(event: Event) {
     return;
   }
 
-
   formData.append('account', tradingAccountsStore.selected);
   const response = await pb
     .collection('screenshots')
@@ -79,13 +78,21 @@ async function uploadScreenshot(event: Event) {
     .catch((e) => {
       toast.add({
         severity: 'error',
-        summary: 'Import error',
-        detail: e.data.message,
-        life: 5000
+        summary: 'Upload error',
+        detail: e.data.data?.image?.message || e.data.message,
+        life: 10000
       });
     });
 
-    console.log("response", response);
+  console.log('response', response);
+  if (response) {
+    toast.add({
+      severity: 'success',
+      summary: 'Upload successful',
+      detail: 'A screenshot record has been created.',
+      life: 5000
+    });
+  }
 }
 </script>
 
@@ -116,8 +123,8 @@ async function uploadScreenshot(event: Event) {
 
   <h2>Screenshots</h2>
   <form @submit.prevent="uploadScreenshot">
-    <input type="date" name="date" />
-    <input type="file" name="image" />
+    <input type="date" name="date" required />
+    <input type="file" name="image" required />
     <Button type="submit" label="Submit"></Button>
   </form>
 </template>
