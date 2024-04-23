@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"trading-statistics/eventhandlers"
+
 	_ "trading-statistics/migrations"
 
 	"github.com/pocketbase/pocketbase"
@@ -34,6 +35,8 @@ func main() {
 		e.Router.GET("/*", apis.StaticDirectoryHandler(os.DirFS("./pb_public"), indexFallback))
 		return nil
 	})
+
+	app.OnRecordBeforeCreateRequest("screenshots").Add(eventhandlers.ResizeImages)
 
 	app.OnRecordAfterCreateRequest("trade_log_files").Add(eventhandlers.CreateTradeRecordsFromLogFiles(app))
 

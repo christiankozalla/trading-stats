@@ -57,6 +57,36 @@ function onFileInputChange(event: Event) {
     fileNames.value = Array.from(files).map((f) => f.name);
   }
 }
+
+async function uploadScreenshot(event: Event) {
+  const formData = new FormData(event.target as HTMLFormElement);
+
+  if (!tradingAccountsStore.selected) {
+    toast.add({
+      severity: 'info',
+      summary: 'Trading account required',
+      detail: 'Please select/create a trading account before importing.',
+      life: 5000
+    });
+    return;
+  }
+
+
+  formData.append('account', tradingAccountsStore.selected);
+  const response = await pb
+    .collection('screenshots')
+    .create(formData)
+    .catch((e) => {
+      toast.add({
+        severity: 'error',
+        summary: 'Import error',
+        detail: e.data.message,
+        life: 5000
+      });
+    });
+
+    console.log("response", response);
+}
 </script>
 
 <template>
@@ -81,6 +111,13 @@ function onFileInputChange(event: Event) {
       @change="onFileInputChange"
       multiple
     />
+    <Button type="submit" label="Submit"></Button>
+  </form>
+
+  <h2>Screenshots</h2>
+  <form @submit.prevent="uploadScreenshot">
+    <input type="date" name="date" />
+    <input type="file" name="image" />
     <Button type="submit" label="Submit"></Button>
   </form>
 </template>
