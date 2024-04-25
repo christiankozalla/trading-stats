@@ -4,6 +4,9 @@
   width: 16px;
 }
 
+/* Changing the stroke color from outside the svg is impossible
+ * create two static versions of each icon
+ * e.g. .icon-house-white { content:url('./icons/icon-house-white.svg'); } */
 .icon-house {
   content: url('./icons/icon-house.svg');
 }
