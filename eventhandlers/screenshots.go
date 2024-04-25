@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"errors"
 	"image"
-	_ "image/gif"
 	_ "image/jpeg"
 	_ "image/png"
 	"log"
@@ -42,11 +41,23 @@ func ResizeImages(e *core.RecordCreateEvent) error {
 	defer src.Close()
 
 	// Decode the image
-	img, _, err := image.Decode(src)
+	img, format, err := image.Decode(src)
 
 	if err != nil {
 		log.Printf("Error decoding image: %v\n", err)
 		return errors.New("invalid image format")
+	}
+
+	if format == "webp" {
+		log.Println("Image is already WebP-encoded")
+		return nil
+	} else if format != "jpeg" && format != "png" {
+		return errors.New("image format not supported")
+	}
+
+	if img.Bounds().Dx() <= MAX_WIDTH_IN_PIXELS {
+		log.Println("Image width already less that accepted MAX_WIDTH threshold.\nThis allows PNG and JPEG images to skip resizing and WebP encoding.")
+		return nil
 	}
 
 	// Resize the image concurrently
