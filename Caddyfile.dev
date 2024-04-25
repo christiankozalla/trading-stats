@@ -1,5 +1,4 @@
-
 http://localhost:3000 {
-    reverse_proxy /api/* localhost:8090
-    reverse_proxy * localhost:5173
+        reverse_proxy /api/* http://localhost:8090
+        reverse_proxy * http://localhost:5173
 }
