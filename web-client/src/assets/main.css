@@ -1,11 +1,6 @@
 /* Order matters */
 @layer reset, primevue;
 
-/* @layer global {
-  .font-bold {
-    font-weight: 700;
-  }
-} */
 
 /* Reset CSS */
 @layer reset {
@@ -27,4 +22,10 @@
   p {
     margin: 0;
   }
+}
+
+@layer global {
+ .container {
+  padding: var(--inline-spacing) var(--content-padding);
+ }
 }
