@@ -1,5 +1,17 @@
+<script setup lang="ts">
+import { type PanelProps } from 'primevue/panel';
+const props = defineProps<PanelProps>();
+</script>
+
 <template>
-  <Panel :pt="{ header: { class: 'datapanel-header' }, content: { class: 'datapanel-content' } }">
+  <Panel
+    v-bind="props"
+    :pt="{
+      ...props.pt, // props.pt.header and props.pt.content are overwritten, thus cannot be set from outside
+      header: { class: 'datapanel-header' },
+      content: { class: 'datapanel-content' }
+    }"
+  >
     <slot></slot>
     <slot name="left"></slot>
     <slot name="right"></slot>
@@ -27,5 +39,9 @@
 .datapanel-content > *:only-child {
   width: 100%;
   padding: 0;
+}
+
+.p-panel-title {
+  margin: var(--inline-spacing) 0;
 }
 </style>
