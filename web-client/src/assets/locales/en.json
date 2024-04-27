@@ -11,7 +11,7 @@
   "import": {
     "log-files": {
       "header": "Upload Sierra Chart Trading Log-Files",
-      "description": "No Log-Files chosen yet.<br>Export Log-Files from Sierra Chart and upload them here."
+      "description": "No Log-Files chosen yet.<br>Export Log-Files from Sierra Chart and upload them here. Multiple selection possible. Hold down <i>Ctrl</i> when selecting."
     },
     "screenshot": {
       "header": "Upload Screenshots/Images with Notes",

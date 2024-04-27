@@ -11,7 +11,7 @@
   "import": {
     "log-files": {
       "header": "Lade Sierra Chart Trading Log-Dateien hoch",
-      "description": "Keine Dateien ausgewählt.<br>Exportiere Log-Dateien aus Sierra Chart und lade sie hier hoch."
+      "description": "Keine Dateien ausgewählt.<br>Exportiere Log-Dateien aus Sierra Chart und lade sie hier hoch. Mehrfachauswahl möglich. Halte bei der Auswahl <i>Strg</i> gedrückt."
     },
     "screenshot": {
       "header": "Lade Screenshots/Bilder mit Notizen hoch",
