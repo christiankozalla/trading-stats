@@ -50,7 +50,7 @@ async function uploadLogFile(event: Event) {
     .catch((e) => {
       toast.add({
         severity: 'error',
-        summary: 'Import error',
+        summary: t('generic.import-error'),
         detail: e.data.message,
         life: 5000
       });
@@ -58,7 +58,7 @@ async function uploadLogFile(event: Event) {
   if (response) {
     toast.add({
       severity: 'success',
-      summary: 'Import successful',
+      summary: t('generic.import-success'),
       life: 5000
     });
     tradeLogFileNames.value = [];
@@ -71,8 +71,8 @@ async function uploadScreenshot(event: Event) {
   if (!tradingAccountsStore.selected) {
     toast.add({
       severity: 'info',
-      summary: 'Trading account required',
-      detail: 'Please select/create a trading account before importing.',
+      summary: t('generic.trading-account-required'),
+      detail: t('generic.trading-account-required-description'),
       life: 5000
     });
     return;
@@ -111,6 +111,10 @@ function onFileInputChange<T>(destination: Ref<T>, cb: (files: FileList) => T) {
     }
   };
 }
+
+function log(e?: Event) {
+  console.log('event', e);
+}
 </script>
 
 <template>
@@ -141,10 +145,12 @@ function onFileInputChange<T>(destination: Ref<T>, cb: (files: FileList) => T) {
             type="file"
             name="file"
             id="tradeLogFile"
-            class="hidden"
+            class="p-sr-only"
             accept="text/plain"
             @change="handleTradeLogFiles"
             multiple
+            :oninvalid="`this.setCustomValidity('${t('generic.file-input-required')}')`"
+            required
           />
           <Button type="submit" label="Submit"></Button>
         </form>
@@ -166,8 +172,9 @@ function onFileInputChange<T>(destination: Ref<T>, cb: (files: FileList) => T) {
               type="file"
               name="image"
               id="screenshot"
-              class="hidden"
+              class="p-sr-only"
               accept="image/png, image/jpeg, image/webp"
+              :oninvalid="`this.setCustomValidity('${t('generic.file-input-required')}')`"
               required
               @change="handleScreenshotFile"
             />
@@ -175,9 +182,9 @@ function onFileInputChange<T>(destination: Ref<T>, cb: (files: FileList) => T) {
             <ImagePreview v-if="screenshot" :file="screenshot" />
           </div>
           <div class="screenshot-metadata-wrapper">
-            <label for="screenshot-date" class="hidden">Date</label>
+            <label for="screenshot-date" class="p-sr-only">Date</label>
             <InputText id="screenshot-date" type="date" name="date" required />
-            <label for="screenshot-comment" class="hidden">Date</label>
+            <label for="screenshot-comment" class="p-sr-only">Date</label>
             <Textarea
               autoResize
               id="screenshot-comment"
@@ -217,10 +224,6 @@ form#screenshots {
   overflow-x: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-}
-
-.hidden {
-  display: none;
 }
 
 .screenshot-upload-wrapper {

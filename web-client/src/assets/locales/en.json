@@ -11,7 +11,7 @@
   "import": {
     "log-files": {
       "header": "Upload Sierra Chart Trading Log-Files",
-      "description": "No Log-Files chosen yet.<br>Export Log-Files from Sierra Chart and upload them here. Multiple selection possible. Hold down <i>Ctrl</i> when selecting."
+      "description": "No Log-Files chosen yet.<br>Export Log-Files from Sierra Chart and upload them here.<br><small>Hint: Multiple selection possible. Hold down <i>Ctrl</i> when selecting.</small>"
     },
     "screenshot": {
       "header": "Upload Screenshots/Images with Notes",
@@ -22,6 +22,11 @@
     "upload-button-change":"Change {type}",
     "upload-button-choose": "Choose {type}",
     "image": "Image",
-    "log-files": "Log-Files"
+    "log-files": "Log-Files",
+    "file-input-required": "Please select at least one file.",
+    "trading-account-required": "Trading account required",
+    "trading-account-required-description": "Please select/create a trading account before importing.",
+    "import-success": "Import successful!",
+    "import-error": "Import failed."
   }
 }
