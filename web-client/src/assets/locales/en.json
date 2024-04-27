@@ -7,5 +7,21 @@
     "avg-per-week": "Avg. PnL/Week",
     "current-week": "Current Week's PnL",
     "last-week": "Last Week's PnL"
+  },
+  "import": {
+    "log-files": {
+      "header": "Upload Sierra Chart Trading Log-Files",
+      "description": "No Log-Files chosen yet.<br>Export Log-Files from Sierra Chart and upload them here."
+    },
+    "screenshot": {
+      "header": "Upload Screenshots/Images with Notes",
+      "comment-placeholder": "Optional notes"
+    }
+  },
+  "generic": {
+    "upload-button-change":"Change {type}",
+    "upload-button-choose": "Choose {type}",
+    "image": "Image",
+    "log-files": "Log-Files"
   }
 }

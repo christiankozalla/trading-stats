@@ -54,7 +54,7 @@ const useI18nStore = defineStore('i18n', () => {
         return replaceVariables(message, data);
       }
 
-      return message; // interpolation of data to be implemented
+      return message;
     }
     return '';
   }

@@ -1,12 +1,26 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed, type Ref } from 'vue';
+import { useToast } from 'primevue/usetoast';
+import Textarea from 'primevue/textarea';
 import { pb } from '@/api-client';
 import { useTradingAccountsStore } from '@/stores/tradingAccounts';
-import { useToast } from 'primevue/usetoast';
+import { useI18nStore } from '@/stores/i18n';
+import DataPanel from '@/components/DataPanel.vue';
+import ImagePreview from '@/components/ImagePreview.vue';
 
 const toast = useToast();
 const tradingAccountsStore = useTradingAccountsStore();
-const fileNames = ref<string[]>([]);
+const tradeLogFileNames = ref<string[]>([]);
+const screenshots = ref<File[]>([]);
+const screenshot = computed(() => {
+  return screenshots.value[0];
+});
+const { t } = useI18nStore();
+
+const handleTradeLogFiles = onFileInputChange<string[]>(tradeLogFileNames, (files) =>
+  Array.from(files).map((f) => f.name)
+);
+const handleScreenshotFile = onFileInputChange<File[]>(screenshots, (files) => Array.from(files));
 
 async function uploadLogFile(event: Event) {
   const formData = new FormData(event.target as HTMLFormElement);
@@ -47,15 +61,17 @@ async function uploadLogFile(event: Event) {
       summary: 'Import successful',
       life: 5000
     });
-    fileNames.value = [];
+    tradeLogFileNames.value = [];
   }
 }
 
-function onFileInputChange(event: Event) {
-  const files = (event.target as HTMLInputElement).files;
-  if (files?.length) {
-    fileNames.value = Array.from(files).map((f) => f.name);
-  }
+function onFileInputChange<T>(destination: Ref<T>, cb: (files: FileList) => T) {
+  return function (event: Event) {
+    const files = (event.target as HTMLInputElement).files;
+    if (files?.length) {
+      destination.value = cb(files);
+    }
+  };
 }
 
 async function uploadScreenshot(event: Event) {
@@ -84,7 +100,6 @@ async function uploadScreenshot(event: Event) {
       });
     });
 
-  console.log('response', response);
   if (response) {
     toast.add({
       severity: 'success',
@@ -92,49 +107,110 @@ async function uploadScreenshot(event: Event) {
       detail: 'A screenshot record has been created.',
       life: 5000
     });
+
+    (event.target as HTMLFormElement).clear();
   }
 }
 </script>
 
 <template>
-  <form @submit.prevent="uploadLogFile">
-    <div v-if="fileNames?.length">
-      Files to be uploaded
-      <ul>
-        <li v-for="fileName in fileNames" :key="fileName">{{ fileName }}</li>
-      </ul>
-    </div>
-    <label for="file" class="p-button p-component"
-      ><span style="color: white" class="p-button-icon p-button-icon-left icon icon-upload"></span
-      ><span class="p-button-label">{{
-        fileNames.length > 0 ? 'Change Files' : 'Choose Files'
-      }}</span></label
-    >
-    <InputText
-      type="file"
-      name="file"
-      id="file"
-      class="file"
-      @change="onFileInputChange"
-      multiple
-    />
-    <Button type="submit" label="Submit"></Button>
-  </form>
+  <div class="container">
+    <DataPanel :header="t('import.log-files.header')">
+      <div>
+        <div v-if="tradeLogFileNames?.length">
+          <ul>
+            <li v-for="fileName in tradeLogFileNames" :key="fileName">
+              <small>{{ fileName }}</small>
+            </li>
+          </ul>
+        </div>
+        <div v-else>
+          <p v-html="t('import.log-files.description')" clas="log-files-description" />
+        </div>
 
-  <h2>Screenshots</h2>
-  <form @submit.prevent="uploadScreenshot">
-    <input type="date" name="date" required />
-    <input type="file" name="image" required />
-    <Button type="submit" label="Submit"></Button>
-  </form>
+        <form @submit.prevent="uploadLogFile" id="log-files">
+          <label for="tradeLogFile" class="p-button p-component"
+            ><span class="p-button-icon p-button-icon-left icon icon-upload"></span
+            ><span class="p-button-label">{{
+              tradeLogFileNames.length > 0
+                ? t('generic.upload-button-change', { type: t('generic.log-files') })
+                : t('generic.upload-button-choose', { type: t('generic.log-files') })
+            }}</span></label
+          >
+          <InputText
+            type="file"
+            name="file"
+            id="tradeLogFile"
+            class="hidden"
+            accept="text/plain"
+            @change="handleTradeLogFiles"
+            multiple
+          />
+          <Button type="submit" label="Submit"></Button>
+        </form>
+      </div>
+    </DataPanel>
+    <DataPanel :header="t('import.screenshot.header')">
+      <div>
+        <form @submit.prevent="uploadScreenshot" id="screenshots">
+          <div class="screenshot-upload-wrapper p-panel">
+            <label for="screenshot" class="screenshot-upload-button p-button p-component"
+              ><span class="p-button-icon p-button-icon-left icon icon-upload"></span
+              ><span class="p-button-label">{{
+                screenshots.length > 0
+                  ? t('generic.upload-button-change', { type: t('generic.image') })
+                  : t('generic.upload-button-choose', { type: t('generic.image') })
+              }}</span></label
+            >
+            <InputText
+              type="file"
+              name="image"
+              id="screenshot"
+              class="hidden"
+              accept="image/png, image/jpeg, image/webp"
+              required
+              @change="handleScreenshotFile"
+            />
+
+            <ImagePreview v-if="screenshot" :file="screenshot" />
+          </div>
+          <div class="screenshot-metadata-wrapper">
+            <label for="screenshot-date" class="hidden">Date</label>
+            <InputText id="screenshot-date" type="date" name="date" required />
+            <label for="screenshot-comment" class="hidden">Date</label>
+            <Textarea
+              autoResize
+              id="screenshot-comment"
+              name="comment"
+              :placeholder="t('import.screenshot.comment-placeholder')"
+            />
+            <Button type="submit" label="Submit"></Button>
+          </div>
+        </form>
+      </div>
+    </DataPanel>
+  </div>
 </template>
 
 <style scoped>
-form {
+.container > * {
+  margin: var(--content-padding) 0;
+}
+
+form#log-files {
   display: flex;
-  flex-direction: column;
   gap: var(--inline-spacing);
-  max-width: 300px;
+  margin-top: var(--content-padding);
+}
+
+form#log-files > * {
+  width: 50%;
+}
+
+form#screenshots {
+  display: flex;
+  gap: var(--inline-spacing);
+  height: 300px;
 }
 
 .p-button-label {
@@ -143,7 +219,35 @@ form {
   text-overflow: ellipsis;
 }
 
-.file {
+.hidden {
   display: none;
+}
+
+.screenshot-upload-wrapper {
+  position: relative;
+  flex-grow: 6;
+}
+
+.screenshot-upload-button {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.screenshot-metadata-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--inline-spacing);
+  flex-grow: 1;
+}
+
+#screenshot-date,
+#screenshot-comment {
+  width: 100%;
+}
+
+#screenshot-comment {
+  flex-grow: 1;
 }
 </style>
