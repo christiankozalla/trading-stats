@@ -183,8 +183,10 @@ function log(e?: Event) {
           </div>
           <div class="screenshot-metadata-wrapper">
             <label for="screenshot-date" class="p-sr-only">Date</label>
-            <InputText id="screenshot-date" type="date" name="date" required />
-            <label for="screenshot-comment" class="p-sr-only">Date</label>
+            <InputText id="screenshot-date" type="date" name="date"
+            :oninvalid="`this.setCustomValidity('${t('generic.date-input-required')}')`"
+            required />
+            <label for="screenshot-comment" class="p-sr-only">Comment</label>
             <Textarea
               autoResize
               id="screenshot-comment"

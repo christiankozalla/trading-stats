@@ -24,6 +24,7 @@
     "image": "Bild",
     "log-files": "Log-Dateien",
     "file-input-required": "Bitte wähle mindestens eine Datei aus.",
+    "date-input-required": "Bitte wähle ein Datum.",
     "trading-account-required": "Trading Account erforderlich.",
     "trading-account-required-description": "Bitte wähle oder erstelle einen Trading Account vor dem Import.",
     "import-success": "Import erfolgreich!",
