@@ -65,15 +65,6 @@ async function uploadLogFile(event: Event) {
   }
 }
 
-function onFileInputChange<T>(destination: Ref<T>, cb: (files: FileList) => T) {
-  return function (event: Event) {
-    const files = (event.target as HTMLInputElement).files;
-    if (files?.length) {
-      destination.value = cb(files);
-    }
-  };
-}
-
 async function uploadScreenshot(event: Event) {
   const formData = new FormData(event.target as HTMLFormElement);
 
@@ -110,6 +101,15 @@ async function uploadScreenshot(event: Event) {
 
     (event.target as HTMLFormElement).clear();
   }
+}
+
+function onFileInputChange<T>(destination: Ref<T>, cb: (files: FileList) => T) {
+  return function (event: Event) {
+    const files = (event.target as HTMLInputElement).files;
+    if (files?.length) {
+      destination.value = cb(files);
+    }
+  };
 }
 </script>
 
