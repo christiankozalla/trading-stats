@@ -7,6 +7,7 @@ interface TypedPocketBase extends PocketBase {
   collection(idOrName: 'trades'): RecordService<Trade>;
   collection(idOrName: 'trading_accounts'): RecordService<TradingAccount>;
   collection(idOrName: 'profit_loss'): RecordService<ProfitLoss>;
+  collection(idOrName: 'screenshots'): RecordService<Screenshot>;
 }
 
 // import.meta.env.BASE_URL is provided by Vite (default "/") which works, because Vue and Pocketbase run on the same domain
@@ -66,4 +67,10 @@ export type Trade = {
   user: string;
 } & RecordModel;
 
-export type Collections = 'trades' | 'users' | 'raw_trades' | 'trade_log_files' | 'profit_loss';
+export type Screenshot = {
+  date: string;
+  image: string;
+  comment?: string;
+} & RecordModel;
+
+export type Collections = 'trades' | 'users' | 'raw_trades' | 'trade_log_files' | 'profit_loss' | 'screenshots';
