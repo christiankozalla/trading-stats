@@ -55,12 +55,15 @@ async function uploadLogFile(event: Event) {
         life: 5000
       });
     });
+
   if (response) {
     toast.add({
       severity: 'success',
       summary: t('generic.import-success'),
       life: 5000
     });
+
+    (event.target as HTMLFormElement).reset();
     tradeLogFileNames.value = [];
   }
 }
@@ -99,8 +102,8 @@ async function uploadScreenshot(event: Event) {
       life: 5000
     });
 
-    // TODO: debug this
-    // (event.target as HTMLFormElement).clear();
+    (event.target as HTMLFormElement).reset();
+    screenshots.value = undefined;
   }
 }
 
