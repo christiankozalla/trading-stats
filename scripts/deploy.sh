@@ -5,7 +5,7 @@ set -e  # This command causes the script to exit immediately if any command exit
 echo -e "Deleting 'dist' directory...\n"
 rm -rf dist
 
-go build -o dist/its .
+CGO_ENABLED=0 go build -o dist/its .
 
 cd web-client
 

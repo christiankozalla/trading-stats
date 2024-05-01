@@ -30,11 +30,10 @@ func init() {
 					"options": {
 						"mimeTypes": [
 							"image/png",
-							"image/jpeg",
-							"image/webp"
+							"image/jpeg"
 						],
 						"thumbs": [
-							"100x100"
+							"100x100", "0x40"
 						],
 						"maxSelect": 1,
 						"maxSize": 2097152,

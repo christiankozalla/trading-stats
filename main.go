@@ -36,7 +36,7 @@ func main() {
 		return nil
 	})
 
-	app.OnRecordBeforeCreateRequest("screenshots").Add(eventhandlers.ResizeImages)
+	// app.OnRecordBeforeCreateRequest("screenshots").Add(eventhandlers.ResizeImages)
 
 	app.OnRecordAfterCreateRequest("trade_log_files").Add(eventhandlers.CreateTradeRecordsFromLogFiles(app))
 
