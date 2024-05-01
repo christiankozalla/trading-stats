@@ -20,6 +20,7 @@ import { useLoaderStore } from '@/stores/loader';
 import { useI18nStore } from '@/stores/i18n';
 
 const { t } = useI18nStore();
+const loaderStore = useLoaderStore();
 
 // helpers
 const sum = (array: number[]) => array.reduce((sum, curr) => sum + curr, 0);
@@ -64,7 +65,6 @@ const previousWeekStart = toISODate(
   startOfWeek(new Date(new Date().getTime() - sevenDaysInMilliseconds))
 );
 
-const loaderStore = useLoaderStore();
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -75,6 +75,7 @@ ChartJS.register(
   Tooltip,
   Legend
 );
+
 const profitLoss = ref<ProfitLossExtended[]>();
 
 onMounted(() => {
@@ -226,7 +227,7 @@ function formatCurrency(value: number) {
   </section>
 
   <section>
-    <TradesTable :trades="trades" :mapper-fn="tradesMapper" />
+    <TradesTable :trades="trades" :mapperFn="tradesMapper" />
   </section>
 </template>
 
