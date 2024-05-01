@@ -11,16 +11,16 @@ import ImagePreview from '@/components/ImagePreview.vue';
 const toast = useToast();
 const tradingAccountsStore = useTradingAccountsStore();
 const tradeLogFileNames = ref<string[]>([]);
-const screenshots = ref<File[]>([]);
+const screenshots = ref<FileList | undefined>();
 const screenshot = computed(() => {
-  return screenshots.value[0];
+  return screenshots.value?.item(0) ?? undefined;
 });
 const { t } = useI18nStore();
 
 const handleTradeLogFiles = onFileInputChange<string[]>(tradeLogFileNames, (files) =>
   Array.from(files).map((f) => f.name)
 );
-const handleScreenshotFile = onFileInputChange<File[]>(screenshots, (files) => Array.from(files));
+const handleScreenshotFile = onFileInputChange<FileList | undefined>(screenshots, (files) => files);
 
 async function uploadLogFile(event: Event) {
   const formData = new FormData(event.target as HTMLFormElement);
@@ -99,7 +99,8 @@ async function uploadScreenshot(event: Event) {
       life: 5000
     });
 
-    (event.target as HTMLFormElement).clear();
+    // TODO: debug this
+    // (event.target as HTMLFormElement).clear();
   }
 }
 
@@ -108,12 +109,13 @@ function onFileInputChange<T>(destination: Ref<T>, cb: (files: FileList) => T) {
     const files = (event.target as HTMLInputElement).files;
     if (files?.length) {
       destination.value = cb(files);
+    } else {
+      // File selection was cancelled
+      if (screenshots.value) {
+        (event.target as HTMLInputElement).files = screenshots.value; // add stored FileList back into file-input-element
+      }
     }
   };
-}
-
-function log(e?: Event) {
-  console.log('event', e);
 }
 </script>
 
@@ -163,7 +165,7 @@ function log(e?: Event) {
             <label for="screenshot" class="screenshot-upload-button p-button p-component"
               ><span class="p-button-icon p-button-icon-left icon icon-upload"></span
               ><span class="p-button-label">{{
-                screenshots.length > 0
+                screenshot
                   ? t('generic.upload-button-change', { type: t('generic.image') })
                   : t('generic.upload-button-choose', { type: t('generic.image') })
               }}</span></label
@@ -179,13 +181,17 @@ function log(e?: Event) {
               @change="handleScreenshotFile"
             />
 
-            <ImagePreview v-if="screenshot" :file="screenshot" />
+            <ImagePreview :file="screenshot" />
           </div>
           <div class="screenshot-metadata-wrapper">
             <label for="screenshot-date" class="p-sr-only">Date</label>
-            <InputText id="screenshot-date" type="date" name="date"
-            :oninvalid="`this.setCustomValidity('${t('generic.date-input-required')}')`"
-            required />
+            <InputText
+              id="screenshot-date"
+              type="date"
+              name="date"
+              :oninvalid="`this.setCustomValidity('${t('generic.date-input-required')}')`"
+              required
+            />
             <label for="screenshot-comment" class="p-sr-only">Comment</label>
             <Textarea
               autoResize
@@ -230,7 +236,7 @@ form#screenshots {
 
 .screenshot-upload-wrapper {
   position: relative;
-  flex-grow: 6;
+  flex-basis: 60%;
 }
 
 .screenshot-upload-button {
@@ -244,7 +250,7 @@ form#screenshots {
   display: flex;
   flex-direction: column;
   gap: var(--inline-spacing);
-  flex-grow: 1;
+  flex-basis: 40%;
 }
 
 #screenshot-date,

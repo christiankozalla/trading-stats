@@ -1,13 +1,15 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-const props = defineProps<{ file: File }>();
-const dataURI = ref<string>();
+import { computed } from 'vue';
+const props = defineProps<{ file?: File }>();
 
-if (props.file.type.startsWith('image/')) {
-  dataURI.value = URL.createObjectURL(props.file);
-} else {
-  console.warn('No file or not an image.');
-}
+const dataURI = computed(() => {
+  if (props.file?.type.startsWith('image/')) {
+    return URL.createObjectURL(props.file);
+  } else {
+    console.warn('No file or not an image.');
+    return '';
+  }
+});
 </script>
 
 <template>
