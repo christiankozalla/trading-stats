@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import type { MenuItem } from 'primevue/menuitem';
+import { RouterLink } from 'vue-router';
 import LogoTitle from '@/components/LogoTitle.vue';
 import { pb, isAuthenticated } from '@/api-client';
 import TradingAccountSelector from '@/components/TradingAccountSelector.vue';
@@ -81,6 +82,20 @@ async function changeLocale() {
           </div>
           <div v-if="pb.authStore.model?.email" class="menuitem-padding">
             {{ pb.authStore.model?.email }}
+          </div>
+        </template>
+        <template #item="{ item, props }">
+          <div v-if="item.url" class="p-menuitem-content" data-pc-section="content">
+            <RouterLink :to="item.url as string" v-bind="props.action" class="p-menuitem-link">
+              <span class="p-menuitem-icon" :class="item.icon" data-pc-section="icon" />
+              <span class="p-menuitem-text" data-pc-section="label">{{ item.label }}</span>
+            </RouterLink>
+          </div>
+          <div v-else class="p-menuitem-content" data-pc-section="content">
+            <div v-bind="props.action">
+              <span class="p-menuitem-icon" :class="item.icon" data-pc-section="icon" />
+              <span class="p-menuitem-text" data-pc-section="label">{{ item.label }}</span>
+            </div>
           </div>
         </template>
       </Menu>
