@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, type Ref } from 'vue';
 import { useToast } from 'primevue/usetoast';
-import Textarea from 'primevue/textarea';
+// import Textarea from 'primevue/textarea';
 import { pb } from '@/api-client';
 import { useTradingAccountsStore } from '@/stores/tradingAccounts';
 import { useI18nStore } from '@/stores/i18n';
