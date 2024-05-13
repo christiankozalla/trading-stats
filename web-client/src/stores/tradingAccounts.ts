@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
-import { computed, ref, onMounted, watch } from 'vue';
-import { pb, type TradingAccount } from '@/api-client';
+import { computed, ref, watch } from 'vue';
+import { pb, isAuthenticated, type TradingAccount } from '@/api-client';
 
 type AccountId = string;
 
@@ -12,20 +12,23 @@ const useTradingAccountsStore = defineStore('tradingAccounts', () => {
   const selected = ref<AccountId>();
   const scopedKey = `${accountIdKey}-${pb.authStore.model?.id}`;
 
-  onMounted(async () => {
-    const storedSelectedId = localStorage.getItem(scopedKey);
-    if (storedSelectedId) {
-      selected.value = storedSelectedId;
-    }
-
-    await get();
-  });
-
   watch(selected, (newValue) => {
     if (newValue) {
       localStorage.setItem(scopedKey, newValue);
     } else {
       localStorage.removeItem(scopedKey);
+    }
+  });
+
+  watch(isAuthenticated, async (isAuthenticated) => {
+    if (isAuthenticated) {
+      const storedSelectedId = localStorage.getItem(scopedKey);
+      if (storedSelectedId) {
+        selected.value = storedSelectedId;
+      }
+      await get();
+    } else {
+      resetState();
     }
   });
 
@@ -42,6 +45,10 @@ const useTradingAccountsStore = defineStore('tradingAccounts', () => {
 
   function add(...tradingAccounts: TradingAccount[]) {
     state.value.push(...tradingAccounts);
+  }
+
+  function resetState() {
+    state.value = [];
   }
 
   return {
