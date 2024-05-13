@@ -59,7 +59,7 @@ const useCollectionsStore = defineStore('collections', () => {
 
         return state.value[collectionId];
       } catch (e) {
-        console.error('error fetching collection ', collectionId);
+        console.error('error fetching collection', collectionId, e);
         if (e instanceof ClientResponseError) {
           toast.add({
             severity: 'error',
