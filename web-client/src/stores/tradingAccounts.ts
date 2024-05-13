@@ -20,17 +20,21 @@ const useTradingAccountsStore = defineStore('tradingAccounts', () => {
     }
   });
 
-  watch(isAuthenticated, async (isAuthenticated) => {
-    if (isAuthenticated) {
-      const storedSelectedId = localStorage.getItem(scopedKey);
-      if (storedSelectedId) {
-        selected.value = storedSelectedId;
+  watch(
+    isAuthenticated,
+    async (isAuthenticated) => {
+      if (isAuthenticated) {
+        const storedSelectedId = localStorage.getItem(scopedKey);
+        if (storedSelectedId) {
+          selected.value = storedSelectedId;
+        }
+        await get();
+      } else {
+        resetState();
       }
-      await get();
-    } else {
-      resetState();
-    }
-  });
+    },
+    { immediate: true }
+  );
 
   async function get() {
     pb.collection('trading_accounts')
