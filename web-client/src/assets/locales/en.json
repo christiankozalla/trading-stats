@@ -19,8 +19,9 @@
     }
   },
   "generic": {
-    "upload-button-change":"Change {type}",
+    "upload-button-change": "Change {type}",
     "upload-button-choose": "Choose {type}",
+    "upload": "Upload {type}",
     "image": "Image",
     "log-files": "Log-Files",
     "file-input-required": "Please select at least one file.",

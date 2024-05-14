@@ -1,7 +1,6 @@
 /* Order matters */
 @layer reset, primevue;
 
-
 /* Reset CSS */
 @layer reset {
   body {
@@ -25,7 +24,7 @@
 }
 
 @layer global {
- .container {
-  padding: var(--inline-spacing) var(--content-padding);
- }
+  .container {
+    padding: var(--inline-spacing) var(--content-padding);
+  }
 }

@@ -73,4 +73,10 @@ export type Screenshot = {
   comment?: string;
 } & RecordModel;
 
-export type Collections = 'trades' | 'users' | 'raw_trades' | 'trade_log_files' | 'profit_loss' | 'screenshots';
+export type Collections =
+  | 'trades'
+  | 'users'
+  | 'raw_trades'
+  | 'trade_log_files'
+  | 'profit_loss'
+  | 'screenshots';

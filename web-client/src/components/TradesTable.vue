@@ -1,8 +1,13 @@
 <script setup lang="ts">
 import { ref, type Ref, computed, onMounted, onUpdated } from 'vue';
 import { pb, type Screenshot as ScreenshotType } from '@/api-client';
+import { useI18nStore } from '@/stores/i18n';
 import Screenshot from '@/components/Screenshot.vue';
+import UploadScreenshot from '@/components/UploadScreenshot.vue';
 import { type usePaginatedCollection } from '@/composables/usePaginatedCollection';
+import { useScreenshotViewer } from '@/composables/useScreenshotViewer';
+
+const { t } = useI18nStore();
 
 const props = defineProps<{
   trades: ReturnType<typeof usePaginatedCollection>;
@@ -16,6 +21,13 @@ const items = computed(() => {
 });
 const dateRange = computed(() => getDateRange(items.value));
 const screenshots = ref<ScreenshotsByDate>({});
+
+const { viewer } = useScreenshotViewer();
+
+function handleScreenshotViewer(emittedRecord: ScreenshotType) {
+  viewer.setActiveRecord(emittedRecord);
+  viewer.setIsOpen(true);
+}
 
 // this could be implemented with a watcher as well
 onMounted(fetchAndUpdateScreenshots(screenshots));
@@ -33,7 +45,7 @@ function fetchAndUpdateScreenshots(ref: Ref<ScreenshotsByDate>) {
           })
         })
         .then((list) => {
-          for (const record of list.items) ref.value[record.date.slice(0, 10)] = record; // refactor task: each date should hold a list of records - i.e. { [date: string]: ScreenshotType[] }
+          for (const record of list.items) ref.value[record.date.slice(0, 10)] = record;
         });
     }
   };
@@ -60,6 +72,14 @@ function getDateRange(list: { DateTime_close: string }[]): { min?: string; max?:
     }
   }
   return { min, max };
+}
+
+// for uploading a new screenshot
+const screenshotDate = ref<string | null | undefined>();
+const isScreenshotDialogOpen = ref<boolean>(false);
+function openAddScreenshotDialog(date: string) {
+  screenshotDate.value = date;
+  isScreenshotDialogOpen.value = true;
 }
 </script>
 
@@ -96,9 +116,30 @@ function getDateRange(list: { DateTime_close: string }[]): { min?: string; max?:
       <Column field="ProfitLoss" header="PnL" sortable />
       <Column field="DateTime_close" header="Screenshot">
         <template #body="slotProps">
-          <Screenshot :record="screenshots[slotProps.data.DateTime_close.slice(0, 10)]" />
+          <Screenshot
+            v-if="screenshots[slotProps.data.DateTime_close]"
+            :record="screenshots[slotProps.data.DateTime_close]"
+            thumb
+            @emitActiveScreenshot="handleScreenshotViewer"
+          />
+          <Button
+            v-else
+            icon="icon icon-upload"
+            severity="secondary"
+            rounded
+            :aria-label="t('generic.upload', { type: 'Screenshot' })"
+            @click="openAddScreenshotDialog(slotProps.data.DateTime_close)"
+          />
         </template>
       </Column>
     </DataTable>
   </section>
+  <Dialog
+    v-model:visible="isScreenshotDialogOpen"
+    :header="t('import.screenshot.header')"
+    style="width: 90vw; max-width: 1100px"
+    modal
+  >
+    <UploadScreenshot :date="screenshotDate" />
+  </Dialog>
 </template>

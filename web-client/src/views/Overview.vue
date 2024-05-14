@@ -150,6 +150,7 @@ const trades = usePaginatedCollection('trades');
 
 const tradesMapper = (trade: Trade) => ({
   ...trade,
+  DateTime_close: trade.DateTime_close.slice(0, 10),
   ProfitLoss: formatCurrency(trade.ProfitLoss * trade.Multiplier)
 });
 

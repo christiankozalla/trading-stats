@@ -19,8 +19,9 @@
     }
   },
   "generic": {
-    "upload-button-change":"{type} ändern",
+    "upload-button-change": "{type} ändern",
     "upload-button-choose": "{type} wählen",
+    "upload": "{type} hochladen",
     "image": "Bild",
     "log-files": "Log-Dateien",
     "file-input-required": "Bitte wähle mindestens eine Datei aus.",

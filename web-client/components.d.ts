@@ -12,6 +12,7 @@ declare module 'vue' {
     Column: typeof import('primevue/column')['default']
     DataPanel: typeof import('./src/components/DataPanel.vue')['default']
     DataTable: typeof import('primevue/datatable')['default']
+    Dialog: typeof import('primevue/dialog')['default']
     Dropdown: typeof import('primevue/dropdown')['default']
     ImagePreview: typeof import('./src/components/ImagePreview.vue')['default']
     InputText: typeof import('primevue/inputtext')['default']
@@ -23,11 +24,13 @@ declare module 'vue' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Screenshot: typeof import('./src/components/Screenshot.vue')['default']
+    ScreenshotViewer: typeof import('./src/components/ScreenshotViewer.vue')['default']
     TabMenu: typeof import('primevue/tabmenu')['default']
     Textarea: typeof import('primevue/textarea')['default']
     TradesTable: typeof import('./src/components/TradesTable.vue')['default']
     TradingAccounts: typeof import('./src/components/TradingAccounts.vue')['default']
     TradingAccountSelector: typeof import('./src/components/TradingAccountSelector.vue')['default']
+    UploadScreenshot: typeof import('./src/components/UploadScreenshot.vue')['default']
     UserProfile: typeof import('./src/components/UserProfile.vue')['default']
   }
 }
