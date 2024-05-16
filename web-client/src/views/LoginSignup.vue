@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, nextTick } from 'vue';
 import { useRouter } from 'vue-router';
 import { useLoaderStore } from '@/stores/loader';
 import type { TabMenuChangeEvent } from 'primevue/tabmenu';
@@ -16,6 +16,8 @@ type AuthTypes = 'login' | 'signup';
 const formErrors = ref<Record<string, string>>({});
 const authType = ref<AuthTypes>('signup');
 const authTypes: AuthTypes[] = ['signup', 'login'] as const;
+const validateEmail = (email: string | null): email is string =>
+  email ? /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/.test(email) : false;
 
 async function signup(event: Event) {
   event.preventDefault();
@@ -110,11 +112,11 @@ function validateSignupData(
   passwordConfirm: string | null
 ) {
   const validated: Record<string, string> = {};
-  const isInvalidEmail = email && !/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/.test(email);
+  const isValidEmail = validateEmail(email);
 
   if (!email) {
     formErrors.value.email = 'Please enter your email address.';
-  } else if (isInvalidEmail) {
+  } else if (!isValidEmail) {
     formErrors.value.email = 'Please enter a valid email address.';
   } else {
     validated.email = email;
@@ -140,11 +142,11 @@ function validateSignupData(
 
 function validateLoginData(email: string | null, password: string | null) {
   const validated: Record<string, string> = {};
-  const isInvalidEmail = email && !/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/.test(email);
+  const isValidEmail = validateEmail(email);
 
   if (!email) {
     formErrors.value.email = 'Please enter your email address.';
-  } else if (isInvalidEmail) {
+  } else if (!isValidEmail) {
     formErrors.value.email = 'Please enter a valid email address.';
   } else {
     validated.email = email;
@@ -183,6 +185,53 @@ const headline = computed(() => {
 function changeAuthType(event: TabMenuChangeEvent) {
   authType.value = authTypes[event.index];
 }
+
+const passwordContextOpen = ref<boolean>(false);
+async function requestPasswordResetEmail(event: Event) {
+  const formData = new FormData(event.target as HTMLFormElement);
+  for (const entries of formData.entries()) {
+    console.log('entries', entries);
+  }
+  const email = formData.get('email') as string | null;
+  if (!validateEmail(email)) {
+    toast.add({
+      severity: 'error',
+      summary: 'Please enter a valid email address.',
+      life: 10000
+    });
+    return;
+  }
+  try {
+    loaderStore.startLoading();
+    const emailSent = await pb.collection('users').requestPasswordReset(email);
+    if (emailSent) {
+      toast.add({
+        severity: 'success',
+        summary: 'Password reset requested successfully',
+        detail: 'Check your inbox to complete password reset process.',
+        life: 5000
+      });
+    }
+  } catch (e) {
+    if (e instanceof ClientResponseError)
+      toast.add({
+        severity: 'error',
+        summary: 'Failed to request password reset email',
+        detail: `${e.data.message} Check email and password.`,
+        life: 5000
+      });
+  } finally {
+    loaderStore.stopLoading();
+  }
+}
+
+const openPasswordResetContext = () => {
+  passwordContextOpen.value = !passwordContextOpen.value;
+  passwordContextOpen.value &&
+    nextTick().then(() => {
+      document.getElementById('password-reset-email')?.focus();
+    });
+};
 </script>
 
 <template>
@@ -245,13 +294,32 @@ function changeAuthType(event: TabMenuChangeEvent) {
       </div>
       <Button label="Submit" type="submit" style="width: 100%"></Button>
     </form>
+
+    <Button
+      v-if="authType === 'login'"
+      label="Forgot password?"
+      link
+      @click="openPasswordResetContext"
+      class="password-reset-button"
+    />
+    <form v-if="passwordContextOpen" @submit.prevent="requestPasswordResetEmail" novalidate>
+      <label for="password-reset-email">Request password reset email</label>
+      <InputText
+        type="email"
+        name="email"
+        id="password-reset-email"
+        placeholder="Your account's email"
+        required
+      />
+      <Button label="Request password reset" type="submit" severity="secondary" />
+    </form>
   </div>
 </template>
 
 <style>
 .container {
   max-width: 500px;
-  margin: 0 auto;
+  margin: 0 auto 120px;
 }
 
 form {
@@ -277,5 +345,12 @@ label + input {
 
 small {
   color: var(--red-400);
+}
+
+.password-reset-button {
+  display: block;
+  margin-left: auto;
+  margin-right: 0;
+  font-size: small;
 }
 </style>
