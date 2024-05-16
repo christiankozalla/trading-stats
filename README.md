@@ -4,20 +4,6 @@ Traders need to track their progress over time to eventually sit down and assess
 
 This app aims to be a trader's daily companion and single source of truth for providing insights on their trading activity via data visualizations such as charts and tables.
 
-### Required software
-
-#### [libwebp](https://developers.google.com/speed/webp/docs/api)
-
-Every time a screenshot image is uploaded for the screenshots collection, it is resized and converted to WebP. Package [kolesa-team/go-webp](github.com/kolesa-team/go-webp) utilises [libwebp](https://developers.google.com/speed/webp/docs/api) for processing.
-
-Install libwebp with
-
-```shell
-sudo apt install libwebp-dev
-```
-
-
-
 ## Running in production
 
 The app is currently running on a VPS behind a Caddy server reverse-proxy that routes all requests to PocketBase. PocketBase serves the Vue frontend app from its static directory `pb_public`, and acts as a REST API on all routes like /api/* . PocketBase is deployed as a single binary. A single process is managed by systemd. All data is currently stored in the `pb_data` directory such as the SQLite database or user-provided uploaded files. In the future, an S3 storage can be used for such file hosting.

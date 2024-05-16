@@ -4,6 +4,20 @@ package eventhandlers
 // - PocketBase does not generate/serve thumbnails from WebP images
 // - CGO must be enabled in order to encode WebP images (there is: https://git.sr.ht/~jackmordaunt/go-libwebp bit it is experimental)
 
+// add this to README.md when enabling this feature again
+
+// ### Required software
+
+// #### [libwebp](https://developers.google.com/speed/webp/docs/api)
+
+// Every time a screenshot image is uploaded for the screenshots collection, it is resized and converted to WebP. Package [kolesa-team/go-webp](github.com/kolesa-team/go-webp) utilises [libwebp](https://developers.google.com/speed/webp/docs/api) for processing.
+
+// Install libwebp with
+
+// ```shell
+// sudo apt install libwebp-dev
+// ```
+
 // import (
 // 	"bytes"
 // 	"errors"
