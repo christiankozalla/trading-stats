@@ -6,7 +6,6 @@ const dataURI = computed(() => {
   if (props.file?.type.startsWith('image/')) {
     return URL.createObjectURL(props.file);
   } else {
-    console.warn('No file or not an image.');
     return '';
   }
 });
