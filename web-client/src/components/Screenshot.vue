@@ -15,13 +15,16 @@ const src = computed(() => (props.thumb ? thumbSrc : imageSrc));
 </script>
 
 <template>
+  <div class="flex flex-row flex-gap h-100">
   <img
     :src="src"
-    :class="{ clickable: props.thumb, viewer: !props.thumb }"
+    :class="{ clickable: props.thumb, viewer: !props.thumb, 'm-auto': !props.thumb && !record.comment }"
     alt=""
     :loading="props.loading || 'eager'"
     @click="$emit('emitActiveScreenshot', props.record)"
   />
+  <p v-if="!thumb && record.comment">{{  record.comment }}</p>
+</div>
 </template>
 
 <style scoped>
@@ -33,6 +36,5 @@ const src = computed(() => (props.thumb ? thumbSrc : imageSrc));
   display: block;
   object-fit: contain;
   height: 100%;
-  margin: 0 auto;
 }
 </style>
