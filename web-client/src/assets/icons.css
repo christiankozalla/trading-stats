@@ -1,44 +1,43 @@
+/* colored icons with mask image - ref: https://antfu.me/posts/icons-in-pure-css */
 .icon {
   display: inline-block;
-  height: 16px;
-  width: 16px;
+  height: 1.2em; /* slightly bigger than the text */
+  width: 1.2em;
+  background-color: currentColor;
 }
 
-/* Changing the stroke color from outside the svg is impossible
- * create two static versions of each icon
- * e.g. .icon-house-white { content:url('./icons/icon-house-white.svg'); } */
 .icon-house {
-  content: url('./icons/icon-house.svg');
+  mask-image: url('./icons/icon-house.svg');
 }
 
 .icon-gear {
-  content: url('./icons/icon-gear.svg');
+  mask-image: url('./icons/icon-gear.svg');
 }
 
 .icon-person {
-  content: url('./icons/icon-person.svg');
+  mask-image: url('./icons/icon-person.svg');
 }
 
 .icon-menu {
-  content: url('./icons/icon-menu.svg');
+  mask-image: url('./icons/icon-menu.svg');
 }
 
 .icon-login {
-  content: url('./icons/icon-login.svg');
+  mask-image: url('./icons/icon-login.svg');
 }
 
 .icon-logout {
-  content: url('./icons/icon-logout.svg');
+  mask-image: url('./icons/icon-logout.svg');
 }
 
 .icon-upload {
-  content: url('./icons/icon-upload.svg');
+  mask-image: url('./icons/icon-upload.svg');
 }
 
 .icon-refresh {
-  content: url('./icons/icon-refresh.svg');
+  mask-image: url('./icons/icon-refresh.svg');
 }
 
 .icon-language {
-  content: url('./icons//icon-language.svg');
+  mask-image: url('./icons//icon-language.svg');
 }
