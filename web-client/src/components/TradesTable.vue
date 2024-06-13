@@ -81,6 +81,12 @@ function openAddScreenshotDialog(date: string) {
   screenshotDate.value = date;
   isScreenshotDialogOpen.value = true;
 }
+
+function handleScreenshotUploadSuccess() {
+  setTimeout(() => {
+    isScreenshotDialogOpen.value = false;
+  }, 100);
+}
 </script>
 
 <template>
@@ -140,6 +146,6 @@ function openAddScreenshotDialog(date: string) {
     style="width: 90vw; max-width: 1100px"
     modal
   >
-    <UploadScreenshot :date="screenshotDate" />
+    <UploadScreenshot :date="screenshotDate" @uploadSuccess="handleScreenshotUploadSuccess" />
   </Dialog>
 </template>

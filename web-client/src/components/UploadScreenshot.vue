@@ -6,6 +6,8 @@ import { useTradingAccountsStore } from '@/stores/tradingAccounts';
 import ImagePreview from '@/components/ImagePreview.vue';
 import { useI18nStore } from '@/stores/i18n';
 
+const emit = defineEmits(['uploadSuccess']);
+
 const { t } = useI18nStore();
 const toast = useToast();
 const tradingAccountsStore = useTradingAccountsStore();
@@ -63,6 +65,8 @@ async function uploadScreenshot(event: Event) {
 
     (event.target as HTMLFormElement).reset();
     screenshots.value = undefined;
+
+    emit('uploadSuccess');
   }
 }
 </script>
