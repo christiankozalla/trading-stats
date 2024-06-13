@@ -51,4 +51,18 @@
   .m-auto {
     margin: 0 auto;
   }
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--bluegray-200) var(--bluegray-50);
+  }
+
+  *::-webkit-scrollbar-track {
+    width: var(--scrollbar-width);
+    background-color: var(--bluegray-50);
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background-color: var(--bluegray-200);
+  }
 }
