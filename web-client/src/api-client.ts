@@ -70,6 +70,8 @@ export type Trade = {
 export type Screenshot = {
   date: string;
   image: string;
+  imageHeight?: number;
+  imageWidth?: number;
   comment?: string;
 } & RecordModel;
 

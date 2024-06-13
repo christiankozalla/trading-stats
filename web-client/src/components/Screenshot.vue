@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { reactive, computed } from 'vue';
 import { pb, type Screenshot } from '@/api-client';
 
 const props = defineProps<{
@@ -12,19 +12,26 @@ const thumbSrc = pb.files.getUrl(props.record, props.record.image, { thumb: '0x4
 const imageSrc = pb.files.getUrl(props.record, props.record.image);
 
 const src = computed(() => (props.thumb ? thumbSrc : imageSrc));
+// const height = computed(() => (props.record?.imageHeight ? `${props.record?.imageHeight}px` : undefined))
+const imageClasses = reactive({
+  clickable: props.thumb,
+  viewer: !props.thumb,
+  'm-auto': !props.thumb && !props.record.comment
+})
+const imageStyles = reactive({
+  width: !props.thumb && props.record?.imageWidth ? `${props.record?.imageWidth}px` : undefined,
+  'max-height': '90vh', 'aspect-ratio': props.record?.imageHeight && props.record?.imageWidth
+    ? props.record?.imageWidth / props.record?.imageHeight
+    : undefined
+});
 </script>
 
 <template>
-  <div class="flex flex-row flex-gap h-100">
-  <img
-    :src="src"
-    :class="{ clickable: props.thumb, viewer: !props.thumb, 'm-auto': !props.thumb && !record.comment }"
-    alt=""
-    :loading="props.loading || 'eager'"
-    @click="$emit('emitActiveScreenshot', props.record)"
-  />
-  <p v-if="!thumb && record.comment">{{  record.comment }}</p>
-</div>
+  <div :class="{ screenshot__container: !props.thumb }">
+    <img :src="src" :class="imageClasses" alt="" :style="imageStyles" :loading="props.loading || 'eager'"
+      @click="$emit('emitActiveScreenshot', props.record)" />
+    <p v-if="!thumb && record.comment">{{ record.comment }}</p>
+  </div>
 </template>
 
 <style scoped>
@@ -36,5 +43,19 @@ const src = computed(() => (props.thumb ? thumbSrc : imageSrc));
   display: block;
   object-fit: contain;
   height: 100%;
+}
+
+.screenshot__container {
+  display: flex;
+  max-height: 90vh;
+}
+
+.screenshot__container img {
+  flex: 1 2 50%;
+}
+
+.screenshot__container p {
+  flex: 0 2 calc(50% - var(--inline-spacing));
+  margin-left: var(--inline-spacing);
 }
 </style>
