@@ -41,14 +41,22 @@ const routes: RouteRecordRaw[] = [
     meta: {
       requiresAuth: false
     }
+  },
+  {
+    path: '/:locale/public/:userId/:tradingAccountId/overview',
+    component: () => import('../views/PublicOverview.vue'),
+    meta: {
+      requiresAuth: false
+    }
+  },
+  {
+    path: '/:locale/:pathMatch(.*)', // Catch all 404
+    component: () => import('../views/404.vue'),
+    meta: {
+      requiresAuth: false
+    }
   }
-  // {
-  //   path: '/:pathMatch(.*)', // Catch all 404
-  //   redirect: '/404' // Redirect to default locale if route not found
-  // }
 ];
-
-const protectedRoutes = routes.filter((r) => r.meta?.requiresAuth === true);
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -59,7 +67,6 @@ router.beforeEach(async (to, _from, next) => {
   // if the user is not requesting a path with a locale
   // a.) get the users standard language, see whether we support it and send the user there
   // a.2) if we do not support the users favorite locale, send them to /en
-
   const i18n = useI18nStore();
   const localeParam = to.params.locale;
 
@@ -88,7 +95,7 @@ router.beforeEach((to, _from, next) => {
   if (Array.isArray(to.params.locale)) {
     throw new Error(`Multiple locale params in route: ${to.params.locale.join()}`);
   }
-  if (protectedRoutes.some((route) => route.name === to.name) && !pb.authStore.isValid) {
+  if (to.meta.requiresAuth && !pb.authStore.isValid) {
     const locale = supportedOrFallbackLocale(to.params.locale);
     next(`/${locale}/login-signup`); // or next({ name: 'login-signup', params: { locale }})
   } else next();

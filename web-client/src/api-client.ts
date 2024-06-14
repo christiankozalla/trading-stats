@@ -1,5 +1,4 @@
 import PocketBase, { type RecordService, type RecordModel } from 'pocketbase';
-import { supportedOrFallbackLocale } from './router/helpers';
 import { ref } from 'vue';
 
 interface TypedPocketBase extends PocketBase {
@@ -16,10 +15,7 @@ export const pb = new PocketBase(import.meta.env.BASE_URL) as TypedPocketBase;
 export const isAuthenticated = ref<boolean>(false);
 pb.authStore.onChange((token) => {
   if (!token) {
-    const currentLocale = supportedOrFallbackLocale(window.location.pathname.slice(1, 3));
-    const nextPath = `/${currentLocale}/login-signup`;
     isAuthenticated.value = false;
-    if (window.location.pathname !== nextPath) window.location.pathname = nextPath;
   } else {
     if (isAuthenticated.value !== true) isAuthenticated.value = true;
   }
