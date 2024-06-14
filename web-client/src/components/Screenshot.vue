@@ -12,6 +12,7 @@ const thumbSrc = pb.files.getUrl(props.record, props.record.image, { thumb: '0x4
 const imageSrc = pb.files.getUrl(props.record, props.record.image);
 
 const src = computed(() => (props.thumb ? thumbSrc : imageSrc));
+const hasComment = computed(() => (!props.thumb && props.record?.comment));
 // const height = computed(() => (props.record?.imageHeight ? `${props.record?.imageHeight}px` : undefined))
 const imageClasses = reactive({
   clickable: props.thumb,
@@ -24,13 +25,14 @@ const imageStyles = reactive({
     ? props.record?.imageWidth / props.record?.imageHeight
     : undefined
 });
+
 </script>
 
 <template>
-  <div :class="{ screenshot__container: !props.thumb }">
+  <div :class="{ screenshot__container: !props.thumb, 'screenshot__container--with-comment': hasComment }">
     <img :src="src" :class="imageClasses" alt="" :style="imageStyles" :loading="props.loading || 'eager'"
       @click="$emit('emitActiveScreenshot', props.record)" />
-    <p v-if="!thumb && record.comment">{{ record.comment }}</p>
+    <p v-if="!props.thumb && props.record.comment">{{ props.record.comment }}</p>
   </div>
 </template>
 
@@ -50,12 +52,12 @@ const imageStyles = reactive({
   max-height: 90vh;
 }
 
-.screenshot__container img {
-  flex: 1 2 50%;
+.screenshot__container--with-comment img {
+  width: 70%;
 }
 
-.screenshot__container p {
-  flex: 0 2 calc(50% - var(--inline-spacing));
+.screenshot__container--with-comment p {
+  width: calc(30% - var(--inline-spacing));
   margin-left: var(--inline-spacing);
 }
 </style>
