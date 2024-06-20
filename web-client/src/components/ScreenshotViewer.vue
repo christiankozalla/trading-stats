@@ -20,8 +20,8 @@ const { isOpen, activeRecord } = defineProps<{
 }>();
 </script>
 
-<style>
-.screenshot-viewer__dialog-content {
+<style scoped>
+:deep(.screenshot-viewer__dialog-content) {
   margin: var(--inline-spacing);
   margin-top: 0;
 }

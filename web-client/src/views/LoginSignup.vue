@@ -316,7 +316,7 @@ const openPasswordResetContext = () => {
   </div>
 </template>
 
-<style>
+<style scoped>
 .container {
   max-width: 500px;
   margin: 0 auto 120px;

@@ -15,7 +15,7 @@ const loaderStore = useLoaderStore();
   </div>
 </template>
 
-<style>
+<style scoped>
 .loader {
   display: grid;
   place-items: center;

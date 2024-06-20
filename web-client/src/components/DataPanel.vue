@@ -18,30 +18,30 @@ const props = defineProps<PanelProps>();
   </Panel>
 </template>
 
-<style>
-.datapanel-header {
+<style scoped>
+:deep(.datapanel-header) {
   padding: 9px 18px;
 }
 
-.datapanel-content > * {
+:deep(.datapanel-content) > * {
   display: inline-block;
   width: 50%;
   vertical-align: top;
 }
 
-.datapanel-content > *:nth-child(1) {
+:deep(.datapanel-content) > *:nth-child(1) {
   padding-right: 9px;
 }
 
-.datapanel-content > *:nth-child(2) {
+:deep(.datapanel-content) > *:nth-child(2) {
   padding-left: 9px;
 }
-.datapanel-content > *:only-child {
+:deep(.datapanel-content) > *:only-child {
   width: 100%;
   padding: 0;
 }
 
-.p-panel-title {
+:deep(.p-panel-title) {
   margin: var(--inline-spacing) 0;
 }
 </style>
