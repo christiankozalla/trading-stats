@@ -13,7 +13,7 @@ declare module 'vue-router' {
 
 const routes: RouteRecordRaw[] = [
   {
-    path: '/:locale', // could use regex pattern like: '/:locale(de|en)'
+    path: '/:locale/', // could use regex pattern like: '/:locale(de|en)'
     name: 'overview',
     component: Overview,
     meta: {
@@ -43,7 +43,7 @@ const routes: RouteRecordRaw[] = [
     }
   },
   {
-    path: '/:locale/public/:userId/:tradingAccountId/overview',
+    path: '/:locale/public/:userId/:accountId/overview',
     component: () => import('../views/PublicOverview.vue'),
     meta: {
       requiresAuth: false
