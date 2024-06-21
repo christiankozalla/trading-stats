@@ -18,6 +18,10 @@
       "comment-placeholder": "Optionale Notiz"
     }
   },
+  "trading-accounts": {
+    "create": "Erstelle einen Trading Account",
+    "create-cta": "Account erstellen"
+  },
   "generic": {
     "upload-button-change": "{type} ändern",
     "upload-button-choose": "{type} wählen",

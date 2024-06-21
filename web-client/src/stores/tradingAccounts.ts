@@ -12,6 +12,13 @@ const useTradingAccountsStore = defineStore('tradingAccounts', () => {
   const selected = ref<AccountId>();
   const scopedKey = `${accountIdKey}-${pb.authStore.model?.id}`;
 
+  watch(accounts, (newAccounts) => {
+    if (newAccounts.length === 1) {
+      // if there is only one account, select it
+      selected.value = newAccounts[0].id;
+    }
+  })
+
   watch(selected, (newValue) => {
     if (newValue) {
       localStorage.setItem(scopedKey, newValue);

@@ -18,6 +18,10 @@
       "comment-placeholder": "Optional notes"
     }
   },
+  "trading-accounts": {
+    "create": "Create a trading account",
+    "create-cta": "Create account"
+  },
   "generic": {
     "upload-button-change": "Change {type}",
     "upload-button-choose": "Choose {type}",
