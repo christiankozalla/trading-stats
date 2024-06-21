@@ -2,9 +2,11 @@ package eventhandlers
 
 import (
 	"encoding/csv"
+	"fmt"
 	"io"
 	"log"
 	"strings"
+	"unicode"
 
 	"github.com/pocketbase/dbx"
 	"github.com/pocketbase/pocketbase"
@@ -78,16 +80,23 @@ func createRawTradeRecords(app *pocketbase.PocketBase, e *core.RecordCreateEvent
 			// hence the multiplier
 			globexCode, ok := trade["Symbol"].(string)
 			if ok {
-				if strings.Contains(globexCode, ".") {
-					parts := strings.Split(globexCode, ".")
-					globexCode = parts[0][:len(parts[0])-2]
-				} else if len(globexCode) >= 2 {
-					globexCode = globexCode[:len(globexCode)-2]
+				// todo: figure out whether the Symbol refers to a Future, Stock or Option
+				var extractedGlobexCode string
+				if parts := strings.Split(globexCode, "."); len(parts) > 1 {
+					extractedGlobexCode = extractGlobexCode(parts[0])
+				} else if parts := strings.Split(globexCode, "_"); len(parts) > 1 {
+					extractedGlobexCode = extractGlobexCode(parts[0])
+				} else {
+					extractedGlobexCode = extractGlobexCode(globexCode)
 				}
 
-				multiplier := globexCodeToMultiplierMap[globexCode]
+				multiplier := globexCodeToMultiplierMap[extractedGlobexCode]
+				if multiplier == 0 {
+					app.Logger().Error(fmt.Sprintf("Matching Globex Code Not Found for Symbol '%s'", globexCode))
+					multiplier = 1
+				}
 				trade["Multiplier"] = multiplier
-				trade["ShortSymbol"] = globexCode
+				trade["ShortSymbol"] = extractedGlobexCode
 			}
 
 			trade["user"] = userId
@@ -217,4 +226,16 @@ func tradeStructToMap(trade Trade) map[string]any {
 		"Quantity_close":  trade.QuantityClose,
 		"ProfitLoss":      trade.ProfitLoss,
 	}
+}
+
+func extractGlobexCode(s string) string {
+	for i, char := range s {
+		if unicode.IsDigit(char) {
+			if i > 0 {
+				return s[0 : i-1]
+			}
+			break
+		}
+	}
+	return s
 }
