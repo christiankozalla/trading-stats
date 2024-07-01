@@ -39,7 +39,11 @@ const useCollectionsStore = defineStore('collections', () => {
 
       loaderStore.startLoading();
       try {
-        const list = await pb.collection(collectionId).getList(page, perPage, options);
+        const list = await pb.collection(collectionId).getList(page, perPage, {
+          ...options,
+          // every filter passed by options will be overwritten
+          filter: pb.filter('account = {:accountId}', { accountId: tradingAcccountId })
+        });
         // make sure existing store collection data is from same account
         if (existing) {
           existing.items.push(...list.items);

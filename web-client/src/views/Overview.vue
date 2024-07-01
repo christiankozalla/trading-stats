@@ -18,9 +18,11 @@ import {
 import { Line, Bar, type ChartProps } from 'vue-chartjs';
 import { useLoaderStore } from '@/stores/loader';
 import { useI18nStore } from '@/stores/i18n';
+import { useTradingAccountsStore } from '@/stores/tradingAccounts';
 
 const { t } = useI18nStore();
 const loaderStore = useLoaderStore();
+const tradingAccountsStore = useTradingAccountsStore();
 
 // helpers
 const sum = (array: number[]) => array.reduce((sum, curr) => sum + curr, 0);
@@ -81,7 +83,10 @@ const profitLoss = ref<ProfitLossExtended[]>();
 onMounted(() => {
   loaderStore.startLoading();
   pb.collection('profit_loss')
-    .getFullList({ sort: 'DateTime_close' })
+    .getFullList({
+      filter: pb.filter('account = {:accountId}', { accountId: tradingAccountsStore.selected }),
+      sort: 'DateTime_close'
+    })
     .then(
       (records) =>
         (profitLoss.value = records.map(

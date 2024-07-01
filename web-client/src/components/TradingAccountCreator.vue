@@ -9,6 +9,7 @@ const { t } = useI18nStore();
 async function createTradingAccount(event: Event) {
   const formData = new FormData(event.target as HTMLFormElement);
   formData.append('user', pb.authStore.model?.id);
+  // TODO: stop here and add a toast if the user is not authenticated
   pb.collection('trading_accounts')
     .create<TradingAccount>(formData)
     .then((newTradingAcc) => {

@@ -6,8 +6,10 @@ import Screenshot from '@/components/Screenshot.vue';
 import UploadScreenshot from '@/components/UploadScreenshot.vue';
 import { type usePaginatedCollection } from '@/composables/usePaginatedCollection';
 import { useScreenshotViewer } from '@/composables/useScreenshotViewer';
+import { useTradingAccountsStore } from '@/stores/tradingAccounts';
 
 const { t } = useI18nStore();
+const tradingAccountsStore = useTradingAccountsStore();
 
 const props = defineProps<{
   trades: ReturnType<typeof usePaginatedCollection>;
@@ -39,7 +41,8 @@ function fetchAndUpdateScreenshots(ref: Ref<ScreenshotsByDate>) {
       pb.collection('screenshots')
         .getList(undefined, undefined, {
           skipTotal: true,
-          filter: pb.filter('date >= {:startDate} && date <= {:endDate}', {
+          filter: pb.filter('account = {:accountId} && date >= {:startDate} && date <= {:endDate}', {
+            accountId: tradingAccountsStore.selected,
             startDate: new Date(dateRange.value.min),
             endDate: new Date(dateRange.value.max)
           })
