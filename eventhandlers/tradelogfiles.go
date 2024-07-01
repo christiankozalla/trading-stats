@@ -75,6 +75,20 @@ func createRawTradeRecords(app *pocketbase.PocketBase, e *core.RecordCreateEvent
 				trade[header[i]] = value
 			}
 
+			// either take the first two chars of an incoming symbol - e.g. "NQU24_FUT_CME"
+			// other examples "CLJ4.NYMEX", "ESH4.CME"
+			// H4, J4 and U24 are only month and year codes, NQ, ES, and CL are the relevant symbols
+			// but a relevant symbol may consists of three chars, too
+
+			// algorithm idea: search first two charts, and first three chars... until there is a number
+			// algorithm idea: look for the number, delete the number and one char before the number, take what is left from there to the beginning of the string to the left
+			// need a set of many real input values
+
+			// isFuture ? then globexCode and multiplier
+			// isStock ? then currency
+			// isOption ? then expiry date and currency
+			// maybe this helps: https://www.sierrachart.com/index.php?page=doc/IBSymbols.html#FuturesFormat
+
 			// adds multiplier to calculate cash ($) from ticks
 			// because ProfitLoss is given in ticks, each tick has different value for each future
 			// hence the multiplier
