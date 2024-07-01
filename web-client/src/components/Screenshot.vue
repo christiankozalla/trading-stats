@@ -13,7 +13,6 @@ const imageSrc = pb.files.getUrl(props.record, props.record.image);
 
 const src = computed(() => (props.thumb ? thumbSrc : imageSrc));
 const hasComment = computed(() => (!props.thumb && props.record?.comment));
-// const height = computed(() => (props.record?.imageHeight ? `${props.record?.imageHeight}px` : undefined))
 const imageClasses = reactive({
   clickable: props.thumb,
   viewer: !props.thumb,
