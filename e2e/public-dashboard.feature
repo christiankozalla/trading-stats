@@ -5,7 +5,7 @@ As a user I want granular control over what categories of data can be viewed by 
 
 Implementation planning:
 - A database table "public_dashboard_permissions" that holds a user_id and a list of permitted public resources of the user. Public resources can be read (HTTP GET), but not mutated by anybody (except for the owner of the data itself, of course).
-- Pocketbase permissions for `list` and `get` need to follow a logic: allow `list` of `get`, if a) the request is issued from the public url (e.g. /:lang/public/:userId/:tradingAccountId/overview) OR b) the user is the owner of the resource AND c) the permission is granted through database table "public_dashboard_permissions" --> (a || b) && c
+- Pocketbase permissions for `list` and `get` need to follow a logic: allow `list` of `get`, if a) the request is issued from the public url (e.g. /:lang/public/:userId/:tradingAccountId/overview) AND b) the permission is granted through database table "public_dashboard_permissions" OR c) the user is the owner of the resource AND  --> (a && b) || c
 
 Scenario:
     Given a user's `trade` records are public according to permissions table
