@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router';
-import Overview from '../views/Overview.vue';
 import { pb } from '@/api-client';
 import { useI18nStore } from '@/stores/i18n';
 import { isSupportedLocale, supportedOrFallbackLocale } from './helpers';
@@ -15,7 +14,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/:locale/', // could use regex pattern like: '/:locale(de|en)'
     name: 'overview',
-    component: Overview,
+    component: () => import('../views/Overview.vue'),
     meta: {
       requiresAuth: true
     }
