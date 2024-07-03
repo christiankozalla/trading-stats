@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
+import Button from 'primevue/button';
+import Menu from 'primevue/menu';
 import type { MenuItem } from 'primevue/menuitem';
 import { RouterLink } from 'vue-router';
 import LogoTitle from '@/components/LogoTitle.vue';
@@ -60,7 +62,7 @@ async function changeLocale() {
 <template>
   <header>
     <LogoTitle />
-    <div v-if="isAuthenticated">
+    <div v-if="isAuthenticated" class="auth-section">
       <TradingAccountSelector />
       <Button
         @click="toggleMenu"
@@ -106,12 +108,17 @@ async function changeLocale() {
 <style scoped>
 header {
   border: none;
-  border-bottom: 1px solid var(--surface-border);
+  border-bottom: 1px solid var(--p-gray-200);
   border-radius: 0;
   padding: 4px 12px;
 
   display: flex;
   justify-content: space-between;
+  align-items: center;
+}
+
+.auth-section {
+  display: flex;
   align-items: center;
 }
 
@@ -128,14 +135,14 @@ header {
 }
 .background-color-hover {
   transition: background-color 300ms ease;
-  background-color: var(--primary-100);
+  background-color: var(--p-primary-100);
 }
 
 .background-color-hover:hover {
-  background-color: var(--primary-200);
+  background-color: var(--p-primary-200);
 }
 
 .background-color-hover:active {
-  background-color: var(--primary-300);
+  background-color: var(--p-primary-300);
 }
 </style>

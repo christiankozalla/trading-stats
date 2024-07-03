@@ -1,3 +1,7 @@
+<script setup lang="ts">
+import ProgressSpinner from 'primevue/progressspinner';
+</script>
+
 <template>
   <div style="display: grid; place-items: center; padding: 12px 0">
     <ProgressSpinner

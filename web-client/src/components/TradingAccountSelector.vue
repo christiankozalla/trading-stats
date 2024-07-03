@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent } from 'vue';
+import Select from 'primevue/select';
 import LoaderInline from './LoaderInline.vue';
 import { useTradingAccountsStore } from '@/stores/tradingAccounts';
 import { useI18nStore } from '@/stores/i18n';
@@ -39,7 +40,7 @@ function stopPropagation(e: Event) {
 </script>
 
 <template>
-  <Dropdown
+  <Select
     v-model="tradingAccountsStore.selected"
     optionLabel="name"
     optionValue="id"
@@ -59,5 +60,5 @@ function stopPropagation(e: Event) {
         <TradingAccountCreator />
       </div>
     </template>
-  </Dropdown>
+  </Select>
 </template>

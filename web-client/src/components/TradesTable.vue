@@ -1,5 +1,9 @@
 <script setup lang="ts">
 import { ref, type Ref, computed, onMounted, onUpdated } from 'vue';
+import Button from 'primevue/button';
+import DataTable from 'primevue/datatable';
+import Column from 'primevue/column';
+import Dialog from 'primevue/dialog';
 import { pb, type Screenshot as ScreenshotType } from '@/api-client';
 import { useI18nStore } from '@/stores/i18n';
 import Screenshot from '@/components/Screenshot.vue';

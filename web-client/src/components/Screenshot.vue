@@ -8,10 +8,10 @@ const props = defineProps<{
   thumb?: boolean;
 }>();
 
-const thumbSrc = pb.files.getUrl(props.record, props.record.image, { thumb: '0x40' });
-const imageSrc = pb.files.getUrl(props.record, props.record.image);
+const thumbSrc = computed(() => pb.files.getUrl(props.record, props.record.image, { thumb: '0x40' }));
+const imageSrc = computed(() => pb.files.getUrl(props.record, props.record.image));
+const src = computed(() => (props.thumb ? thumbSrc.value : imageSrc.value));
 
-const src = computed(() => (props.thumb ? thumbSrc : imageSrc));
 const hasComment = computed(() => (!props.thumb && props.record?.comment));
 const imageClasses = reactive({
   clickable: props.thumb,
@@ -24,7 +24,6 @@ const imageStyles = reactive({
     ? props.record?.imageWidth / props.record?.imageHeight
     : undefined
 });
-
 </script>
 
 <template>

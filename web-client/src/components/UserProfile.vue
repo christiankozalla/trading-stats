@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Button from 'primevue/button';
 import { pb, isAuthenticated } from '@/api-client';
 import { ClientResponseError } from 'pocketbase';
 import { useToast } from 'primevue/usetoast';

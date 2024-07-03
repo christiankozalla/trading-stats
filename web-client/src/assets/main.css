@@ -24,6 +24,28 @@
 }
 
 @layer global {
+  :root {
+    /* from systemfontstack.com
+     although a web font can be used because the download penalty is only on first load if cached properly 
+    */
+    font-family:
+      -apple-system,
+      BlinkMacSystemFont,
+      avenir next,
+      avenir,
+      segoe ui,
+      helvetica neue,
+      helvetica,
+      Cantarell,
+      Ubuntu,
+      roboto,
+      noto,
+      arial,
+      sans-serif;
+    --inline-spacing: 0.5rem;
+    --content-padding: 1.125rem;
+    --text-color: rgb(51, 65, 85);
+  }
   .container {
     padding: var(--inline-spacing) var(--content-padding);
   }
@@ -52,17 +74,21 @@
     margin: 0 auto;
   }
 
+  .font-bold {
+    font-weight: bold;
+  }
+
   * {
     scrollbar-width: thin;
-    scrollbar-color: var(--bluegray-200) var(--bluegray-50);
+    scrollbar-color: var(--p-bluegray-200) var(--p-bluegray-50);
   }
 
   *::-webkit-scrollbar-track {
-    width: var(--scrollbar-width);
-    background-color: var(--bluegray-50);
+    width: var(--p-scrollbar-width);
+    background-color: var(--p-bluegray-50);
   }
 
   *::-webkit-scrollbar-thumb {
-    background-color: var(--bluegray-200);
+    background-color: var(--p-bluegray-200);
   }
 }

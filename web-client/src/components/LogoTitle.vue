@@ -9,7 +9,7 @@ const i18n = useI18nStore();
     :to="{ name: 'overview', params: { locale: i18n.currentLocale || 'en' } }"
   >
     <!-- the fallback locale 'en' above is necessary, because RouterLink throws an error if locale is undefined,
-      and the i18n.currentLocale f is undefined at first when / is requested and changes later after the navigation guards have resolved -->
+      and the i18n.currentLocale is undefined at first when / is requested and changes later after the navigation guards have resolved -->
     <img class="logo-image" src="@/assets/inloopo-logo.png" alt="Inloopo logo" />
     <h1 class="logo-text">Trade&nbsp;Stats</h1>
   </RouterLink>

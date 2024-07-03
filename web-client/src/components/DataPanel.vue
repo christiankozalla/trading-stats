@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { type PanelProps } from 'primevue/panel';
+import Panel, { type PanelProps } from 'primevue/panel';
 const props = defineProps<PanelProps>();
 </script>
 

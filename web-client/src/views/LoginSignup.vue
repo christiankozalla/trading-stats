@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { ref, computed, nextTick } from 'vue';
+import Tabs from 'primevue/tabs';
+import TabList from 'primevue/tablist';
 import { useRouter } from 'vue-router';
 import { useLoaderStore } from '@/stores/loader';
-import type { TabMenuChangeEvent } from 'primevue/tabmenu';
 import { pb, type User } from '@/api-client';
 import { ClientResponseError } from 'pocketbase';
 import { useToast } from 'primevue/usetoast';
@@ -15,7 +16,6 @@ type AuthTypes = 'login' | 'signup';
 
 const formErrors = ref<Record<string, string>>({});
 const authType = ref<AuthTypes>('signup');
-const authTypes: AuthTypes[] = ['signup', 'login'] as const;
 const validateEmail = (email: string | null): email is string =>
   email ? /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/.test(email) : false;
 
@@ -182,10 +182,6 @@ const headline = computed(() => {
   return '';
 });
 
-function changeAuthType(event: TabMenuChangeEvent) {
-  authType.value = authTypes[event.index];
-}
-
 const passwordContextOpen = ref<boolean>(false);
 async function requestPasswordResetEmail(event: Event) {
   const formData = new FormData(event.target as HTMLFormElement);
@@ -237,21 +233,18 @@ const openPasswordResetContext = () => {
 <template>
   <div class="container">
     <h2>{{ headline }}</h2>
-    <TabMenu
-      :pt="{
-        menuitem: {
-          style: {
-            'max-width': '50%',
-            width: '50%'
-          }
-        }
-      }"
-      :model="[
-        { label: 'Signup', ariaLabel: 'Signup', icon: 'icon icon-person' },
-        { label: 'Login', ariaLabel: 'Login', icon: 'icon icon-login' }
-      ]"
-      @tab-change="changeAuthType"
-    />
+    <Tabs v-model:value="authType">
+      <TabList>
+        <Tab value="signup">
+          <i class="icon icon-person" />
+          Signup
+        </Tab>
+        <Tab value="login">
+          <i class="icon icon-login" />
+          Login
+        </Tab>
+      </TabList>
+    </Tabs>
     <form @submit.prevent="onSubmit" novalidate>
       <div v-if="authType === 'signup'">
         <label for="name">Name:</label>
@@ -344,7 +337,7 @@ label + input {
 }
 
 small {
-  color: var(--red-400);
+  color: var(--p-red-400);
 }
 
 .password-reset-button {
