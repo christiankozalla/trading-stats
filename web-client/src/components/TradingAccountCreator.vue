@@ -25,7 +25,7 @@ async function createTradingAccount(event: Event) {
 
 <template>
   <form @submit.prevent="createTradingAccount" style="padding: var(--inline-spacing)">
-    <InputText id="name" name="name" required placeholder="Name" />
+    <InputText id="name" name="name" required :placeholder="t('trading-accounts.name')" autocomplete="off" />
     <Button
       type="submit"
       :label="t('trading-accounts.create-cta')"

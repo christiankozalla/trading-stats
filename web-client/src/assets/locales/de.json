@@ -19,8 +19,10 @@
     }
   },
   "trading-accounts": {
+    "select": "Wähle einen Trading Account",
     "create": "Erstelle einen Trading Account",
-    "create-cta": "Account erstellen"
+    "create-cta": "Account erstellen",
+    "name": "Accountbezeichnung"
   },
   "generic": {
     "upload-button-change": "{type} ändern",

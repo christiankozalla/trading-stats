@@ -19,8 +19,10 @@
     }
   },
   "trading-accounts": {
+    "select": "Select a trading account",
     "create": "Create a trading account",
-    "create-cta": "Create account"
+    "create-cta": "Create account",
+    "name": "Accoun name"
   },
   "generic": {
     "upload-button-change": "Change {type}",

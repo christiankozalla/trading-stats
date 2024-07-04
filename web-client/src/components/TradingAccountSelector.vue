@@ -15,8 +15,8 @@ const { t } = useI18nStore();
 
 const options = computed(() => {
   return tradingAccountsStore.accounts?.length
-    ? tradingAccountsStore.accounts
-    : [{ component: 'internal-trading-account-creator' }];
+  ? [{ component: 'internal-trading-account-creator' }]
+  : tradingAccountsStore.accounts
 });
 
 const tradingAccountCreatorProps = computed(() =>
@@ -33,10 +33,6 @@ const tradingAccountCreatorProps = computed(() =>
         }
       }
 );
-
-function stopPropagation(e: Event) {
-  e.stopPropagation();
-}
 </script>
 
 <template>
@@ -45,16 +41,16 @@ function stopPropagation(e: Event) {
     optionLabel="name"
     optionValue="id"
     :options="options"
-    placeholder="Select a trading account"
+    :placeholder="t('trading-accounts.select')"
     :pt="tradingAccountCreatorProps"
   >
     <template #option="slotProps">
       <div
         v-if="slotProps.option.component === 'internal-trading-account-creator'"
-        @click="stopPropagation"
-        style="width: 100%"
+        class="create-trading-account"
+        @click.stop=""
       >
-        <p style="padding-left: var(--inline-spacing); padding-top: var(--inline-spacing)">
+        <p class="copy-text">
           {{ t('trading-accounts.create') }}
         </p>
         <TradingAccountCreator />
@@ -62,3 +58,15 @@ function stopPropagation(e: Event) {
     </template>
   </Select>
 </template>
+
+<style scoped>
+.copy-text {
+  padding-left: var(--inline-spacing);
+  padding-top: var(--inline-spacing);
+}
+
+.create-trading-account {
+  width: 100%;
+  cursor: default;
+}
+</style>
