@@ -81,6 +81,8 @@ ChartJS.register(
 const profitLoss = ref<ProfitLossExtended[]>();
 
 onMounted(() => {
+  if (!tradingAccountsStore.selected) return;
+
   loaderStore.startLoading();
   pb.collection('profit_loss')
     .getFullList({
