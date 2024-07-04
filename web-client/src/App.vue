@@ -3,6 +3,7 @@ import { watch } from 'vue';
 import { RouterView, useRouter, useRoute } from 'vue-router';
 import AppHeader from '@/components/AppHeader.vue';
 import Loader from '@/components/Loader.vue';
+import ScreenshotViewer from './components/ScreenshotViewer.vue';
 import { useTradingAccountsStore } from '@/stores/tradingAccounts';
 import { useScreenshotViewer } from './composables/useScreenshotViewer';
 import { isAuthenticated } from '@/api-client';
