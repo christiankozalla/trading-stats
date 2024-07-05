@@ -1,4 +1,4 @@
-# web-client
+# inloopo Trading Stats Web Frontend
 
 Vue app for interacting with PocketBase backend and rendering UI.
 
