@@ -33,7 +33,7 @@ const PrimevuePreset = definePreset(Aura, {
             950: '{indigo.950}'
         }
     }
-})
+});
 
 app.use(PrimeVue, {
   theme: {
