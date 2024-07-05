@@ -315,7 +315,7 @@ const openPasswordResetContext = () => {
         :placeholder="t('authentication.password-reset-placeholder')"
         required
       />
-      <Button label="t('authentication.password-reset-btn')" type="submit" severity="secondary" />
+      <Button :label="t('authentication.password-reset-btn')" type="submit" severity="secondary" />
     </form>
   </div>
 </template>
