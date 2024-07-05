@@ -15,8 +15,8 @@ const { t } = useI18nStore();
 
 const options = computed(() => {
   return tradingAccountsStore.accounts?.length
-  ? [{ component: 'internal-trading-account-creator' }]
-  : tradingAccountsStore.accounts
+    ? tradingAccountsStore.accounts
+    : [{ component: 'internal-trading-account-creator' }];
 });
 
 const tradingAccountCreatorProps = computed(() =>
