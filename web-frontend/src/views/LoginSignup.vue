@@ -2,15 +2,20 @@
 import { ref, computed, nextTick } from 'vue';
 import Tabs from 'primevue/tabs';
 import TabList from 'primevue/tablist';
+import Tab from 'primevue/tab';
+import InputText from 'primevue/inputtext';
+import Button from 'primevue/button';
 import { useRouter } from 'vue-router';
 import { useLoaderStore } from '@/stores/loader';
 import { pb, type User } from '@/api-client';
 import { ClientResponseError } from 'pocketbase';
 import { useToast } from 'primevue/usetoast';
+import { useI18nStore } from '@/stores/i18n';
 
 const router = useRouter();
 const loaderStore = useLoaderStore();
 const toast = useToast();
+const { t } = useI18nStore();
 
 type AuthTypes = 'login' | 'signup';
 
@@ -175,9 +180,9 @@ function onSubmit(event: Event) {
 
 const headline = computed(() => {
   if (authType.value === 'login') {
-    return 'Login to inloopo trading stats';
+    return t('authentication.headline-login');
   } else if (authType.value === 'signup') {
-    return 'Sign up to inloopo trading stats';
+    return t('authentication.headline-signup');
   }
   return '';
 });
@@ -345,5 +350,13 @@ small {
   margin-left: auto;
   margin-right: 0;
   font-size: small;
+}
+
+:deep(.p-tablist-tab-list > *) {
+  flex: 1 1 0;
+  display: flex;
+  align-items: center;
+  gap: var(--inline-spacing);
+  font-size: 15px;
 }
 </style>

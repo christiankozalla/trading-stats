@@ -24,6 +24,10 @@
     "create-cta": "Create account",
     "name": "Accoun name"
   },
+  "authentication": {
+    "headline-login": "Login to inloopo trading stats",
+    "headline-signup": "Sign up to inloopo trading stats"
+  },
   "generic": {
     "upload-button-change": "Change {type}",
     "upload-button-choose": "Choose {type}",

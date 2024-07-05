@@ -24,6 +24,10 @@
     "create-cta": "Account erstellen",
     "name": "Accountbezeichnung"
   },
+  "authentication": {
+    "headline-login": "Log' dich bei inloopo Trading Stats ein.",
+    "headline-signup": "Registriere dich bei inloopo Trading Stats."
+  },
   "generic": {
     "upload-button-change": "{type} ändern",
     "upload-button-choose": "{type} wählen",
