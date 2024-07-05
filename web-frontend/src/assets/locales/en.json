@@ -26,7 +26,16 @@
   },
   "authentication": {
     "headline-login": "Login to inloopo trading stats",
-    "headline-signup": "Sign up to inloopo trading stats"
+    "headline-signup": "Sign up to inloopo trading stats",
+    "signup-tab": "Signup",
+    "user-name": "User name",
+    "email": "Email",
+    "password": "Password",
+    "password-confirm": "Confirm password",
+    "forgot-password": "Forgot password?",
+    "password-reset-placeholder": "Your account's email",
+    "password-reset-label": "Request password reset email",
+    "password-reset-btn": "Request password reset"
   },
   "generic": {
     "upload-button-change": "Change {type}",

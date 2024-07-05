@@ -26,7 +26,16 @@
   },
   "authentication": {
     "headline-login": "Log' dich bei inloopo Trading Stats ein.",
-    "headline-signup": "Registriere dich bei inloopo Trading Stats."
+    "headline-signup": "Registriere dich bei inloopo Trading Stats.",
+    "signup-tab": "Registrieren",
+    "user-name": "Nutzername",
+    "email": "Email",
+    "password": "Passwort",
+    "password-confirm": "Passwort bestätigen",
+    "forgot-password": "Passwort vergessen?",
+    "password-reset-placeholder": "Email-Adresse deines Accounts",
+    "password-reset-label": "Email zur Passwortrücksetzung anfordern",
+    "password-reset-btn": "Passwortrücksetzung anfordern"
   },
   "generic": {
     "upload-button-change": "{type} ändern",

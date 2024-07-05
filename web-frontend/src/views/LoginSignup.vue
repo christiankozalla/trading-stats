@@ -242,7 +242,7 @@ const openPasswordResetContext = () => {
       <TabList>
         <Tab value="signup">
           <i class="icon icon-person" />
-          Signup
+          {{ t('authentication.signup-tab') }}
         </Tab>
         <Tab value="login">
           <i class="icon icon-login" />
@@ -252,22 +252,23 @@ const openPasswordResetContext = () => {
     </Tabs>
     <form @submit.prevent="onSubmit" novalidate>
       <div v-if="authType === 'signup'">
-        <label for="name">Name:</label>
-        <InputText id="name" name="name" required />
+        <label for="name">{{ t('authentication.user-name') }}:</label>
+        <InputText id="name" name="name" :placeholder="t('authentication.user-name')" required />
       </div>
       <div>
         <label for="email">Email:</label>
-        <InputText id="email" name="email" required />
+        <InputText id="email" name="email" :placeholder="t('authentication.email')" required />
         <small
           ><i>{{ formErrors.email }}</i></small
         >
       </div>
       <div>
-        <label for="password">Password:</label>
+        <label for="password">{{ t('authentication.password') }}:</label>
         <InputText
           type="password"
           id="password"
           name="password"
+          :placeholder="t('authentication.password')"
           required
           minlength="8"
           maxlength="72"
@@ -277,12 +278,13 @@ const openPasswordResetContext = () => {
         >
       </div>
       <div v-if="authType === 'signup'">
-        <label for="passwordConfirm">Confirm Password:</label>
+        <label for="passwordConfirm">{{ t('authentication.password-confirm') }}:</label>
         <InputText
           type="password"
           id="passwordConfirm"
           name="passwordConfirm"
           required
+          :placeholder="t('authentication.password-confirm')"
           minlength="8"
           maxlength="72"
         />
@@ -290,26 +292,30 @@ const openPasswordResetContext = () => {
           ><i>{{ formErrors.passwordConfirm }}</i></small
         >
       </div>
-      <Button label="Submit" type="submit" style="width: 100%"></Button>
+      <Button
+        :label="authType === 'signup' ? t('authentication.signup-tab') : 'Login'"
+        type="submit"
+        style="width: 100%"
+      ></Button>
     </form>
 
     <Button
       v-if="authType === 'login'"
-      label="Forgot password?"
+      :label="t('authentication.forgot-password')"
       link
       @click="openPasswordResetContext"
       class="password-reset-button"
     />
     <form v-if="passwordContextOpen" @submit.prevent="requestPasswordResetEmail" novalidate>
-      <label for="password-reset-email">Request password reset email</label>
+      <label for="password-reset-email">{{ t('authentication.password-reset-label') }}</label>
       <InputText
         type="email"
         name="email"
         id="password-reset-email"
-        placeholder="Your account's email"
+        :placeholder="t('authentication.password-reset-placeholder')"
         required
       />
-      <Button label="Request password reset" type="submit" severity="secondary" />
+      <Button label="t('authentication.password-reset-btn')" type="submit" severity="secondary" />
     </form>
   </div>
 </template>
