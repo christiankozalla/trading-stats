@@ -17,7 +17,7 @@ const useTradingAccountsStore = defineStore('tradingAccounts', () => {
       // if there is only one account, select it
       selected.value = newAccounts[0].id;
     }
-  })
+  });
 
   watch(selected, (newValue) => {
     if (newValue) {

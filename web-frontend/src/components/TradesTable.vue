@@ -45,11 +45,14 @@ function fetchAndUpdateScreenshots(ref: Ref<ScreenshotsByDate>) {
       pb.collection('screenshots')
         .getList(undefined, undefined, {
           skipTotal: true,
-          filter: pb.filter('account = {:accountId} && date >= {:startDate} && date <= {:endDate}', {
-            accountId: tradingAccountsStore.selected,
-            startDate: new Date(dateRange.value.min),
-            endDate: new Date(dateRange.value.max)
-          })
+          filter: pb.filter(
+            'account = {:accountId} && date >= {:startDate} && date <= {:endDate}',
+            {
+              accountId: tradingAccountsStore.selected,
+              startDate: new Date(dateRange.value.min),
+              endDate: new Date(dateRange.value.max)
+            }
+          )
         })
         .then((list) => {
           for (const record of list.items) ref.value[record.date.slice(0, 10)] = record;
