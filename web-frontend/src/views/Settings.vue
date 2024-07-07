@@ -5,11 +5,11 @@ import TabList from 'primevue/tablist';
 import Tab from 'primevue/tab';
 import TabPanels from 'primevue/tabpanels';
 import TabPanel from 'primevue/tabpanel';
-import UserProfile from '@/components/UserProfile.vue';
-import TradingAccounts from '@/components/TradingAccounts.vue';
+import UserSettings from '@/components/UserSettings.vue';
+import TradingAccountsSettings from '@/components/TradingAccountsSettings.vue';
 
 const route = useRoute();
-const router = useRouter()
+const router = useRouter();
 
 function updateRouteHash(newValue: string) {
   router.replace({ ...route, hash: `#${newValue}` });
@@ -31,10 +31,10 @@ function updateRouteHash(newValue: string) {
       </TabList>
       <TabPanels>
         <TabPanel value="user">
-          <UserProfile />
+          <UserSettings />
         </TabPanel>
         <TabPanel value="trading-accounts">
-          <TradingAccounts />
+          <TradingAccountsSettings />
         </TabPanel>
       </TabPanels>
     </Tabs>

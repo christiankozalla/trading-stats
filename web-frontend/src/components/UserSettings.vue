@@ -30,6 +30,13 @@ async function requestPasswordReset() {
 
 <template>
   <div v-if="isAuthenticated && pb.authStore.model">
+    <!-- Display name RU (read update) -->
+    <!-- Email RU -->
+    <!-- Password U + Reset Password dialog -->
+    <!-- Default date style format (can be overwritten by date style format in trading accounts settings) -->
+    <!-- Default base currency (can be overwritten by currency in trading accounts settings)  -->
+    <!-- Later: Subscription / Plan / Payment info (if not freemium) OR may get its own tab "Subscription" -->
+    <!-- Delete account -->
     <ul>
       <li>Name: {{ pb.authStore.model.name }}</li>
       <li>Username: {{ pb.authStore.model.username }}</li>
