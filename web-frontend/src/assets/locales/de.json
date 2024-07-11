@@ -33,14 +33,30 @@
     "password": "Passwort",
     "password-confirm": "Passwort bestätigen",
     "forgot-password": "Passwort vergessen?",
+    "login-failed": "Login fehlgeschlagen",
+    "signup-failed": "Registrierung fehlgeschlagen",
     "password-reset": {
       "started": "Passwort-Reset gestartet",
       "started-detail": "Wir haben dir eine Email zum Zurücksetzen deines Passworts gesendet.",
+      "started-detail-2": "Prüfen Sie Ihren Posteingang, um den Vorgang der Passwortrücksetzung abzuschließen.",
       "error": "Anfordern des Passwort-Resets fehlgeschlagen",
-      "placeholder": "Email-Adresse deines Accounts",
+      "placeholder": "Email Adresse deines Accounts",
       "label": "Email zum Passwort-Reset anfordern",
-      "description": "Du kannst hier ein neues Passwort anfordern.",
-      "btn": "Passwort-Reset anfordern"
+      "btn": "Passwort-Reset anfordern",
+      "description": "Du kannst hier ein neues Passwort anfordern."
+    }
+  },
+  "validation": {
+    "email": {
+      "empty": "Bitte gib deine Email Adresse ein.",
+      "invalid": "Bitte gib eine gültige Email Adresse ein."
+    },
+    "password": {
+      "empty": "Bitte gib dein Passwort ein.",
+      "short": "Dein Passwort ist zu kurz. Bitte gib mindestens 8 Zeichen ein.",
+      "long": "Dein Passwort ist zu lang.",
+      "no-match": "Die Passwörter stimmen nicht überein.",
+      "confirm": "Bitte bestätige dein Passwort."
     }
   },
   "generic": {
@@ -64,8 +80,8 @@
       "update-name-message": "Dein Nutzername wurde aktualisiert.",
       "create-name": "Nutzernamen erstellen",
       "no-name-yet": "You don't have a username yet.",
-      "update-email": "Email-Adresse aktualisieren",
-      "update-email-message": "Deine Email-Adresse wurde aktualisiert."
+      "update-email": "Email Adresse aktualisieren",
+      "update-email-message": "Deine Email Adresse wurde aktualisiert."
     }
   }
 }

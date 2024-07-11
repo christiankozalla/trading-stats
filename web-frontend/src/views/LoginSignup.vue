@@ -61,7 +61,7 @@ async function signup(event: Event) {
         if (e instanceof ClientResponseError) {
           toast.add({
             severity: 'error',
-            summary: 'Signup error',
+            summary: t('authentication.signup-failed'),
             detail: e.data.message,
             life: 5000
           });
@@ -99,7 +99,7 @@ async function login(event: Event, { redirectOnSuccess = true } = {}) {
         if (e instanceof ClientResponseError) {
           toast.add({
             severity: 'error',
-            summary: 'Login error',
+            summary: t('authentication.login-failed'),
             detail: `${e.data.message} Check email and password.`,
             life: 5000
           });
@@ -120,25 +120,25 @@ function validateSignupData(
   const isValidEmail = validateEmail(email);
 
   if (!email) {
-    formErrors.value.email = 'Please enter your email address.';
+    formErrors.value.email = t('validation.email.empty');
   } else if (!isValidEmail) {
-    formErrors.value.email = 'Please enter a valid email address.';
+    formErrors.value.email = t('validation.email.invalid');
   } else {
     validated.email = email;
   }
   if (!password) {
-    formErrors.value.password = 'Please enter your password.';
+    formErrors.value.password = t('validation.password.empty');
   } else if (password.length < 8) {
-    formErrors.value.password = 'Your password is too short. Please enter 8 characters.';
+    formErrors.value.password = t('validation.password.short');
   } else if (password.length > 72) {
-    formErrors.value.password = 'Your password is too long.';
+    formErrors.value.password = t('validation.password.long');
   } else {
     validated.password = password;
   }
   if (!passwordConfirm) {
-    formErrors.value.passwordConfirm = 'Please confirm your password.';
+    formErrors.value.passwordConfirm = t('validation.password.confirm');
   } else if (password !== passwordConfirm) {
-    formErrors.value.passwordConfirm = 'Passwords do not match.';
+    formErrors.value.passwordConfirm = t('validation.password.no-match');
   } else {
     validated.passwordConfirm = passwordConfirm;
   }
@@ -150,18 +150,18 @@ function validateLoginData(email: string | null, password: string | null) {
   const isValidEmail = validateEmail(email);
 
   if (!email) {
-    formErrors.value.email = 'Please enter your email address.';
+    formErrors.value.email = t('validation.email.empty');
   } else if (!isValidEmail) {
-    formErrors.value.email = 'Please enter a valid email address.';
+    formErrors.value.email = t('validation.email.invalid');
   } else {
     validated.email = email;
   }
   if (!password) {
-    formErrors.value.password = 'Please enter your password.';
+    formErrors.value.password = t('validation.password.empty');
   } else if (password.length < 8) {
-    formErrors.value.password = 'Your password is too short. Please enter 8 characters.';
+    formErrors.value.password = t('validation.password.short');
   } else if (password.length > 72) {
-    formErrors.value.password = 'Your password is too long.';
+    formErrors.value.password = t('validation.password.long');
   } else {
     validated.password = password;
   }
@@ -197,7 +197,7 @@ async function requestPasswordResetEmail(event: Event) {
   if (!validateEmail(email)) {
     toast.add({
       severity: 'error',
-      summary: 'Please enter a valid email address.',
+      summary: t('validation.email.empty'),
       life: 10000
     });
     return;
@@ -208,8 +208,8 @@ async function requestPasswordResetEmail(event: Event) {
     if (emailSent) {
       toast.add({
         severity: 'success',
-        summary: 'Password reset requested successfully',
-        detail: 'Check your inbox to complete password reset process.',
+        summary: t('authentication.password-reset.started'),
+        detail: t('authentication.password-reset.started-detail-2'),
         life: 5000
       });
     }
@@ -217,7 +217,7 @@ async function requestPasswordResetEmail(event: Event) {
     if (e instanceof ClientResponseError)
       toast.add({
         severity: 'error',
-        summary: 'Failed to request password reset email',
+        summary: t('authentication.password-reset.error'),
         detail: `${e.data.message} Check email and password.`,
         life: 5000
       });

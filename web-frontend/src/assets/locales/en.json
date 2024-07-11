@@ -33,15 +33,30 @@
     "password": "Password",
     "password-confirm": "Confirm password",
     "forgot-password": "Forgot password?",
+    "login-failed": "Login failed",
+    "signup-failed": "Signup failed",
     "password-reset": {
       "started": "Password reset started",
       "started-detail": "We have sent you an email to reset your password.",
+      "started-detail-2": "Check your inbox to complete password reset process.",
       "error": "Request for password reset failed",
       "placeholder": "Your account's email",
       "label": "Request password reset email",
       "btn": "Request password reset",
-      "description": "You can request a password reset here.",
-      "success-detail": "We've sent you an email for resetting your password."
+      "description": "You can request a password reset here."
+    }
+  },
+  "validation": {
+    "email": {
+      "empty": "Please enter your email address.",
+      "invalid": "Please enter a valid email address."
+    },
+    "password": {
+      "empty": "Please enter your password.",
+      "short": "Your password is too short. Please enter 8 characters.",
+      "long": "Your password is too long.",
+      "no-match": "Passwords do not match.",
+      "confirm": "Please confirm your password."
     }
   },
   "generic": {
