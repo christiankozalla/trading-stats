@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ref } from 'vue';
 import { pb } from '@/api-client';
 import { ClientResponseError } from 'pocketbase';
 import { useToast } from 'primevue/usetoast';
@@ -8,15 +9,18 @@ import Button from 'primevue/button';
 
 const toast = useToast();
 const { t } = useI18nStore();
+const loading = ref<boolean>(false);
 
 async function requestPasswordReset() {
   try {
     if (pb.authStore.model?.email) {
+      loading.value = true;
       await pb.collection('users').requestPasswordReset(pb.authStore.model.email);
       toast.add({
         severity: 'success',
         summary: t('authentication.password-reset.started'),
-        detail: t('authentication.password-reset.started-detail')
+        detail: t('authentication.password-reset.started-detail'),
+        life: 5000
       });
     }
   } catch (e) {
@@ -24,28 +28,36 @@ async function requestPasswordReset() {
       toast.add({
         severity: 'error',
         summary: 'Passwort-Reset Fehler',
-        detail: e.data.message
+        detail: e.data.message,
+        life: 5000
       });
+  } finally {
+    loading.value = false;
   }
 }
 
 async function updateUser(event: Event, field: string) {
-  const formData = new FormData(event.target as HTMLFormElement);
   try {
+    loading.value = true;
+    const formData = new FormData(event.target as HTMLFormElement);
     await pb.collection('users').update(pb.authStore.model?.id as string, formData);
     toast.add({
       severity: 'success',
       summary: t('settings.update-success'),
-      detail: t(`settings.user.update-${field}-message`)
+      detail: t(`settings.user.update-${field}-message`),
+      life: 5000
     });
   } catch (err) {
     if (err instanceof ClientResponseError) {
       toast.add({
         severity: 'error',
         summary: t('settings.update-fail'),
-        detail: err.data.message
+        detail: err.data.message,
+        life: 5000
       });
     }
+  } finally {
+    loading.value = false;
   }
 }
 </script>
@@ -72,9 +84,11 @@ async function updateUser(event: Event, field: string) {
     />
     <Button
       type="submit"
+      severity="secondary"
       :label="
         pb.authStore.model?.name ? t('settings.user.update-name') : t('settings.user.create-name')
       "
+      :loading="loading"
     />
   </form>
 
@@ -83,13 +97,24 @@ async function updateUser(event: Event, field: string) {
       <h4>Email</h4>
     </label>
     <InputText id="email" name="email" :value="pb.authStore.model?.email" />
-    <Button type="submit" :label="t('settings.user.update-email')" />
+    :loading="loading"
+    <Button
+      type="submit"
+      severity="secondary"
+      :label="t('settings.user.update-email')"
+      :loading="loading"
+    />
   </form>
 
   <div class="mt">
     <h4>{{ t('authentication.forgot-password') }}</h4>
     <p>{{ t('authentication.password-reset.description') }}</p>
-    <Button @click="requestPasswordReset" :label="t('authentication.password-reset.btn')" />
+    <Button
+      @click="requestPasswordReset"
+      severity="secondary"
+      :label="t('authentication.password-reset.btn')"
+      :loading="loading"
+    />
   </div>
 </template>
 
