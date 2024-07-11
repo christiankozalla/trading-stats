@@ -33,9 +33,16 @@
     "password": "Password",
     "password-confirm": "Confirm password",
     "forgot-password": "Forgot password?",
-    "password-reset-placeholder": "Your account's email",
-    "password-reset-label": "Request password reset email",
-    "password-reset-btn": "Request password reset"
+    "password-reset": {
+      "started": "Password reset started",
+      "started-detail": "We have sent you an email to reset your password.",
+      "error": "Request for password reset failed",
+      "placeholder": "Your account's email",
+      "label": "Request password reset email",
+      "btn": "Request password reset",
+      "description": "You can request a password reset here.",
+      "success-detail": "We've sent you an email for resetting your password."
+    }
   },
   "generic": {
     "upload-button-change": "Change {type}",
@@ -49,5 +56,17 @@
     "trading-account-required-description": "Please select/create a trading account before importing.",
     "import-success": "Import successful!",
     "import-error": "Import failed."
+  },
+  "settings": {
+    "update-success": "Update successful",
+    "update-fail": "Update failed",
+    "user": {
+      "update-name": "Update username",
+      "update-name-message": "Your username has been updated.",
+      "create-name": "Create username",
+      "no-name-yet": "You don't have a username yet.",
+      "update-email": "Update email",
+      "update-email-message": "Your email has been updated."
+    }
   }
 }

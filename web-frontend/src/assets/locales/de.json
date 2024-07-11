@@ -33,9 +33,15 @@
     "password": "Passwort",
     "password-confirm": "Passwort bestätigen",
     "forgot-password": "Passwort vergessen?",
-    "password-reset-placeholder": "Email-Adresse deines Accounts",
-    "password-reset-label": "Email zur Passwortrücksetzung anfordern",
-    "password-reset-btn": "Passwortrücksetzung anfordern"
+    "password-reset": {
+      "started": "Passwort-Reset gestartet",
+      "started-detail": "Wir haben dir eine Email zum Zurücksetzen deines Passworts gesendet.",
+      "error": "Anfordern des Passwort-Resets fehlgeschlagen",
+      "placeholder": "Email-Adresse deines Accounts",
+      "label": "Email zum Passwort-Reset anfordern",
+      "description": "Du kannst hier ein neues Passwort anfordern.",
+      "btn": "Passwort-Reset anfordern"
+    }
   },
   "generic": {
     "upload-button-change": "{type} ändern",
@@ -49,5 +55,17 @@
     "trading-account-required-description": "Bitte wähle oder erstelle einen Trading Account vor dem Import.",
     "import-success": "Import erfolgreich!",
     "import-error": "Import fehlgeschlagen."
+  },
+  "settings": {
+    "update-success": "Update erfolgreich",
+    "update-fail": "Update fehlgeschlagen",
+    "user": {
+      "update-name": "Nutzernamen aktualisieren",
+      "update-name-message": "Dein Nutzername wurde aktualisiert.",
+      "create-name": "Nutzernamen erstellen",
+      "no-name-yet": "You don't have a username yet.",
+      "update-email": "Email-Adresse aktualisieren",
+      "update-email-message": "Deine Email-Adresse wurde aktualisiert."
+    }
   }
 }

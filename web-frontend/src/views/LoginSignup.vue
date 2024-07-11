@@ -307,15 +307,15 @@ const openPasswordResetContext = () => {
       class="password-reset-button"
     />
     <form v-if="passwordContextOpen" @submit.prevent="requestPasswordResetEmail" novalidate>
-      <label for="password-reset-email">{{ t('authentication.password-reset-label') }}</label>
+      <label for="password-reset-email">{{ t('authentication.password-reset.label') }}</label>
       <InputText
         type="email"
         name="email"
         id="password-reset-email"
-        :placeholder="t('authentication.password-reset-placeholder')"
+        :placeholder="t('authentication.password-reset.placeholder')"
         required
       />
-      <Button :label="t('authentication.password-reset-btn')" type="submit" severity="secondary" />
+      <Button :label="t('authentication.password-reset.btn')" type="submit" severity="secondary" />
     </form>
   </div>
 </template>
