@@ -1021,9 +1021,9 @@ func init() {
 						"id": "qyo3cfbv",
 						"name": "account",
 						"type": "relation",
-						"required": false,
+						"required": true,
 						"presentable": false,
-						"unique": false,
+						"unique": true,
 						"options": {
 							"collectionId": "zml6ffhmc1kewy5",
 							"cascadeDelete": true,
@@ -1037,7 +1037,7 @@ func init() {
 						"id": "yw3yp4op",
 						"name": "is_trades_table_public",
 						"type": "bool",
-						"required": false,
+						"required": true,
 						"presentable": false,
 						"unique": false,
 						"options": {}
