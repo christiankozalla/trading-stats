@@ -97,7 +97,6 @@ async function updateUser(event: Event, field: string) {
       <h4>Email</h4>
     </label>
     <InputText id="email" name="email" :value="pb.authStore.model?.email" />
-    :loading="loading"
     <Button
       type="submit"
       severity="secondary"
