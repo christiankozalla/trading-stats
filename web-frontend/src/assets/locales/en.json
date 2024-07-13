@@ -22,7 +22,7 @@
     "select": "Select a trading account",
     "create": "Create a trading account",
     "create-cta": "Create account",
-    "name": "Accoun name"
+    "name": "Account name"
   },
   "authentication": {
     "headline-login": "Login to inloopo trading stats",
