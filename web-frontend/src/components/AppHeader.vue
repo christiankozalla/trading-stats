@@ -8,10 +8,9 @@ import LogoTitle from '@/components/LogoTitle.vue';
 import { pb, isAuthenticated } from '@/api-client';
 import TradingAccountSelector from '@/components/TradingAccountSelector.vue';
 import { useI18nStore } from '@/stores/i18n';
-import { useRoute, useRouter } from 'vue-router';
+import { useRouter } from 'vue-router';
 
 const router = useRouter();
-const route = useRoute();
 const menu = ref();
 const i18n = useI18nStore();
 
@@ -54,7 +53,9 @@ function toggleMenu(event: MouseEvent) {
 
 async function changeLocale() {
   const otherLocale = i18n.currentLocale === 'de' ? 'en' : 'de';
-  const newPath = route.path.replace(/^(\/de|\/en)/, `/${otherLocale}`);
+  const newPath =
+    router.currentRoute.value.path.replace(/^(\/de|\/en)/, `/${otherLocale}`) +
+    router.currentRoute.value.hash;
   await router.push(newPath);
 }
 </script>
