@@ -16,8 +16,8 @@ export const isAuthenticated = ref<boolean>(false);
 pb.authStore.onChange((token) => {
   if (!token) {
     isAuthenticated.value = false;
-  } else {
-    if (isAuthenticated.value !== true) isAuthenticated.value = true;
+  } else if (isAuthenticated.value !== true) {
+    isAuthenticated.value = true;
   }
 }, true); // fires immediately
 
