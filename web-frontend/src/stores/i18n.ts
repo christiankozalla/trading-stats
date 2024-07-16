@@ -11,6 +11,7 @@ export const SUPPORTED_LOCALES = ['de', 'en'] as const;
 export type Locale = (typeof SUPPORTED_LOCALES)[number];
 
 const useI18nStore = defineStore('i18n', () => {
+  // TODO: can be replaces by useRoute().params.locale <<-- current locale always up to date
   const currentLocale = ref<Locale>();
   const messages: Record<Locale, null | Record<string, unknown>> = { de: null, en: null };
 
