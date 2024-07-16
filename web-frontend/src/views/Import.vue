@@ -4,12 +4,15 @@ import { useToast } from 'primevue/usetoast';
 import { pb } from '@/api-client';
 import { useTradingAccountsStore } from '@/stores/tradingAccounts';
 import { useI18nStore } from '@/stores/i18n';
+import Button from 'primevue/button';
+import InputText from 'primevue/inputtext';
 import DataPanel from '@/components/DataPanel.vue';
 import UploadScreenshot from '@/components/UploadScreenshot.vue';
 
 const toast = useToast();
 const tradingAccountsStore = useTradingAccountsStore();
 const tradeLogFileNames = ref<string[]>([]);
+const loading = ref(false);
 
 const { t } = useI18nStore();
 
@@ -39,7 +42,7 @@ async function uploadLogFile(event: Event) {
     });
     return;
   }
-
+  loading.value = true;
   formData.append('user', pb.authStore.model.id);
   formData.append('account', tradingAccountsStore.selected);
   const response = await pb
@@ -52,6 +55,9 @@ async function uploadLogFile(event: Event) {
         detail: e.data.message,
         life: 5000
       });
+    })
+    .finally(() => {
+      loading.value = false;
     });
 
   if (response) {
@@ -83,7 +89,7 @@ async function uploadLogFile(event: Event) {
         </div>
 
         <form @submit.prevent="uploadLogFile" id="log-files">
-          <label for="tradeLogFile" class="p-button p-component"
+          <label for="tradeLogFile" class="p-button p-component p-button-secondary"
             ><span class="p-button-icon p-button-icon-left icon icon-upload"></span
             ><span class="p-button-label">{{
               tradeLogFileNames.length > 0
@@ -95,14 +101,14 @@ async function uploadLogFile(event: Event) {
             type="file"
             name="file"
             id="tradeLogFile"
-            class="p-sr-only"
+            class="screen-reader-only"
             accept="text/plain"
             @change="handleTradeLogFiles"
             multiple
             :oninvalid="`this.setCustomValidity('${t('generic.file-input-required')}')`"
             required
           />
-          <Button type="submit" label="Submit"></Button>
+          <Button type="submit" label="Submit" :loading="loading" />
         </form>
       </div>
     </DataPanel>

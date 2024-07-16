@@ -14,6 +14,7 @@ const emit = defineEmits(['uploadSuccess']);
 const { t } = useI18nStore();
 const toast = useToast();
 const tradingAccountsStore = useTradingAccountsStore();
+const loading = ref(false);
 
 const screenshots = ref<FileList | undefined>();
 const screenshot = computed(() => {
@@ -33,6 +34,7 @@ function handleScreenshotFile(event: Event) {
 }
 
 async function uploadScreenshot(event: Event) {
+  loading.value = true;
   const formData = new FormData(event.target as HTMLFormElement);
 
   if (!tradingAccountsStore.selected) {
@@ -68,6 +70,7 @@ async function uploadScreenshot(event: Event) {
 
     (event.target as HTMLFormElement).reset();
     screenshots.value = undefined;
+    loading.value = false;
 
     emit('uploadSuccess');
   }
@@ -77,7 +80,7 @@ async function uploadScreenshot(event: Event) {
 <template>
   <form @submit.prevent="uploadScreenshot" id="screenshots">
     <div class="screenshot-upload-wrapper p-panel">
-      <label for="screenshot" class="screenshot-upload-button p-button p-component"
+      <label for="screenshot" class="screenshot-upload-button p-button p-component p-button-secondary"
         ><span class="p-button-icon p-button-icon-left icon icon-upload"></span
         ><span class="p-button-label">{{
           screenshot
@@ -89,7 +92,7 @@ async function uploadScreenshot(event: Event) {
         type="file"
         name="image"
         id="screenshot"
-        class="p-sr-only"
+        class="screen-reader-only"
         accept="image/png, image/jpeg, image/webp"
         :oninvalid="`this.setCustomValidity('${t('generic.file-input-required')}')`"
         required
@@ -99,7 +102,7 @@ async function uploadScreenshot(event: Event) {
       <ImagePreview :file="screenshot" />
     </div>
     <div class="screenshot-metadata-wrapper">
-      <label for="screenshot-date" class="p-sr-only">Date</label>
+      <label for="screenshot-date" class="screen-reader-only">Date</label>
       <InputText
         id="screenshot-date"
         type="date"
@@ -108,14 +111,14 @@ async function uploadScreenshot(event: Event) {
         :oninvalid="`this.setCustomValidity('${t('generic.date-input-required')}')`"
         required
       />
-      <label for="screenshot-comment" class="p-sr-only">Comment</label>
+      <label for="screenshot-comment" class="screen-reader-only">Comment</label>
       <Textarea
         autoResize
         id="screenshot-comment"
         name="comment"
         :placeholder="t('import.screenshot.comment-placeholder')"
       />
-      <Button type="submit" label="Submit"></Button>
+      <Button type="submit" label="Submit" :loading="loading"></Button>
     </div>
   </form>
 </template>
