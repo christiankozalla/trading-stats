@@ -69,7 +69,7 @@ async function toggleDashboardPermission(event: Event) {
           })
         }}
       </p>
-      <div v-for="filename in logFile.file" :key="filename" style="margin: 12px;">
+      <div v-for="filename in logFile.file" :key="filename" style="margin: 12px">
         <h5 style="word-break: break-all; margin: 0">&#x2022; {{ filename }}</h5>
       </div>
     </li>

@@ -80,7 +80,9 @@ async function uploadScreenshot(event: Event) {
 <template>
   <form @submit.prevent="uploadScreenshot" id="screenshots">
     <div class="screenshot-upload-wrapper p-panel">
-      <label for="screenshot" class="screenshot-upload-button p-button p-component p-button-secondary"
+      <label
+        for="screenshot"
+        class="screenshot-upload-button p-button p-component p-button-secondary"
         ><span class="p-button-icon p-button-icon-left icon icon-upload"></span
         ><span class="p-button-label">{{
           screenshot
