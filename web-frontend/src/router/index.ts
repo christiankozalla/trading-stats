@@ -42,7 +42,7 @@ const routes: RouteRecordRaw[] = [
     }
   },
   {
-    path: '/:locale/public/:userId/:accountId/overview',
+    path: '/:locale/public/:accountId/overview',
     component: () => import('../views/PublicOverview.vue'),
     meta: {
       requiresAuth: false
