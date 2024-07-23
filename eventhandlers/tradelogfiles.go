@@ -38,6 +38,7 @@ func createRawTradeRecords(app *pocketbase.PocketBase, e *core.RecordCreateEvent
 	files := e.UploadedFiles["file"]
 	userId := e.Record.GetString("user")
 	accountId := e.Record.GetString("account")
+	logfileId := e.Record.GetString("id")
 
 	defer app.Dao().SaveRecord(e.Record) // setting the status after operation
 
@@ -115,6 +116,7 @@ func createRawTradeRecords(app *pocketbase.PocketBase, e *core.RecordCreateEvent
 
 			trade["user"] = userId
 			trade["account"] = accountId
+			trade["Logfile"] = logfileId
 
 			err = createRecord(app, "raw_trades", trade)
 			if err != nil {
@@ -156,6 +158,7 @@ type Trade struct {
 	DateTimeClose  string  `db:"DateTime_close" json:"DateTime_close"`
 	User           string  `db:"user" json:"user"`
 	Account        string  `db:"account" json:"account"`
+	Logfile        string  `db:"Logfile" json:"Logfile"`
 	Symbol         string  `db:"Symbol" json:"Symbol"`
 	ShortSymbol    string  `db:"ShortSymbol" json:"ShortSymbol"`
 	Multiplier     float64 `db:"Multiplier" json:"Multiplier"`
@@ -180,6 +183,7 @@ func createTradeRecords(app *pocketbase.PocketBase, e *core.RecordCreateEvent) e
 			closeTrades.DateTime AS DateTime_close,
 			openTrades.user AS user,
 			openTrades.account AS account,
+			openTrades.Logfile AS Logfile,
 			openTrades.Symbol AS Symbol,
 			openTrades.ShortSymbol AS ShortSymbol,
 			openTrades.Multiplier AS Multiplier,
@@ -229,6 +233,7 @@ func tradeStructToMap(trade Trade) map[string]any {
 		"DateTime_close":  trade.DateTimeClose,
 		"user":            trade.User,
 		"account":         trade.Account,
+		"Logfile":         trade.Logfile,
 		"Symbol":          trade.Symbol,
 		"ShortSymbol":     trade.ShortSymbol,
 		"Multiplier":      trade.Multiplier,

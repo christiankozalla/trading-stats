@@ -66,6 +66,14 @@
     gap: var(--content-padding, 1.125rem);
   }
 
+  .flex.align-center {
+    align-items: center;
+  }
+
+  .flex.justify-between {
+    justify-content: space-between;
+  }
+
   .h-100 {
     height: 100%;
   }

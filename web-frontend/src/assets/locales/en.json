@@ -82,6 +82,12 @@
       "no-name-yet": "You don't have a username yet.",
       "update-email": "Update email",
       "update-email-message": "Your email has been updated."
+    },
+    "accounts": {
+      "created-date": "This account has been created on {date}.",
+      "log-file-created-date": "This log file has been created on {date}.",
+      "view-details-btn": "Account details",
+      "clear-account-btn": "Clear account"
     }
   }
 }

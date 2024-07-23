@@ -31,6 +31,7 @@ async function createTradingAccount(event: Event) {
       required
       :placeholder="t('trading-accounts.name')"
       autocomplete="off"
+      style="width: 100%"
     />
     <Button
       type="submit"
