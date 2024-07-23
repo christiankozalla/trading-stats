@@ -22,7 +22,6 @@ const { t } = useI18nStore();
 const loaderStore = useLoaderStore();
 
 const route = useRoute();
-console.log('route params', route.params);
 
 // helpers
 const sum = (array: number[]) => array.reduce((sum, curr) => sum + curr, 0);
@@ -154,74 +153,78 @@ const pnlData = computed(() => {
 </script>
 
 <template>
-  <div v-if="!profitLoss || !profitLoss.length">This trading account has no public dashboard.</div>
-  <div v-else>
-    <section v-if="!loaderStore.isLoading" class="data-panels">
-      <DataPanel>
-        <template #left>
-          <p>
-            <strong>{{ t('pnl.total') }}</strong> <br />
-            {{ displayMoney(pnlData.total) }}
-          </p>
-        </template>
-        <template #right>
-          <p>
-            <strong>{{ t('pnl.win-days') }}</strong>
-            {{
-              pnlData.saldo.datasets[0]?.data?.filter((n) => typeof n === 'number' && n > 0)
-                .length || 'No data'
-            }}
-            <br />
-            <strong>{{ t('pnl.loss-days') }}</strong>
-            {{
-              pnlData.saldo.datasets[0]?.data?.filter((n) => typeof n === 'number' && n < 0)
-                .length || 'No data'
-            }}
-          </p>
-        </template>
-      </DataPanel>
-      <DataPanel>
-        <template #left>
-          <p>
-            <strong>{{ t('pnl.avg-per-day') }}</strong> <br />
-            {{ displayMoney(pnlData.avgPerDay) }}
-          </p>
-        </template>
-        <template #right>
-          <p>
-            <strong>{{ t('pnl.avg-per-week') }}</strong> <br />
-            {{ displayMoney(pnlData.avgPerWeek) }}
-          </p>
-        </template>
-      </DataPanel>
-      <DataPanel>
-        <template #left>
-          <p>
-            <strong> {{ t('pnl.current-week') }}</strong
-            ><br />
-            {{ currentWeekStart }}:
-            {{ displayMoney(pnlData.weekly[currentWeekStart]?.sum) }}
-          </p>
-        </template>
-        <template #right>
-          <p>
-            <strong>{{ t('pnl.last-week') }}</strong
-            ><br />
-            {{ previousWeekStart }}:
-            {{ displayMoney(pnlData.weekly[previousWeekStart]?.sum) }}
-          </p>
-        </template>
-      </DataPanel>
-    </section>
+  <div v-if="!loaderStore.isLoading">
+    <div v-if="!profitLoss || !profitLoss.length">
+      This trading account has no public dashboard.
+    </div>
+    <div v-else>
+      <section class="data-panels">
+        <DataPanel>
+          <template #left>
+            <p>
+              <strong>{{ t('pnl.total') }}</strong> <br />
+              {{ displayMoney(pnlData.total) }}
+            </p>
+          </template>
+          <template #right>
+            <p>
+              <strong>{{ t('pnl.win-days') }}</strong>
+              {{
+                pnlData.saldo.datasets[0]?.data?.filter((n) => typeof n === 'number' && n > 0)
+                  .length || 'No data'
+              }}
+              <br />
+              <strong>{{ t('pnl.loss-days') }}</strong>
+              {{
+                pnlData.saldo.datasets[0]?.data?.filter((n) => typeof n === 'number' && n < 0)
+                  .length || 'No data'
+              }}
+            </p>
+          </template>
+        </DataPanel>
+        <DataPanel>
+          <template #left>
+            <p>
+              <strong>{{ t('pnl.avg-per-day') }}</strong> <br />
+              {{ displayMoney(pnlData.avgPerDay) }}
+            </p>
+          </template>
+          <template #right>
+            <p>
+              <strong>{{ t('pnl.avg-per-week') }}</strong> <br />
+              {{ displayMoney(pnlData.avgPerWeek) }}
+            </p>
+          </template>
+        </DataPanel>
+        <DataPanel>
+          <template #left>
+            <p>
+              <strong> {{ t('pnl.current-week') }}</strong
+              ><br />
+              {{ currentWeekStart }}:
+              {{ displayMoney(pnlData.weekly[currentWeekStart]?.sum) }}
+            </p>
+          </template>
+          <template #right>
+            <p>
+              <strong>{{ t('pnl.last-week') }}</strong
+              ><br />
+              {{ previousWeekStart }}:
+              {{ displayMoney(pnlData.weekly[previousWeekStart]?.sum) }}
+            </p>
+          </template>
+        </DataPanel>
+      </section>
 
-    <section v-if="!loaderStore.isLoading" class="charts">
-      <div>
-        <Line :data="pnlData.cumulative" />
-      </div>
-      <div>
-        <Bar :data="pnlData.saldo" />
-      </div>
-    </section>
+      <section v-if="!loaderStore.isLoading" class="charts">
+        <div>
+          <Line :data="pnlData.cumulative" />
+        </div>
+        <div>
+          <Bar :data="pnlData.saldo" />
+        </div>
+      </section>
+    </div>
   </div>
 </template>
 
