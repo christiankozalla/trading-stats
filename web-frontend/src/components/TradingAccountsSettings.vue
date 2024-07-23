@@ -102,7 +102,7 @@ async function clearAccount(accountId: string) {
       </DataPanel>
     </li>
   </ul>
-  <TradingAccountCreator style="max-width: 300px" />
+  <TradingAccountCreator style="padding: 0; max-width: 300px" />
   <Drawer
     header="Trading Account Details"
     v-model:visible="drawerVisible"
