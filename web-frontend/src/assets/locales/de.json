@@ -85,11 +85,17 @@
     },
     "accounts": {
       "created-date": "Dieser Account wurde am {date} erstellt.",
-      "log-file-created-date": "Diese Log-Datei wurde am {date} erstellt.",
+      "log-file-headline": "Log-File Importe",
+      "log-file-created-date": "Dieser Log-Datei Import wurde am {date} erstellt.",
+      "log-file-count": "Anzahl der einzelnen Trades, die aus diesem Import abgeleitet wurden: {count}",
       "view-details-btn": "Account Details",
       "clear-account-btn": "Account leeren",
       "clear-account-description": "Beim Leeren des Accounts werden alle Log-Dateien dieses Accounts gelöscht sowie alle Trades, die aus diesen Log-Dateien importiert wurden.",
-      "clear-account-confirm-question": "Bist Du sicher, dass Du dieses Konto löschen möchten? Dadurch werden alle mit diesem Trading Account verbundenen Log-Dateien und Trades gelöscht."
+      "clear-account-confirm-question": "Bist du sicher, dass du dieses Konto löschen möchten? Dadurch werden alle mit diesem Trading Account verbundenen Log-Dateien und Trades gelöscht."
     }
+  },
+  "public-dashboard": {
+    "no-public-dashboard-headline": "Dieser Trading Account hat kein öffentliches Dashboard!",
+    "no-public-dashboard-hint": "Wenn du der Inhaber dieses Accounts bist: Keine Sorge, du kannst deinen Account in den Settings jederzeit öffentlich machen."
   }
 }

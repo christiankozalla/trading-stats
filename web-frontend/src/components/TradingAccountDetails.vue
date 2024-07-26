@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { pb, type TradingAccount } from '@/api-client';
+import { pb, type TradingAccount, type TradeLogFileRecord } from '@/api-client';
 import { useI18nStore } from '@/stores/i18n';
 import { useRoute } from 'vue-router';
 import ToggleSwitch from 'primevue/toggleswitch';
@@ -17,9 +17,18 @@ const publicDashboardPermissions = await pb
   .collection('public_dashboard_permissions')
   .getFirstListItem(pb.filter(`account = {:accountId}`, { accountId: props.account.id }));
 
-const logFiles = await pb
+const rawLogFiles = await pb
   .collection('trade_log_files')
   .getFullList({ filter: pb.filter('account = {:accountId}', { accountId: props.account.id }) });
+
+const logFiles = await Promise.all(
+  rawLogFiles.map(async (record) => {
+    const logFilesMeta = await pb.collection('raw_trades_count').getOne(record.id);
+    record.tradeCount = logFilesMeta.trade_count;
+    console.log('updated record', record);
+    return record as TradeLogFileRecord & { tradeCount: number };
+  })
+);
 
 const localTradesTablePublic = ref(publicDashboardPermissions.is_trades_table_public);
 
@@ -52,6 +61,7 @@ async function toggleDashboardPermission(event: Event) {
       })
     }}
   </small>
+  <!-- TODO use Panel component here! -->
   <h4>Public Dashboard</h4>
   <p v-if="localTradesTablePublic">Your Dashboard is public.</p>
   <p v-else>Your Dashboard is private.</p>
@@ -59,7 +69,7 @@ async function toggleDashboardPermission(event: Event) {
     <span>Click to make your Dashboard {{ localTradesTablePublic ? 'private' : 'public' }}</span
     ><ToggleSwitch v-model="localTradesTablePublic" @change="toggleDashboardPermission" />
   </p>
-  <h4>Uploaded Log-Files</h4>
+  <h4>{{ t('settings.accounts.log-file-headline') }}</h4>
   <ul>
     <li v-for="logFile in logFiles" :key="logFile.id">
       <p>
@@ -69,6 +79,7 @@ async function toggleDashboardPermission(event: Event) {
           })
         }}
       </p>
+      <small>{{ t('settings.accounts.log-file-count', { count: logFile.tradeCount }) }}</small>
       <div v-for="filename in logFile.file" :key="filename" style="margin: 12px">
         <h5 style="word-break: break-all; margin: 0">&#x2022; {{ filename }}</h5>
       </div>

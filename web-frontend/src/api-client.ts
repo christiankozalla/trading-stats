@@ -9,6 +9,7 @@ interface TypedPocketBase extends PocketBase {
   collection(idOrName: 'screenshots'): RecordService<Screenshot>;
   collection(idOrName: 'trade_log_files'): RecordService<TradeLogFileRecord>;
   collection(idOrName: 'public_dashboard_permissions'): RecordService<PublicDashboardPermissions>;
+  collection(idOrName: 'raw_trades_count'): RecordService<RawTradesCount>;
 }
 
 // import.meta.env.BASE_URL is provided by Vite (default "/") which works, because Vue and Pocketbase run on the same domain
@@ -83,6 +84,12 @@ export type PublicDashboardPermissions = {
   id: string;
   account: string;
   is_trades_table_public: boolean;
+} & RecordModel;
+
+export type RawTradesCount = {
+  id: string;
+  userId: string;
+  trade_count: number;
 } & RecordModel;
 
 export type Collections =

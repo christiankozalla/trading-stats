@@ -154,8 +154,9 @@ const pnlData = computed(() => {
 
 <template>
   <div v-if="!loaderStore.isLoading">
-    <div v-if="!profitLoss || !profitLoss.length">
-      This trading account has no public dashboard.
+    <div v-if="!profitLoss || !profitLoss.length" class="no-public-dashboard-wrapper">
+      <h3>{{  t('public-dashboard.no-public-dashboard-headline') }}</h3>
+      <p><em>{{  t('public-dashboard.no-public-dashboard-hint') }}</em></p>
     </div>
     <div v-else>
       <section class="data-panels">

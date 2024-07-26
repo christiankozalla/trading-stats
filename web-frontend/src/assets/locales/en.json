@@ -85,11 +85,17 @@
     },
     "accounts": {
       "created-date": "This account has been created on {date}.",
-      "log-file-created-date": "This log file has been created on {date}.",
+      "log-file-headline": "Log File Imports",
+      "log-file-created-date": "This log file import has been created on {date}.",
+      "log-file-count": "Number of trades derived from this log file import: {count}",
       "view-details-btn": "Account details",
       "clear-account-btn": "Clear account",
       "clear-account-description": "Clearing an account will delete all it's associated log files and trades imported from those files.",
       "clear-account-confirm-question": "Are you sure you want to clear this account? This will delete all data associated with this account."
     }
+  },
+  "public-dashboard": {
+    "no-public-dashboard-headline": "This trading account has no public dashboard!",
+    "no-public-dashboard-hint": "If you're the account owner: No worries, you can always make it public in your trading account settings."
   }
 }
