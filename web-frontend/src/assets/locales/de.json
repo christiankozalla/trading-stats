@@ -79,7 +79,7 @@
       "update-name": "Nutzernamen aktualisieren",
       "update-name-message": "Dein Nutzername wurde aktualisiert.",
       "create-name": "Nutzernamen erstellen",
-      "no-name-yet": "You don't have a username yet.",
+      "no-name-yet": "Du hast noch keinen Nutzernamen.",
       "update-email": "Email Adresse aktualisieren",
       "update-email-message": "Deine Email Adresse wurde aktualisiert."
     },
@@ -87,7 +87,9 @@
       "created-date": "Dieser Account wurde am {date} erstellt.",
       "log-file-created-date": "Diese Log-Datei wurde am {date} erstellt.",
       "view-details-btn": "Account Details",
-      "clear-account-btn": "Account leeren"
+      "clear-account-btn": "Account leeren",
+      "clear-account-description": "Beim Leeren des Accounts werden alle Log-Dateien dieses Accounts gelöscht sowie alle Trades, die aus diesen Log-Dateien importiert wurden.",
+      "clear-account-confirm-question": "Bist Du sicher, dass Du dieses Konto löschen möchten? Dadurch werden alle mit diesem Trading Account verbundenen Log-Dateien und Trades gelöscht."
     }
   }
 }

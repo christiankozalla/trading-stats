@@ -10,6 +10,7 @@ import { pb, type TradingAccount } from '@/api-client';
 import { useTradingAccountsStore } from '@/stores/tradingAccounts';
 import { useI18nStore } from '@/stores/i18n';
 import { useRoute } from 'vue-router';
+import { ClientResponseError } from 'pocketbase';
 
 const tradingAccountsStore = useTradingAccountsStore();
 const route = useRoute();
@@ -52,12 +53,13 @@ async function clearAccount(accountId: string) {
     const allLogFiles = await pb
       .collection('trade_log_files')
       .getFullList({ filter: pb.filter('account = {:accountId}', { accountId }) });
-    console.log('total # log files', allLogFiles.length, allLogFiles);
     for (const { id } of allLogFiles) {
       await pb.collection('trade_log_files').delete(id);
     }
   } catch (err) {
-    console.error('clearAccount', err);
+    if (err instanceof ClientResponseError) {
+      console.error('clearAccount', err.data);
+    }
   } finally {
     loading.value = false;
   }
@@ -76,28 +78,20 @@ async function clearAccount(accountId: string) {
       <DataPanel>
         <div>
           <h4>{{ tradingAcc.name }}</h4>
-          <small>
+          <p>
             {{
               t('settings.accounts.created-date', {
                 date: Intl.DateTimeFormat(route.params.locale).format(new Date(tradingAcc.created))
               })
             }}
-          </small>
+          </p>
 
-          <div class="controls">
-            <Button
-              :loading="loading"
-              :label="t('settings.accounts.clear-account-btn')"
-              @click="() => clearAccount(tradingAcc.id)"
-              severity="secondary"
-            />
-
-            <Button
-              :label="t('settings.accounts.view-details-btn')"
-              @click="() => openAccountDetailsDrawer(tradingAcc)"
-              severity="secondary"
-            />
-          </div>
+          <Button
+            class="align-right"
+            :label="t('settings.accounts.view-details-btn')"
+            @click="() => openAccountDetailsDrawer(tradingAcc)"
+            severity="secondary"
+          />
         </div>
       </DataPanel>
     </li>
@@ -106,12 +100,23 @@ async function clearAccount(accountId: string) {
   <Drawer
     header="Trading Account Details"
     v-model:visible="drawerVisible"
-    style="width: clamp(400px, 60vw, 1000px)"
+    style="width: clamp(400px, 80vw, 1000px)"
   >
     <div v-if="selectedAccount">
       <Suspense>
         <template #default>
-          <TradingAccountDetails :account="selectedAccount" />
+          <div>
+            <TradingAccountDetails :account="selectedAccount" />
+            <h4>{{ t('settings.accounts.clear-account-btn') }}</h4>
+            <p class="description">{{ t('settings.accounts.clear-account-description') }}</p>
+            <Button
+              class="align-right"
+              :loading="loading"
+              :label="t('settings.accounts.clear-account-btn')"
+              @click="() => clearAccount(selectedAccount!.id)"
+              severity="secondary"
+            />
+          </div>
         </template>
         <template #fallback>
           <LoaderInline />
@@ -122,8 +127,12 @@ async function clearAccount(accountId: string) {
 </template>
 
 <style scoped>
+h3 {
+  margin: 0 0 1.2rem 0;
+}
+
 h4 {
-  margin: 0 0 0.7rem 0;
+  margin: 2rem 0 0.7rem 0;
 }
 
 ul {
@@ -134,9 +143,13 @@ li {
   list-style: none;
 }
 
-.controls {
-  display: flex;
-  justify-content: flex-end;
-  gap: var(--inline-spacing);
+.description {
+  margin: var(--inline-spacing) 0;
+}
+
+.align-right {
+  display: block;
+  margin-left: auto;
+  margin-right: 0;
 }
 </style>

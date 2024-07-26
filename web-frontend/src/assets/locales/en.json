@@ -87,7 +87,9 @@
       "created-date": "This account has been created on {date}.",
       "log-file-created-date": "This log file has been created on {date}.",
       "view-details-btn": "Account details",
-      "clear-account-btn": "Clear account"
+      "clear-account-btn": "Clear account",
+      "clear-account-description": "Clearing an account will delete all it's associated log files and trades imported from those files.",
+      "clear-account-confirm-question": "Are you sure you want to clear this account? This will delete all data associated with this account."
     }
   }
 }
