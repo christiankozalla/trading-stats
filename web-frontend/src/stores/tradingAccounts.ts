@@ -60,6 +60,7 @@ const useTradingAccountsStore = defineStore('tradingAccounts', () => {
 
   function resetState() {
     state.value = [];
+    selected.value = undefined;
   }
 
   return {
