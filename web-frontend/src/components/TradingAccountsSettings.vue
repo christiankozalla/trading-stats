@@ -107,15 +107,16 @@ async function clearAccount(accountId: string) {
         <template #default>
           <div>
             <TradingAccountDetails :account="selectedAccount" />
-            <h4>{{ t('settings.accounts.clear-account-btn') }}</h4>
-            <p class="description">{{ t('settings.accounts.clear-account-description') }}</p>
-            <Button
-              class="align-right"
-              :loading="loading"
-              :label="t('settings.accounts.clear-account-btn')"
-              @click="() => clearAccount(selectedAccount!.id)"
-              severity="secondary"
-            />
+            <DataPanel :header="t('settings.accounts.clear-account-btn')" class="panel">
+              <p class="description">{{ t('settings.accounts.clear-account-description') }}</p>
+              <Button
+                class="align-right"
+                :loading="loading"
+                :label="t('settings.accounts.clear-account-btn')"
+                @click="() => clearAccount(selectedAccount!.id)"
+                severity="secondary"
+              />
+            </DataPanel>
           </div>
         </template>
         <template #fallback>
@@ -151,5 +152,9 @@ li {
   display: block;
   margin-left: auto;
   margin-right: 0;
+}
+
+:deep(.panel + .panel) {
+  margin-top: calc(3 * var(--inline-spacing));
 }
 </style>

@@ -88,6 +88,7 @@
       "log-file-headline": "Log File Imports",
       "log-file-created-date": "This log file import has been created on {date}.",
       "log-file-count": "Number of trades derived from this log file import: {count}",
+      "no-log-files": "You have no log files at the moment.",
       "view-details-btn": "Account details",
       "clear-account-btn": "Clear account",
       "clear-account-description": "Clearing an account will delete all it's associated log files and trades imported from those files.",
@@ -96,6 +97,12 @@
   },
   "public-dashboard": {
     "no-public-dashboard-headline": "This trading account has no public dashboard!",
-    "no-public-dashboard-hint": "If you're the account owner: No worries, you can always make it public in your trading account settings."
+    "no-public-dashboard-hint": "If you're the account owner: No worries, you can always make it public in your trading account settings.",
+    "settings": {
+      "description": "You can publish your <a href=\"/{locale}/overview\">dashboard</a> to share it with others. If made publish, everyone can view your trading activity on <a target=\"_blank\" href=\"{host}/{locale}/public/{accountId}/overview\">{host}/{locale}/public/{accountId}/overview</a>",
+      "status-text": "Your dashboard is {status}",
+      "status-public": "public",
+      "status-private": "private"
+    }
   }
 }

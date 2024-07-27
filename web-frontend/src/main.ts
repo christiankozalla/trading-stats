@@ -48,4 +48,6 @@ app.use(PrimeVue, {
 app.use(ToastService);
 app.component('Toast', Toast);
 
+app.provide('host', window.location.host);
+
 app.mount('#app');

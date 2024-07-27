@@ -88,6 +88,7 @@
       "log-file-headline": "Log-File Importe",
       "log-file-created-date": "Dieser Log-Datei Import wurde am {date} erstellt.",
       "log-file-count": "Anzahl der einzelnen Trades, die aus diesem Import abgeleitet wurden: {count}",
+      "no-log-files": "Momentan hast du keine Log-Files",
       "view-details-btn": "Account Details",
       "clear-account-btn": "Account leeren",
       "clear-account-description": "Beim Leeren des Accounts werden alle Log-Dateien dieses Accounts gelöscht sowie alle Trades, die aus diesen Log-Dateien importiert wurden.",
@@ -96,6 +97,12 @@
   },
   "public-dashboard": {
     "no-public-dashboard-headline": "Dieser Trading Account hat kein öffentliches Dashboard!",
-    "no-public-dashboard-hint": "Wenn du der Inhaber dieses Accounts bist: Keine Sorge, du kannst deinen Account in den Settings jederzeit öffentlich machen."
+    "no-public-dashboard-hint": "Wenn du der Inhaber dieses Accounts bist: Keine Sorge, du kannst deinen Account in den Settings jederzeit öffentlich machen.",
+    "settings": {
+      "description": "Du kannst dein <a href=\"/{locale}/overview\">Dashboard</a> veröffentlichen, um sie mit anderen zu teilen. Wenn du deine Trading Aktivitäten veröffentlichst, kannst du sie hier mit anderen teilen: <a target=\"_blank\" href=\"{host}/{locale}/public/{accountId}/overview\">{host}/{locale}/public/{accountId}/overview</a>",
+      "status-text": "Dein Dashboard ist {status}",
+      "status-public": "öffentlich",
+      "status-privte": "nicht öffentlich"
+    }
   }
 }

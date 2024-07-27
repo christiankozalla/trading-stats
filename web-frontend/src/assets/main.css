@@ -82,8 +82,16 @@
     margin: 0 auto;
   }
 
+  .mb-2 {
+    margin-bottom: calc(2 * var(--inline-spacing));
+  }
+
   .font-bold {
     font-weight: bold;
+  }
+
+  .block {
+    display: block;
   }
 
   * {
