@@ -1,0 +1,108 @@
+{
+  "pnl": {
+    "total": "Total PnL",
+    "win-days": "Win Days",
+    "loss-days": "Loss Days",
+    "avg-per-day": "Avg. PnL/Day",
+    "avg-per-week": "Avg. PnL/Week",
+    "current-week": "Current Week's PnL",
+    "last-week": "Last Week's PnL"
+  },
+  "import": {
+    "log-files": {
+      "header": "Upload Sierra Chart Trading Log-Files",
+      "description": "No Log-Files chosen yet.<br>Export Log-Files from Sierra Chart and upload them here.<br><small>Hint: Multiple selection possible. Hold down <i>Ctrl</i> when selecting.</small>"
+    },
+    "screenshot": {
+      "header": "Upload Screenshots/Images with Notes",
+      "comment-placeholder": "Optional notes"
+    }
+  },
+  "trading-accounts": {
+    "select": "Select a trading account",
+    "create": "Create a trading account",
+    "create-cta": "Create account",
+    "name": "Account name"
+  },
+  "authentication": {
+    "headline-login": "Login to inloopo trading stats",
+    "headline-signup": "Sign up to inloopo trading stats",
+    "signup-tab": "Signup",
+    "user-name": "User name",
+    "email": "Email",
+    "password": "Password",
+    "password-confirm": "Confirm password",
+    "forgot-password": "Forgot password?",
+    "login-failed": "Login failed",
+    "signup-failed": "Signup failed",
+    "password-reset": {
+      "started": "Password reset started",
+      "started-detail": "We have sent you an email to reset your password.",
+      "started-detail-2": "Check your inbox to complete password reset process.",
+      "error": "Request for password reset failed",
+      "placeholder": "Your account's email",
+      "label": "Request password reset email",
+      "btn": "Request password reset",
+      "description": "You can request a password reset here."
+    }
+  },
+  "validation": {
+    "email": {
+      "empty": "Please enter your email address.",
+      "invalid": "Please enter a valid email address."
+    },
+    "password": {
+      "empty": "Please enter your password.",
+      "short": "Your password is too short. Please enter 8 characters.",
+      "long": "Your password is too long.",
+      "no-match": "Passwords do not match.",
+      "confirm": "Please confirm your password."
+    }
+  },
+  "generic": {
+    "upload-button-change": "Change {type}",
+    "upload-button-choose": "Choose {type}",
+    "upload": "Upload {type}",
+    "image": "Image",
+    "log-files": "Log-Files",
+    "file-input-required": "Please select at least one file.",
+    "date-input-required": "Please select a date.",
+    "trading-account-required": "Trading account required",
+    "trading-account-required-description": "Please select/create a trading account before importing.",
+    "import-success": "Import successful!",
+    "import-error": "Import failed."
+  },
+  "settings": {
+    "update-success": "Update successful",
+    "update-fail": "Update failed",
+    "user": {
+      "update-name": "Update username",
+      "update-name-message": "Your username has been updated.",
+      "create-name": "Create username",
+      "no-name-yet": "You don't have a username yet.",
+      "update-email": "Update email",
+      "update-email-message": "Your email has been updated."
+    },
+    "accounts": {
+      "created-date": "This account has been created on {date}.",
+      "log-file-headline": "Log File Imports",
+      "log-file-created-date": "This log file import has been created on {date}.",
+      "log-file-count": "Number of trades derived from this log file import: {count}",
+      "no-log-files": "You have no log files at the moment.",
+      "view-details-btn": "Account details",
+      "clear-account-btn": "Clear account",
+      "clear-account-description": "Clearing an account will delete all it's associated log files and trades imported from those files.",
+      "clear-account-confirm-question": "Are you sure you want to clear this account? This will delete all data associated with this account."
+    }
+  },
+  "public-dashboard": {
+    "no-public-dashboard-headline": "This trading account has no public dashboard!",
+    "no-public-dashboard-hint": "If you're the account owner: No worries, you can always make it public in your trading account settings.",
+    "settings": {
+      "description": "You can publish your <a href=\"/{locale}/overview\">dashboard</a> to share it with others. If made publish, everyone can view your trading activity on <a target=\"_blank\" href=\"{host}/{locale}/public/{accountId}/overview\">{host}/{locale}/public/{accountId}/overview</a>",
+      "status-text": "Your dashboard is {status}",
+      "status-public": "public",
+      "status-private": "private"
+    }
+  }
+}

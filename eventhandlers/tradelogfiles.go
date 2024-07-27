@@ -2,9 +2,11 @@ package eventhandlers
 
 import (
 	"encoding/csv"
+	"fmt"
 	"io"
 	"log"
 	"strings"
+	"unicode"
 
 	"github.com/pocketbase/dbx"
 	"github.com/pocketbase/pocketbase"
@@ -36,6 +38,7 @@ func createRawTradeRecords(app *pocketbase.PocketBase, e *core.RecordCreateEvent
 	files := e.UploadedFiles["file"]
 	userId := e.Record.GetString("user")
 	accountId := e.Record.GetString("account")
+	logfileId := e.Record.GetString("id")
 
 	defer app.Dao().SaveRecord(e.Record) // setting the status after operation
 
@@ -73,25 +76,47 @@ func createRawTradeRecords(app *pocketbase.PocketBase, e *core.RecordCreateEvent
 				trade[header[i]] = value
 			}
 
+			// either take the first two chars of an incoming symbol - e.g. "NQU24_FUT_CME"
+			// other examples "CLJ4.NYMEX", "ESH4.CME"
+			// H4, J4 and U24 are only month and year codes, NQ, ES, and CL are the relevant symbols
+			// but a relevant symbol may consists of three chars, too
+
+			// algorithm idea: search first two charts, and first three chars... until there is a number
+			// algorithm idea: look for the number, delete the number and one char before the number, take what is left from there to the beginning of the string to the left
+			// need a set of many real input values
+
+			// isFuture ? then globexCode and multiplier
+			// isStock ? then currency
+			// isOption ? then expiry date and currency
+			// maybe this helps: https://www.sierrachart.com/index.php?page=doc/IBSymbols.html#FuturesFormat
+
 			// adds multiplier to calculate cash ($) from ticks
 			// because ProfitLoss is given in ticks, each tick has different value for each future
 			// hence the multiplier
 			globexCode, ok := trade["Symbol"].(string)
 			if ok {
-				if strings.Contains(globexCode, ".") {
-					parts := strings.Split(globexCode, ".")
-					globexCode = parts[0][:len(parts[0])-2]
-				} else if len(globexCode) >= 2 {
-					globexCode = globexCode[:len(globexCode)-2]
+				// todo: figure out whether the Symbol refers to a Future, Stock or Option
+				var extractedGlobexCode string
+				if parts := strings.Split(globexCode, "."); len(parts) > 1 {
+					extractedGlobexCode = extractGlobexCode(parts[0])
+				} else if parts := strings.Split(globexCode, "_"); len(parts) > 1 {
+					extractedGlobexCode = extractGlobexCode(parts[0])
+				} else {
+					extractedGlobexCode = extractGlobexCode(globexCode)
 				}
 
-				multiplier := globexCodeToMultiplierMap[globexCode]
+				multiplier := globexCodeToMultiplierMap[extractedGlobexCode]
+				if multiplier == 0 {
+					app.Logger().Error(fmt.Sprintf("Matching Globex Code Not Found for Symbol '%s'", globexCode))
+					multiplier = 1
+				}
 				trade["Multiplier"] = multiplier
-				trade["ShortSymbol"] = globexCode
+				trade["ShortSymbol"] = extractedGlobexCode
 			}
 
 			trade["user"] = userId
 			trade["account"] = accountId
+			trade["Logfile"] = logfileId
 
 			err = createRecord(app, "raw_trades", trade)
 			if err != nil {
@@ -133,6 +158,7 @@ type Trade struct {
 	DateTimeClose  string  `db:"DateTime_close" json:"DateTime_close"`
 	User           string  `db:"user" json:"user"`
 	Account        string  `db:"account" json:"account"`
+	Logfile        string  `db:"Logfile" json:"Logfile"`
 	Symbol         string  `db:"Symbol" json:"Symbol"`
 	ShortSymbol    string  `db:"ShortSymbol" json:"ShortSymbol"`
 	Multiplier     float64 `db:"Multiplier" json:"Multiplier"`
@@ -157,6 +183,7 @@ func createTradeRecords(app *pocketbase.PocketBase, e *core.RecordCreateEvent) e
 			closeTrades.DateTime AS DateTime_close,
 			openTrades.user AS user,
 			openTrades.account AS account,
+			openTrades.Logfile AS Logfile,
 			openTrades.Symbol AS Symbol,
 			openTrades.ShortSymbol AS ShortSymbol,
 			openTrades.Multiplier AS Multiplier,
@@ -206,6 +233,7 @@ func tradeStructToMap(trade Trade) map[string]any {
 		"DateTime_close":  trade.DateTimeClose,
 		"user":            trade.User,
 		"account":         trade.Account,
+		"Logfile":         trade.Logfile,
 		"Symbol":          trade.Symbol,
 		"ShortSymbol":     trade.ShortSymbol,
 		"Multiplier":      trade.Multiplier,
@@ -217,4 +245,16 @@ func tradeStructToMap(trade Trade) map[string]any {
 		"Quantity_close":  trade.QuantityClose,
 		"ProfitLoss":      trade.ProfitLoss,
 	}
+}
+
+func extractGlobexCode(s string) string {
+	for i, char := range s {
+		if unicode.IsDigit(char) {
+			if i > 0 {
+				return s[0 : i-1]
+			}
+			break
+		}
+	}
+	return s
 }

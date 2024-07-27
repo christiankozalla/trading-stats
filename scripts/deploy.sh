@@ -7,11 +7,7 @@ rm -rf dist
 
 CGO_ENABLED=0 go build -o dist/its .
 
-cd web-client
-
-npm run build
-
-cd ..
+npm -C web-frontend run build
 
 echo -e "\nCopying frontend app assets...\n"
 cp -r pb_public dist/pb_public

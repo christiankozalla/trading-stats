@@ -37,8 +37,11 @@ func main() {
 	})
 
 	// app.OnRecordBeforeCreateRequest("screenshots").Add(eventhandlers.ResizeImages)
+	app.OnRecordBeforeCreateRequest("screenshots").Add(eventhandlers.AddImageMeta)
+	app.OnRecordBeforeUpdateRequest("screenshots").Add(eventhandlers.UpdateImageMeta)
 
 	app.OnRecordAfterCreateRequest("trade_log_files").Add(eventhandlers.CreateTradeRecordsFromLogFiles(app))
+	app.OnRecordAfterCreateRequest("trading_accounts").Add(eventhandlers.CreateDefaultPublicDashboardRecord(app))
 
 	if err := app.Start(); err != nil {
 		log.Fatal(err)

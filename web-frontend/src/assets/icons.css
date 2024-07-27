@@ -1,0 +1,48 @@
+/* colored icons with mask image - ref: https://antfu.me/posts/icons-in-pure-css */
+/* icons by Ionicons v3 - ref: https://ionic.io/ionicons */
+.icon {
+  display: inline-block;
+  height: 1.2em; /* slightly bigger than the text */
+  width: 1.2em;
+  background-color: currentColor;
+}
+
+.icon-house {
+  mask-image: url('./icons/icon-house.svg');
+}
+
+.icon-gear {
+  mask-image: url('./icons/icon-gear.svg');
+}
+
+.icon-person {
+  mask-image: url('./icons/icon-person.svg');
+}
+
+.icon-menu {
+  mask-image: url('./icons/icon-menu.svg');
+}
+
+.icon-login {
+  mask-image: url('./icons/icon-login.svg');
+}
+
+.icon-logout {
+  mask-image: url('./icons/icon-logout.svg');
+}
+
+.icon-upload {
+  mask-image: url('./icons/icon-upload.svg');
+}
+
+.icon-refresh {
+  mask-image: url('./icons/icon-refresh.svg');
+}
+
+.icon-language {
+  mask-image: url('./icons/icon-language.svg');
+}
+
+.icon-folder {
+  mask-image: url('./icons/icon-folder.svg');
+}

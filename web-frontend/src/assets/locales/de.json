@@ -1,0 +1,108 @@
+{
+  "pnl": {
+    "total": "Gesamt PnL",
+    "win-days": "Gewinnertage",
+    "loss-days": "Verlierertage",
+    "avg-per-day": "⌀ PnL/Tag",
+    "avg-per-week": "⌀ PnL/Woche",
+    "current-week": "Aktuelle Woche PnL",
+    "last-week": "Letzte Woche PnL"
+  },
+  "import": {
+    "log-files": {
+      "header": "Lade Sierra Chart Trading Log-Dateien hoch",
+      "description": "Keine Dateien ausgewählt.<br>Exportiere Log-Dateien aus Sierra Chart und lade sie hier hoch.<br><small>Tipp: Mehrfachauswahl möglich. Halte bei der Auswahl <i>Strg</i> gedrückt.</small>"
+    },
+    "screenshot": {
+      "header": "Lade Screenshots/Bilder mit Notizen hoch",
+      "comment-placeholder": "Optionale Notiz"
+    }
+  },
+  "trading-accounts": {
+    "select": "Wähle einen Trading Account",
+    "create": "Erstelle einen Trading Account",
+    "create-cta": "Account erstellen",
+    "name": "Accountbezeichnung"
+  },
+  "authentication": {
+    "headline-login": "Log' dich bei inloopo Trading Stats ein.",
+    "headline-signup": "Registriere dich bei inloopo Trading Stats.",
+    "signup-tab": "Registrieren",
+    "user-name": "Nutzername",
+    "email": "Email",
+    "password": "Passwort",
+    "password-confirm": "Passwort bestätigen",
+    "forgot-password": "Passwort vergessen?",
+    "login-failed": "Login fehlgeschlagen",
+    "signup-failed": "Registrierung fehlgeschlagen",
+    "password-reset": {
+      "started": "Passwort-Reset gestartet",
+      "started-detail": "Wir haben dir eine Email zum Zurücksetzen deines Passworts gesendet.",
+      "started-detail-2": "Prüfen Sie Ihren Posteingang, um den Vorgang der Passwortrücksetzung abzuschließen.",
+      "error": "Anfordern des Passwort-Resets fehlgeschlagen",
+      "placeholder": "Email Adresse deines Accounts",
+      "label": "Email zum Passwort-Reset anfordern",
+      "btn": "Passwort-Reset anfordern",
+      "description": "Du kannst hier ein neues Passwort anfordern."
+    }
+  },
+  "validation": {
+    "email": {
+      "empty": "Bitte gib deine Email Adresse ein.",
+      "invalid": "Bitte gib eine gültige Email Adresse ein."
+    },
+    "password": {
+      "empty": "Bitte gib dein Passwort ein.",
+      "short": "Dein Passwort ist zu kurz. Bitte gib mindestens 8 Zeichen ein.",
+      "long": "Dein Passwort ist zu lang.",
+      "no-match": "Die Passwörter stimmen nicht überein.",
+      "confirm": "Bitte bestätige dein Passwort."
+    }
+  },
+  "generic": {
+    "upload-button-change": "{type} ändern",
+    "upload-button-choose": "{type} wählen",
+    "upload": "{type} hochladen",
+    "image": "Bild",
+    "log-files": "Log-Dateien",
+    "file-input-required": "Bitte wähle mindestens eine Datei aus.",
+    "date-input-required": "Bitte wähle ein Datum.",
+    "trading-account-required": "Trading Account erforderlich.",
+    "trading-account-required-description": "Bitte wähle oder erstelle einen Trading Account vor dem Import.",
+    "import-success": "Import erfolgreich!",
+    "import-error": "Import fehlgeschlagen."
+  },
+  "settings": {
+    "update-success": "Update erfolgreich",
+    "update-fail": "Update fehlgeschlagen",
+    "user": {
+      "update-name": "Nutzernamen aktualisieren",
+      "update-name-message": "Dein Nutzername wurde aktualisiert.",
+      "create-name": "Nutzernamen erstellen",
+      "no-name-yet": "Du hast noch keinen Nutzernamen.",
+      "update-email": "Email Adresse aktualisieren",
+      "update-email-message": "Deine Email Adresse wurde aktualisiert."
+    },
+    "accounts": {
+      "created-date": "Dieser Account wurde am {date} erstellt.",
+      "log-file-headline": "Log-File Importe",
+      "log-file-created-date": "Dieser Log-Datei Import wurde am {date} erstellt.",
+      "log-file-count": "Anzahl der einzelnen Trades, die aus diesem Import abgeleitet wurden: {count}",
+      "no-log-files": "Momentan hast du keine Log-Files",
+      "view-details-btn": "Account Details",
+      "clear-account-btn": "Account leeren",
+      "clear-account-description": "Beim Leeren des Accounts werden alle Log-Dateien dieses Accounts gelöscht sowie alle Trades, die aus diesen Log-Dateien importiert wurden.",
+      "clear-account-confirm-question": "Bist du sicher, dass du dieses Konto löschen möchten? Dadurch werden alle mit diesem Trading Account verbundenen Log-Dateien und Trades gelöscht."
+    }
+  },
+  "public-dashboard": {
+    "no-public-dashboard-headline": "Dieser Trading Account hat kein öffentliches Dashboard!",
+    "no-public-dashboard-hint": "Wenn du der Inhaber dieses Accounts bist: Keine Sorge, du kannst deinen Account in den Settings jederzeit öffentlich machen.",
+    "settings": {
+      "description": "Du kannst dein <a href=\"/{locale}/overview\">Dashboard</a> veröffentlichen, um sie mit anderen zu teilen. Wenn du deine Trading Aktivitäten veröffentlichst, kannst du sie hier mit anderen teilen: <a target=\"_blank\" href=\"{host}/{locale}/public/{accountId}/overview\">{host}/{locale}/public/{accountId}/overview</a>",
+      "status-text": "Dein Dashboard ist {status}",
+      "status-public": "öffentlich",
+      "status-privte": "nicht öffentlich"
+    }
+  }
+}

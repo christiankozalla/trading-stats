@@ -1,0 +1,122 @@
+/* Order matters */
+@layer reset, primevue;
+
+/* Reset CSS */
+@layer reset {
+  body {
+    margin: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Images and videos are constrained to the parent width
+   * while preserving their intrinsic aspect-ratio
+   */
+  img,
+  video {
+    max-width: 100%;
+    height: auto;
+  }
+
+  p {
+    margin: 0;
+  }
+}
+
+@layer global {
+  :root {
+    /* from systemfontstack.com
+     although a web font can be used because the download penalty is only on first load if cached properly 
+    */
+    font-family:
+      -apple-system,
+      BlinkMacSystemFont,
+      avenir next,
+      avenir,
+      segoe ui,
+      helvetica neue,
+      helvetica,
+      Cantarell,
+      Ubuntu,
+      roboto,
+      noto,
+      arial,
+      sans-serif;
+    --inline-spacing: 0.5rem;
+    --content-padding: 1.125rem;
+    --text-color: rgb(51, 65, 85);
+  }
+  .container {
+    padding: var(--inline-spacing) var(--content-padding);
+  }
+
+  .flex {
+    display: flex;
+  }
+
+  .flex.flex-column {
+    flex-direction: column;
+  }
+
+  .flex.flex-row {
+    flex-direction: row;
+  }
+
+  .flex-gap {
+    gap: var(--content-padding, 1.125rem);
+  }
+
+  .flex.align-center {
+    align-items: center;
+  }
+
+  .flex.justify-between {
+    justify-content: space-between;
+  }
+
+  .h-100 {
+    height: 100%;
+  }
+
+  .m-auto {
+    margin: 0 auto;
+  }
+
+  .mb-2 {
+    margin-bottom: calc(2 * var(--inline-spacing));
+  }
+
+  .font-bold {
+    font-weight: bold;
+  }
+
+  .block {
+    display: block;
+  }
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--p-bluegray-200) var(--p-bluegray-50);
+  }
+
+  *::-webkit-scrollbar-track {
+    width: var(--p-scrollbar-width);
+    background-color: var(--p-bluegray-50);
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background-color: var(--p-bluegray-200);
+  }
+
+  .screen-reader-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+    white-space: nowrap; /* Added for improved accessibility in some cases */
+  }
+}
