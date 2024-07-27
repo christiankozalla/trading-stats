@@ -61,16 +61,10 @@ const imageStyles = reactive({
 }
 
 .screenshot__container {
-  display: flex;
   max-height: 90vh;
 }
 
-.screenshot__container--with-comment img {
-  width: 70%;
-}
-
-.screenshot__container--with-comment p {
-  width: calc(30% - var(--inline-spacing));
-  margin-left: var(--inline-spacing);
+.screenshot__container p {
+  margin-top: var(--inline-spacing);
 }
 </style>

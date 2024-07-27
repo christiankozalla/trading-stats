@@ -328,7 +328,7 @@ const openPasswordResetContext = () => {
 
 form {
   display: block;
-  margin-top: calc(2 * var(--inline-spacing));
+  margin-top: var(--content-padding);
 }
 
 form label,

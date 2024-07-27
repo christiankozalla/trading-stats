@@ -155,6 +155,6 @@ li {
 }
 
 :deep(.panel + .panel) {
-  margin-top: calc(3 * var(--inline-spacing));
+  margin-top: var(--content-padding);
 }
 </style>
