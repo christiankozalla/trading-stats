@@ -43,6 +43,7 @@ const items = computed<MenuItem[]>(() => [
     icon: 'icon icon-logout',
     command: () => {
       pb.authStore.clear();
+      isAuthenticated.value = false;
     }
   }
 ]);

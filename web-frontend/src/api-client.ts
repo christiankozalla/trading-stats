@@ -16,19 +16,19 @@ interface TypedPocketBase extends PocketBase {
 export const pb = new PocketBase(import.meta.env.BASE_URL) as TypedPocketBase;
 
 export const isAuthenticated = ref<boolean>(false);
-pb.authStore.onChange(async (token) => {
-  if (!token) {
-    pb.authStore.clear();
-  } else {
+pb.authStore.onChange((token) => {
+  if (token && !isAuthenticated.value) {
     // there is a token in localStorage, authRefresh checks if it's still valid
-    try {
-      await pb.collection('users').authRefresh(); // throws if not valid
-      isAuthenticated.value = true;
-    } catch (err) {
-      // token stored in localStorage was not valid anymore (expired)
-      pb.authStore.clear();
-      isAuthenticated.value = false;
-    }
+    pb.collection('users')
+      .authRefresh()
+      .then(() => {
+        isAuthenticated.value = true;
+      })
+      .catch(() => {
+        // token stored in localStorage was not valid anymore (expired)
+        pb.authStore.clear();
+        isAuthenticated.value = false;
+      });
   }
 }, true); // fires immediately
 
