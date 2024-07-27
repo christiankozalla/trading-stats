@@ -7,3 +7,5 @@ its
 
 *.activitylog.txt
 dev_files
+
+e2e/_*
