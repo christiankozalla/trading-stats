@@ -155,8 +155,10 @@ const pnlData = computed(() => {
 <template>
   <div v-if="!loaderStore.isLoading">
     <div v-if="!profitLoss || !profitLoss.length" class="container">
-      <h3>{{  t('public-dashboard.no-public-dashboard-headline') }}</h3>
-      <p><em>{{  t('public-dashboard.no-public-dashboard-hint') }}</em></p>
+      <h3>{{ t('public-dashboard.no-public-dashboard-headline') }}</h3>
+      <p>
+        <em>{{ t('public-dashboard.no-public-dashboard-hint') }}</em>
+      </p>
     </div>
     <div v-else>
       <section class="data-panels">

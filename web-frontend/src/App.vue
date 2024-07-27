@@ -16,7 +16,10 @@ watch(isAuthenticated, async (newAuthStatus) => {
   await router.isReady();
   if (newAuthStatus === false && router.currentRoute.value.meta.requiresAuth === true) {
     const chosenLocale = supportedOrFallbackLocale(router.currentRoute.value.params.locale);
-    router.push({ name: 'login-signup', params: { ...router.currentRoute.value.params, locale: chosenLocale } });
+    router.push({
+      name: 'login-signup',
+      params: { ...router.currentRoute.value.params, locale: chosenLocale }
+    });
   }
 });
 
