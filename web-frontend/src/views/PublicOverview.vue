@@ -254,6 +254,10 @@ section {
   width: calc(50% - 12px);
 }
 
+.no-public-dashboard-wrapper {
+  padding: 0 calc(2 * var(--inline-spacing));
+}
+
 @media (max-width: 500px) {
   .data-panels {
     grid-template-columns: 1fr;
