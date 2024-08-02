@@ -78,18 +78,25 @@ ChartJS.register(
 );
 
 const profitLoss = ref<ProfitLossExtended[]>();
+const isPublic = ref<boolean>(false);
 
 onMounted(() => {
   loaderStore.startLoading();
-  pb.collection('profit_loss')
-    .getFullList({
-      filter: `account.id = "${route.params.accountId}"`,
-      sort: 'DateTime_close',
-      accountId: route.params.accountId
+  pb.collection('public_dashboard_permissions')
+    .getFirstListItem(`account = "${route.params.accountId}"`, { fields: 'is_trades_table_public' })
+    .then(({ is_trades_table_public }) => {
+      isPublic.value = is_trades_table_public;
+      if (is_trades_table_public) {
+        return pb.collection('profit_loss').getFullList({
+          filter: `account.id = "${route.params.accountId}"`,
+          sort: 'DateTime_close',
+          accountId: route.params.accountId
+        });
+      }
     })
     .then(
       (records) =>
-        (profitLoss.value = records.map(
+        (profitLoss.value = records?.map(
           (record) =>
             ({
               ...record,
@@ -154,13 +161,19 @@ const pnlData = computed(() => {
 
 <template>
   <div v-if="!loaderStore.isLoading">
-    <div v-if="!profitLoss || !profitLoss.length" class="container">
+    <div v-if="!isPublic" class="container">
       <h3>{{ t('public-dashboard.no-public-dashboard-headline') }}</h3>
       <p>
         <em>{{ t('public-dashboard.no-public-dashboard-hint') }}</em>
       </p>
     </div>
-    <div v-else>
+    <div v-else-if="!profitLoss || !profitLoss.length" class="container">
+      <h3>{{ t('public-dashboard.empty-public-dashboard-headline') }}</h3>
+      <p>
+        <em>{{ t('public-dashboard.empty-public-dashboard-hint') }}</em>
+      </p>
+    </div>
+    <div v-else class="container">
       <section class="data-panels">
         <DataPanel>
           <template #left>

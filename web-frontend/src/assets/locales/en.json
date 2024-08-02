@@ -98,6 +98,8 @@
   "public-dashboard": {
     "no-public-dashboard-headline": "This trading account has no public dashboard!",
     "no-public-dashboard-hint": "If you're the account owner: No worries, you can always make it public in your trading account settings.",
+    "empty-public-dashboard-headline": "This public dashboard has no trades yet!",
+    "empty-public-dashboard-hint": "Upload trades into your trading account and they will be displayed here automatically.",
     "settings": {
       "description": "You can publish your <a href=\"/{locale}/overview\">dashboard</a> to share it with others. If made public, everyone can view your trading activity on <a target=\"_blank\" href=\"{host}/{locale}/public/{accountId}/overview\">{host}/{locale}/public/{accountId}/overview</a>",
       "status-text": "Your dashboard is {status}",
