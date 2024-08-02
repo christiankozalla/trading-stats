@@ -11,6 +11,11 @@ import (
 func CreateDefaultPublicDashboardRecord(app *pocketbase.PocketBase) hook.Handler[*core.RecordCreateEvent] {
 	return func(e *core.RecordCreateEvent) error {
 		accountId := e.Record.GetString("id")
+		app.Logger().Info(
+			"Start to create default public dashboard permissions record",
+			"account", accountId,
+		)
+		defer app.Logger().Info("Finished creating default public dashboard permissions record")
 
 		pdpCollection, err := app.Dao().FindCollectionByNameOrId("public_dashboard_permissions")
 		if err != nil {
