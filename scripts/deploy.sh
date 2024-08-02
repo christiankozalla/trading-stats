@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e  # This command causes the script to exit immediately if any command exits with a non-zero status.
+set -e
 
 echo -e "Deleting 'dist' directory...\n"
 rm -rf dist
