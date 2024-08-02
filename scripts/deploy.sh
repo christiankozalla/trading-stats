@@ -17,6 +17,7 @@ scp -r ./dist/pb_public christian@83.171.248.78:/home/christian/projects/trading
 scp -r ./dist/its christian@83.171.248.78:/home/christian/projects/trading-stats/production/its_new
 
 ssh christian@83.171.248.78 'rm -rf ~/projects/trading-stats/production/pb_public && mv -f ~/projects/trading-stats/production/pb_public_new ~/projects/trading-stats/production/pb_public'  
-ssh christian@83.171.248.78 'mv -f ~/projects/trading-stats/production/its_new ~/projects/trading-stats/production/its'  
+ssh christian@83.171.248.78 'mv -f ~/projects/trading-stats/production/its_new ~/projects/trading-stats/production/its'
+ssh christian@83.171.248.78 'chmod +x ~/projects/trading-stats/production/its'
 
 echo -e "\nSuccessfully uploaded!\n"
