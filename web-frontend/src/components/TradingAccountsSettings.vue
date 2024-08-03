@@ -73,7 +73,7 @@ async function clearAccount(accountId: string) {
    Account Details (List of Log-Files and Trades derived from them),
    Public Dashboard Switch, 
    "Export Data" Btn, Clear Account Btn, Delete Account Btn) -->
-  <ul>
+  <ul class="ta-list">
     <li v-for="tradingAcc in tradingAccountsStore.accounts || []" :key="tradingAcc.id">
       <DataPanel>
         <div>
@@ -154,6 +154,7 @@ li {
   margin-right: 0;
 }
 
+.ta-list li + li,
 :deep(.panel + .panel) {
   margin-top: var(--content-padding);
 }
