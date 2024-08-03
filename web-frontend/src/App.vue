@@ -33,7 +33,7 @@ const { viewer, screenshotRecords } = useScreenshotViewer();
     <Loader />
 
     <RouterView :key="tradingAccountsStore.selected" />
-    <Toast position="top-center" />
+    <Toast position="top-right" />
   </main>
   <ScreenshotViewer
     :isOpen="viewer.isOpen"
