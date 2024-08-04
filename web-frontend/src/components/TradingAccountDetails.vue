@@ -68,24 +68,27 @@ async function toggleDashboardPermission(event: Event) {
     }}
   </small>
   <DataPanel header="Public Dashboard" class="panel">
-    <p
-      v-html="
-        t('public-dashboard.settings.description', {
-          host: inject('host')!,
-          locale: route.params.locale as string,
-          accountId: props.account.id
-        })
-      "
-    ></p>
-    <p>
-      {{ t('public-dashboard.settings.status-text', { status }) }}
-    </p>
-    <p class="flex justify-between align-center">
-      <strong
-        ><em>Status: {{ status }}</em></strong
-      >
-      <ToggleSwitch v-model="localTradesTablePublic" @change="toggleDashboardPermission" />
-    </p>
+    <template #left>
+      <p
+        v-html="
+          t('public-dashboard.settings.description', {
+            host: inject('host')!,
+            locale: route.params.locale as string,
+            accountId: props.account.id
+          })
+        "
+      ></p>
+    </template>
+    <template #right>
+      <div>
+        <p class="flex justify-between align-center">
+          <strong
+            ><em>Status: {{ status }}</em></strong
+          >
+          <ToggleSwitch v-model="localTradesTablePublic" @change="toggleDashboardPermission" />
+        </p>
+      </div>
+    </template>
   </DataPanel>
   <DataPanel :header="t('settings.accounts.log-file-headline')" class="panel">
     <ul v-if="logFiles.length">
@@ -120,7 +123,7 @@ li {
   list-style: none;
 }
 
-p + p {
-  margin-top: var(--inline-spacing);
+:deep(.i18n-link) {
+  padding: 0 !important;
 }
 </style>

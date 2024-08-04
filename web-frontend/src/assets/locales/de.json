@@ -101,10 +101,10 @@
     "empty-public-dashboard-headline": "Dieses öffentliche Dashboard hat noch keine Trades!",
     "empty-public-dashboard-hint": "Lade Trades in deinen Trading Account, dann werden sie hier automatisch angezeigt.",
     "settings": {
-      "description": "Du kannst dein <a href=\"/{locale}/overview\">Dashboard</a> veröffentlichen, um sie mit anderen zu teilen. Wenn du deine Trading Aktivitäten veröffentlichst, kannst du sie hier mit anderen teilen: <a target=\"_blank\" href=\"{host}/{locale}/public/{accountId}/overview\">{host}/{locale}/public/{accountId}/overview</a>",
+      "description": "Du kannst dein <a class=\"p-button p-component p-button-link i18n-link\" href=\"/{locale}/overview\">Dashboard</a> veröffentlichen, um sie mit anderen zu teilen. Wenn du deine Trading Aktivitäten veröffentlichst, kannst du sie hier mit anderen teilen: <a target=\"_blank\" class=\"p-button p-component p-button-link i18n-link\" href=\"{host}/{locale}/public/{accountId}/overview\">{host}/{locale}/public/{accountId}/overview</a>",
       "status-text": "Dein Dashboard ist {status}",
       "status-public": "öffentlich",
-      "status-privte": "nicht öffentlich"
+      "status-private": "nicht öffentlich"
     }
   }
 }
