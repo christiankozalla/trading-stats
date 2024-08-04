@@ -58,6 +58,13 @@ const useTradingAccountsStore = defineStore('tradingAccounts', () => {
     state.value.push(...tradingAccounts);
   }
 
+  function remove(accountId: string) {
+    state.value = state.value.filter((ta) => ta.id !== accountId);
+    if (selected.value === accountId) {
+      selected.value = undefined;
+    }
+  }
+
   function resetState() {
     state.value = [];
     selected.value = undefined;
@@ -66,7 +73,8 @@ const useTradingAccountsStore = defineStore('tradingAccounts', () => {
   return {
     accounts,
     selected,
-    add
+    add,
+    remove
   };
 });
 

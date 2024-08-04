@@ -92,7 +92,10 @@
       "view-details-btn": "Account Details",
       "clear-account-btn": "Account leeren",
       "clear-account-description": "Beim Leeren des Accounts werden alle Log-Dateien dieses Accounts gelöscht sowie alle Trades, die aus diesen Log-Dateien importiert wurden.",
-      "clear-account-confirm-question": "Bist du sicher, dass du dieses Konto löschen möchten? Dadurch werden alle mit diesem Trading Account verbundenen Log-Dateien und Trades gelöscht."
+      "clear-account-confirm-question": "Bist du sicher, dass du dieses Konto löschen möchten? Dadurch werden alle mit diesem Trading Account verbundenen Log-Dateien und Trades gelöscht.",
+      "delete-account-btn": "Account löschen",
+      "delete-account-description": "Wenn du einen Account löschst, werden seine Trades und alle damit verbundenen Konfigurationen gelöscht. Dies ist nicht umkehrbar.",
+      "delete-account-confirm-question": "Bist du sicher, dass du diesen Account löschen möchtest?"
     }
   },
   "public-dashboard": {

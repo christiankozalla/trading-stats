@@ -92,7 +92,10 @@
       "view-details-btn": "Account details",
       "clear-account-btn": "Clear account",
       "clear-account-description": "Clearing an account will delete all it's associated log files and trades imported from those files.",
-      "clear-account-confirm-question": "Are you sure you want to clear this account? This will delete all data associated with this account."
+      "clear-account-confirm-question": "Are you sure you want to clear this account? This will delete all data associated with this account.",
+      "delete-account-btn": "Delete account",
+      "delete-account-description": "Deleting a trading account will clear its trades and all associated configuration. This is not reversible.",
+      "delete-account-confirm-question": "Are you sure that you really want to delete this trading account?"
     }
   },
   "public-dashboard": {

@@ -29,12 +29,18 @@ function openAccountDetailsDrawer(account: TradingAccount) {
 
 // Deletes all records / files associated with this account
 // Deletes account-related config aswell (to keep config, CLEAR an account)
-// eslint-disable-next-line
 async function deleteAccount(accountId: string) {
   try {
+    loading.value = true;
     await pb.collection('trading_accounts').delete(accountId);
+    drawerVisible.value = false;
+    selectedAccount.value = null;
+    // manually sync frontend store with backend.. -> better expose a "revalidate" method from the store..
+    tradingAccountsStore.remove(accountId);
   } catch (err) {
     console.error('deleteAccount', err);
+  } finally {
+    loading.value = false;
   }
 }
 
@@ -117,6 +123,20 @@ async function clearAccount(accountId: string) {
                 severity="secondary"
               />
             </DataPanel>
+            <DataPanel
+              :header="t('settings.accounts.delete-account-btn')"
+              class="panel"
+              :pt="{ root: { class: 'delete-account' }, title: { class: 'delete-account-title' } }"
+            >
+              <p class="description">{{ t('settings.accounts.delete-account-description') }}</p>
+              <Button
+                class="align-right"
+                :loading="loading"
+                :label="t('settings.accounts.delete-account-btn')"
+                @click="() => deleteAccount(selectedAccount!.id)"
+                severity="danger"
+              />
+            </DataPanel>
           </div>
         </template>
         <template #fallback>
@@ -157,5 +177,13 @@ li {
 .ta-list li + li,
 :deep(.panel + .panel) {
   margin-top: var(--content-padding);
+}
+
+:deep(.delete-account) {
+  border: 1px solid var(--p-red-500);
+}
+
+:deep(.delete-account-title) {
+  color: var(--p-red-500);
 }
 </style>
