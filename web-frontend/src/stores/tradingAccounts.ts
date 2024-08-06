@@ -35,7 +35,7 @@ const useTradingAccountsStore = defineStore('tradingAccounts', () => {
         if (storedSelectedId) {
           selected.value = storedSelectedId;
         }
-        await get();
+        await revalidate();
       } else {
         resetState();
       }
@@ -43,11 +43,11 @@ const useTradingAccountsStore = defineStore('tradingAccounts', () => {
     { immediate: true }
   );
 
-  async function get() {
+  async function revalidate() {
     pb.collection('trading_accounts')
       .getFullList()
       .then((res) => {
-        state.value.push(...res);
+        state.value = res;
       })
       .catch((e) => {
         console.log('tradingAccounts error', e.data);
@@ -74,7 +74,8 @@ const useTradingAccountsStore = defineStore('tradingAccounts', () => {
     accounts,
     selected,
     add,
-    remove
+    remove,
+    revalidate
   };
 });
 

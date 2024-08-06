@@ -84,6 +84,9 @@
       "update-email-message": "Deine Email Adresse wurde aktualisiert."
     },
     "accounts": {
+      "name": "Name des Accounts",
+      "update-name": "Aktualisieren",
+      "update-name-success": "Name erfolgreich aktualisiert.",
       "created-date": "Dieser Account wurde am {date} erstellt.",
       "log-file-headline": "Log-File Importe",
       "log-file-created-date": "Dieser Log-Datei Import wurde am {date} erstellt.",
