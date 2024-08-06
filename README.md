@@ -44,3 +44,10 @@ The app is currently running on a VPS behind a Caddy server reverse-proxy that r
 #### Logs
 
 Follow the logs with e.g. `tail -f ~/projects/trading-stats/standard.log`
+
+## Terminology
+
+- a _trader_ has a _journal_ (this is the user account in the app)
+- a _journal_ consists of _portfolios_ (currently we call those "trading accounts")
+- a _portfolio_ holds the _trades_ and configuration and user notes
+- a trade consists of an "open" and "close" turn
