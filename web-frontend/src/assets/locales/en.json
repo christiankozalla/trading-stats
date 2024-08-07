@@ -70,7 +70,9 @@
     "trading-account-required": "Trading account required",
     "trading-account-required-description": "Please select/create a trading account before importing.",
     "import-success": "Import successful!",
-    "import-error": "Import failed."
+    "import-error": "Import failed.",
+    "edit": "Edit",
+    "cancel": "Cancel"
   },
   "settings": {
     "update-success": "Update successful",

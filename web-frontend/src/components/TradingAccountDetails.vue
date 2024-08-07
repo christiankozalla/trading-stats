@@ -21,6 +21,7 @@ const props = defineProps<{
 }>();
 
 const accountName = ref(props.account.name);
+const editAccountName = ref(false);
 
 const publicDashboardPermissions = await pb
   .collection('public_dashboard_permissions')
@@ -71,6 +72,7 @@ async function updateAccountName(event: Event) {
   try {
     await pb.collection('trading_accounts').update(props.account.id, formData);
     await tradingAccountsStore.revalidate();
+    editAccountName.value = false;
     toast.add({
       severity: 'success',
       summary: t('settings.accounts.update-name-success'),
@@ -85,13 +87,16 @@ async function updateAccountName(event: Event) {
 </script>
 
 <template>
-  <h3>
-    <form @submit.prevent="updateAccountName">
-      <label for="accountName" class="screen-reader-only">{{ t('settings.accounts.name') }}</label
-      ><InputText id="accountName" v-model="accountName" name="name" />
-      <Button type="submit" :label="t('settings.accounts.update-name')" class="ml-1" />
-    </form>
-  </h3>
+  <form class="headline" v-if="editAccountName" @submit.prevent="updateAccountName">
+    <label for="accountName" class="screen-reader-only">{{ t('settings.accounts.name') }}</label
+    ><InputText id="accountName" v-model="accountName" name="name" />
+    <Button type="submit" :label="t('settings.accounts.update-name')" class="ml-1" />
+    <Button severity="secondary" :label="t('generic.cancel')" @click="editAccountName = false" class="ml-1" />
+  </form>
+  <div v-else class="headline">
+    <h3>{{ accountName }}</h3>
+    <Button class="edit-button ml-2" severity="secondary" :label="t('generic.edit')" @click="editAccountName = true" />
+  </div>
   <small class="block mb-2">
     {{
       t('settings.accounts.created-date', {
@@ -143,10 +148,6 @@ async function updateAccountName(event: Event) {
 </template>
 
 <style scoped>
-h3 {
-  margin: var(--inline-spacing) 0 1.2rem 0;
-}
-
 ul {
   padding: 0;
 }
@@ -157,5 +158,19 @@ li {
 
 :deep(.i18n-link) {
   padding: 0 !important;
+}
+
+.headline {
+  margin: var(--inline-spacing) 0 1.2rem 0;
+}
+
+.headline h3,
+.edit-button {
+  display: inline-block;
+}
+
+.headline h3,
+.headline form {
+  margin: 0.5rem 0;
 }
 </style>

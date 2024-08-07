@@ -90,6 +90,10 @@
     margin-left: var(--inline-spacing);
   }
 
+  .ml-2 {
+    margin-left: calc(2 * var(--inline-spacing));
+  }
+
   .font-bold {
     font-weight: bold;
   }
