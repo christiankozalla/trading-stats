@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
-import Button from 'primevue/button';
-import Menu from 'primevue/menu';
-import type { MenuItem } from 'primevue/menuitem';
-import { RouterLink } from 'vue-router';
-import LogoTitle from '@/components/LogoTitle.vue';
-import { pb, isAuthenticated } from '@/api-client';
-import TradingAccountSelector from '@/components/TradingAccountSelector.vue';
-import { useI18nStore } from '@/stores/i18n';
-import { useRouter } from 'vue-router';
+import { ref, computed } from "vue";
+import Button from "primevue/button";
+import Menu from "primevue/menu";
+import type { MenuItem } from "primevue/menuitem";
+import { RouterLink } from "vue-router";
+import LogoTitle from "@/components/LogoTitle.vue";
+import { pb, isAuthenticated } from "@/api-client";
+import TradingAccountSelector from "@/components/TradingAccountSelector.vue";
+import { useI18nStore } from "@/stores/i18n";
+import { useRouter } from "vue-router";
 
 const router = useRouter();
 const menu = ref();
@@ -19,28 +19,28 @@ const items = computed<MenuItem[]>(() => [
     separator: true
   },
   {
-    label: 'Home',
+    label: "Home",
     url: `/${i18n.currentLocale}`,
-    icon: 'icon icon-house'
+    icon: "icon icon-house"
   },
   {
-    label: 'Import',
+    label: "Import",
     url: `/${i18n.currentLocale}/import`,
-    icon: 'icon icon-upload'
+    icon: "icon icon-upload"
   },
   {
-    label: i18n.currentLocale === 'de' ? 'English language' : 'Deutsche Sprache',
+    label: i18n.currentLocale === "de" ? "English language" : "Deutsche Sprache",
     command: changeLocale,
-    icon: 'icon icon-language'
+    icon: "icon icon-language"
   },
   {
-    label: 'Settings',
+    label: "Settings",
     url: `/${i18n.currentLocale}/settings`,
-    icon: 'icon icon-gear'
+    icon: "icon icon-gear"
   },
   {
-    label: 'Logout',
-    icon: 'icon icon-logout',
+    label: "Logout",
+    icon: "icon icon-logout",
     command: () => {
       pb.authStore.clear();
       isAuthenticated.value = false;
@@ -53,7 +53,7 @@ function toggleMenu(event: MouseEvent) {
 }
 
 async function changeLocale() {
-  const otherLocale = i18n.currentLocale === 'de' ? 'en' : 'de';
+  const otherLocale = i18n.currentLocale === "de" ? "en" : "de";
   const newPath =
     router.currentRoute.value.path.replace(/^(\/de|\/en)/, `/${otherLocale}`) +
     router.currentRoute.value.hash;

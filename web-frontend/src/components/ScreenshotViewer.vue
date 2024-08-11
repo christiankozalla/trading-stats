@@ -12,9 +12,9 @@
 </template>
 
 <script setup lang="ts">
-import Screenshot from './Screenshot.vue';
-import Dialog from 'primevue/dialog';
-import { type Screenshot as ScreenshotType } from '@/api-client';
+import Screenshot from "./Screenshot.vue";
+import Dialog from "primevue/dialog";
+import { type Screenshot as ScreenshotType } from "@/api-client";
 
 const { isOpen, activeRecord } = defineProps<{
   isOpen: boolean;

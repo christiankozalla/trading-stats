@@ -1,29 +1,29 @@
-import { defineStore } from 'pinia';
-import { ref } from 'vue';
+import { defineStore } from "pinia";
+import { ref } from "vue";
 
 function isObject(value: unknown): value is object {
   const type = typeof value;
-  return type === 'object' && value !== null;
+  return type === "object" && value !== null;
 }
 
-export const SUPPORTED_LOCALES = ['de', 'en'] as const;
+export const SUPPORTED_LOCALES = ["de", "en"] as const;
 
 export type Locale = (typeof SUPPORTED_LOCALES)[number];
 
-const useI18nStore = defineStore('i18n', () => {
+const useI18nStore = defineStore("i18n", () => {
   // TODO: can be replaces by useRoute().params.locale <<-- current locale always up to date
   const currentLocale = ref<Locale>();
   const messages: Record<Locale, null | Record<string, unknown>> = { de: null, en: null };
 
   async function setLocale(newLocale: Locale) {
-    document.querySelector('html')?.setAttribute('lang', newLocale);
+    document.querySelector("html")?.setAttribute("lang", newLocale);
 
     if (!messages[newLocale]) {
       let newMessages;
-      if (newLocale === 'de') {
-        newMessages = await import('@/assets/locales/de.json');
-      } else if (newLocale === 'en') {
-        newMessages = await import('@/assets/locales/en.json');
+      if (newLocale === "de") {
+        newMessages = await import("@/assets/locales/de.json");
+      } else if (newLocale === "en") {
+        newMessages = await import("@/assets/locales/en.json");
       } else {
         throw new Error(`Unknown requested locale ${newLocale}`);
       }
@@ -41,7 +41,7 @@ const useI18nStore = defineStore('i18n', () => {
         throw new Error(`Locale ${currentLocale.value} not downloaded yet.`);
       }
       // @ts-ignore - reduce does not provide a type annotation that is needed here. reduce<U>((p: U, c:T) => U, initial: U): U is not what I want
-      const message = messageId.split('.').reduce((o, key) => {
+      const message = messageId.split(".").reduce((o, key) => {
         if (isObject(o)) return o[key];
       }, messages[currentLocale.value]);
 
@@ -57,7 +57,7 @@ const useI18nStore = defineStore('i18n', () => {
 
       return message;
     }
-    return '';
+    return "";
   }
 
   return {

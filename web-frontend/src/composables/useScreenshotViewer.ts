@@ -1,5 +1,5 @@
-import { ref } from 'vue';
-import { type Screenshot } from '@/api-client';
+import { ref } from "vue";
+import { type Screenshot } from "@/api-client";
 
 const isOpen = ref<boolean>(false);
 const screenshotRecords = ref<Screenshot[]>([]);

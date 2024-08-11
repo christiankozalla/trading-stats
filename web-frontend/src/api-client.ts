@@ -1,15 +1,15 @@
-import PocketBase, { type RecordService, type RecordModel } from 'pocketbase';
-import { ref } from 'vue';
+import PocketBase, { type RecordService, type RecordModel } from "pocketbase";
+import { ref } from "vue";
 
 interface TypedPocketBase extends PocketBase {
   collection(idOrName: string): RecordService;
-  collection(idOrName: 'trades'): RecordService<Trade>;
-  collection(idOrName: 'trading_accounts'): RecordService<TradingAccount>;
-  collection(idOrName: 'profit_loss'): RecordService<ProfitLoss>;
-  collection(idOrName: 'screenshots'): RecordService<Screenshot>;
-  collection(idOrName: 'trade_log_files'): RecordService<TradeLogFileRecord>;
-  collection(idOrName: 'public_dashboard_permissions'): RecordService<PublicDashboardPermissions>;
-  collection(idOrName: 'raw_trades_count'): RecordService<RawTradesCount>;
+  collection(idOrName: "trades"): RecordService<Trade>;
+  collection(idOrName: "trading_accounts"): RecordService<TradingAccount>;
+  collection(idOrName: "profit_loss"): RecordService<ProfitLoss>;
+  collection(idOrName: "screenshots"): RecordService<Screenshot>;
+  collection(idOrName: "trade_log_files"): RecordService<TradeLogFileRecord>;
+  collection(idOrName: "public_dashboard_permissions"): RecordService<PublicDashboardPermissions>;
+  collection(idOrName: "raw_trades_count"): RecordService<RawTradesCount>;
 }
 
 // import.meta.env.BASE_URL is provided by Vite (default "/") which works, because Vue and Pocketbase run on the same domain
@@ -19,7 +19,7 @@ export const isAuthenticated = ref<boolean>(false);
 pb.authStore.onChange((token) => {
   if (token && !isAuthenticated.value) {
     // there is a token in localStorage, authRefresh checks if it's still valid
-    pb.collection('users')
+    pb.collection("users")
       .authRefresh()
       .then(() => {
         isAuthenticated.value = true;
@@ -101,11 +101,11 @@ export type RawTradesCount = {
 } & RecordModel;
 
 export type Collections =
-  | 'trades'
-  | 'users'
-  | 'raw_trades'
-  | 'trade_log_files'
-  | 'profit_loss'
-  | 'screenshots'
-  | 'trade_log_files'
-  | 'public_dashboard_permissions';
+  | "trades"
+  | "users"
+  | "raw_trades"
+  | "trade_log_files"
+  | "profit_loss"
+  | "screenshots"
+  | "trade_log_files"
+  | "public_dashboard_permissions";

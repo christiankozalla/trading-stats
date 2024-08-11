@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { ref, computed, inject } from 'vue';
-import { pb, type TradingAccount, type TradeLogFileRecord } from '@/api-client';
-import { useI18nStore } from '@/stores/i18n';
-import { useRoute } from 'vue-router';
-import DataPanel from './DataPanel.vue';
-import InputText from 'primevue/inputtext';
-import Button from 'primevue/button';
-import ToggleSwitch from 'primevue/toggleswitch';
-import { useToast } from 'primevue/usetoast';
-import { ClientResponseError } from 'pocketbase';
-import { useTradingAccountsStore } from '@/stores/tradingAccounts';
+import { ref, computed, inject } from "vue";
+import { pb, type TradingAccount, type TradeLogFileRecord } from "@/api-client";
+import { useI18nStore } from "@/stores/i18n";
+import { useRoute } from "vue-router";
+import DataPanel from "./DataPanel.vue";
+import InputText from "primevue/inputtext";
+import Button from "primevue/button";
+import ToggleSwitch from "primevue/toggleswitch";
+import { useToast } from "primevue/usetoast";
+import { ClientResponseError } from "pocketbase";
+import { useTradingAccountsStore } from "@/stores/tradingAccounts";
 
 const { t } = useI18nStore();
 const tradingAccountsStore = useTradingAccountsStore();
@@ -24,18 +24,18 @@ const accountName = ref(props.account.name);
 const editAccountName = ref(false);
 
 const publicDashboardPermissions = await pb
-  .collection('public_dashboard_permissions')
+  .collection("public_dashboard_permissions")
   .getFirstListItem(pb.filter(`account = {:accountId}`, { accountId: props.account.id }));
 
 const rawLogFiles = await pb
-  .collection('trade_log_files')
-  .getFullList({ filter: pb.filter('account = {:accountId}', { accountId: props.account.id }) });
+  .collection("trade_log_files")
+  .getFullList({ filter: pb.filter("account = {:accountId}", { accountId: props.account.id }) });
 
 const logFiles = await Promise.all(
   rawLogFiles.map(async (record) => {
-    const logFilesMeta = await pb.collection('raw_trades_count').getOne(record.id);
+    const logFilesMeta = await pb.collection("raw_trades_count").getOne(record.id);
     record.tradeCount = logFilesMeta.trade_count;
-    console.log('updated record', record);
+    console.log("updated record", record);
     return record as TradeLogFileRecord & { tradeCount: number };
   })
 );
@@ -43,14 +43,14 @@ const logFiles = await Promise.all(
 const localTradesTablePublic = ref(publicDashboardPermissions.is_trades_table_public);
 const status = computed(() =>
   localTradesTablePublic.value
-    ? t('public-dashboard.settings.status-public')
-    : t('public-dashboard.settings.status-private')
+    ? t("public-dashboard.settings.status-public")
+    : t("public-dashboard.settings.status-private")
 );
 
 async function toggleDashboardPermission(event: Event) {
   try {
     const response = await pb
-      .collection('public_dashboard_permissions')
+      .collection("public_dashboard_permissions")
       .update(publicDashboardPermissions.id, {
         is_trades_table_public: (event.target as HTMLInputElement).checked
       });
@@ -61,7 +61,7 @@ async function toggleDashboardPermission(event: Event) {
     // or make the store reactive - like returning the ref and being able to update it
   } catch (err) {
     if (err instanceof ClientResponseError) {
-      console.error('Error updating public dashboard permissions', err.data);
+      console.error("Error updating public dashboard permissions", err.data);
     }
   }
 }
@@ -70,17 +70,17 @@ async function updateAccountName(event: Event) {
   const formData = new FormData(event.target as HTMLFormElement);
 
   try {
-    await pb.collection('trading_accounts').update(props.account.id, formData);
+    await pb.collection("trading_accounts").update(props.account.id, formData);
     await tradingAccountsStore.revalidate();
     editAccountName.value = false;
     toast.add({
-      severity: 'success',
-      summary: t('settings.accounts.update-name-success'),
+      severity: "success",
+      summary: t("settings.accounts.update-name-success"),
       life: 5000
     });
   } catch (err) {
     if (err instanceof ClientResponseError) {
-      console.error('Error updating trading account name', err.data);
+      console.error("Error updating trading account name", err.data);
     }
   }
 }

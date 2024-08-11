@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { usePaginatedCollection } from '@/composables/usePaginatedCollection';
-import TradesTable from '@/components/TradesTable.vue';
-import DataPanel from '@/components/DataPanel.vue';
-import { pb, type ProfitLoss, type Trade } from '@/api-client';
-import { computed, onMounted, ref } from 'vue';
+import { usePaginatedCollection } from "@/composables/usePaginatedCollection";
+import TradesTable from "@/components/TradesTable.vue";
+import DataPanel from "@/components/DataPanel.vue";
+import { pb, type ProfitLoss, type Trade } from "@/api-client";
+import { computed, onMounted, ref } from "vue";
 import {
   Chart as ChartJS,
   Title,
@@ -14,11 +14,11 @@ import {
   CategoryScale,
   LinearScale,
   BarElement
-} from 'chart.js';
-import { Line, Bar, type ChartProps } from 'vue-chartjs';
-import { useLoaderStore } from '@/stores/loader';
-import { useI18nStore } from '@/stores/i18n';
-import { useTradingAccountsStore } from '@/stores/tradingAccounts';
+} from "chart.js";
+import { Line, Bar, type ChartProps } from "vue-chartjs";
+import { useLoaderStore } from "@/stores/loader";
+import { useI18nStore } from "@/stores/i18n";
+import { useTradingAccountsStore } from "@/stores/tradingAccounts";
 
 const { t } = useI18nStore();
 const loaderStore = useLoaderStore();
@@ -26,9 +26,9 @@ const tradingAccountsStore = useTradingAccountsStore();
 
 // helpers
 const sum = (array: number[]) => array.reduce((sum, curr) => sum + curr, 0);
-const displayMoney = (v?: number | null) => (!v ? 'No data' : `${v.toFixed(1)} $`);
+const displayMoney = (v?: number | null) => (!v ? "No data" : `${v.toFixed(1)} $`);
 const toISODate = (date: string | Date) => {
-  if (typeof date === 'string') {
+  if (typeof date === "string") {
     return new Date(date).toISOString().substring(0, 10);
   } else return date.toISOString().substring(0, 10);
 };
@@ -84,10 +84,10 @@ onMounted(() => {
   if (!tradingAccountsStore.selected) return;
 
   loaderStore.startLoading();
-  pb.collection('profit_loss')
+  pb.collection("profit_loss")
     .getFullList({
-      filter: pb.filter('account = {:accountId}', { accountId: tradingAccountsStore.selected }),
-      sort: 'DateTime_close'
+      filter: pb.filter("account = {:accountId}", { accountId: tradingAccountsStore.selected }),
+      sort: "DateTime_close"
     })
     .then((records) => {
       profitLoss.value = records?.map(
@@ -105,11 +105,11 @@ type DateString = string;
 
 const pnlData = computed(() => {
   let total = 0;
-  const cumulative: ChartProps<'line'>['data'] = {
+  const cumulative: ChartProps<"line">["data"] = {
     labels: [],
     datasets: []
   };
-  const saldo: ChartProps<'bar'>['data'] = {
+  const saldo: ChartProps<"bar">["data"] = {
     labels: [],
     datasets: []
   };
@@ -130,13 +130,13 @@ const pnlData = computed(() => {
       }
     }
     cumulative.labels = Object.keys(cumulativeData);
-    cumulative.datasets.push({ label: 'Cumulative PnL $', data: Object.values(cumulativeData) });
+    cumulative.datasets.push({ label: "Cumulative PnL $", data: Object.values(cumulativeData) });
     saldo.labels = Object.keys(saldoData);
     const saldoBars = Object.values(saldoData).map(sum);
     saldo.datasets.push({
-      label: 'Daily Change PnL $',
+      label: "Daily Change PnL $",
       data: saldoBars,
-      backgroundColor: saldoBars.map((bar) => (bar >= 0 ? 'green' : 'red'))
+      backgroundColor: saldoBars.map((bar) => (bar >= 0 ? "green" : "red"))
     });
     weekly = groupDataByWeek(saldoData);
     avgPerDay = saldoBars.length ? total / saldoBars.length : null;
@@ -152,7 +152,7 @@ const pnlData = computed(() => {
   };
 });
 
-const trades = usePaginatedCollection('trades');
+const trades = usePaginatedCollection("trades");
 
 const tradesMapper = (trade: Trade) => ({
   ...trade,
@@ -161,7 +161,7 @@ const tradesMapper = (trade: Trade) => ({
 });
 
 function formatCurrency(value: number) {
-  return value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+  return value.toLocaleString("en-US", { style: "currency", currency: "USD" });
 }
 </script>
 

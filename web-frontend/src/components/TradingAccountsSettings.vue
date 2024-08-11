@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import LoaderInline from './LoaderInline.vue';
-import DataPanel from './DataPanel.vue';
-import TradingAccountCreator from './TradingAccountCreator.vue';
-import TradingAccountDetails from './TradingAccountDetails.vue';
-import Button from 'primevue/button';
-import Drawer from 'primevue/drawer';
-import { pb, type TradingAccount } from '@/api-client';
-import { useTradingAccountsStore } from '@/stores/tradingAccounts';
-import { useI18nStore } from '@/stores/i18n';
-import { useRoute } from 'vue-router';
-import { ClientResponseError } from 'pocketbase';
+import { ref } from "vue";
+import LoaderInline from "./LoaderInline.vue";
+import DataPanel from "./DataPanel.vue";
+import TradingAccountCreator from "./TradingAccountCreator.vue";
+import TradingAccountDetails from "./TradingAccountDetails.vue";
+import Button from "primevue/button";
+import Drawer from "primevue/drawer";
+import { pb, type TradingAccount } from "@/api-client";
+import { useTradingAccountsStore } from "@/stores/tradingAccounts";
+import { useI18nStore } from "@/stores/i18n";
+import { useRoute } from "vue-router";
+import { ClientResponseError } from "pocketbase";
 
 const tradingAccountsStore = useTradingAccountsStore();
 const route = useRoute();
@@ -32,13 +32,13 @@ function openAccountDetailsDrawer(account: TradingAccount) {
 async function deleteAccount(accountId: string) {
   try {
     loading.value = true;
-    await pb.collection('trading_accounts').delete(accountId);
+    await pb.collection("trading_accounts").delete(accountId);
     drawerVisible.value = false;
     selectedAccount.value = null;
     // manually sync frontend store with backend.. -> better expose a "revalidate" method from the store..
     tradingAccountsStore.remove(accountId);
   } catch (err) {
-    console.error('deleteAccount', err);
+    console.error("deleteAccount", err);
   } finally {
     loading.value = false;
   }
@@ -57,14 +57,14 @@ async function clearAccount(accountId: string) {
   try {
     loading.value = true;
     const allLogFiles = await pb
-      .collection('trade_log_files')
-      .getFullList({ filter: pb.filter('account = {:accountId}', { accountId }) });
+      .collection("trade_log_files")
+      .getFullList({ filter: pb.filter("account = {:accountId}", { accountId }) });
     for (const { id } of allLogFiles) {
-      await pb.collection('trade_log_files').delete(id);
+      await pb.collection("trade_log_files").delete(id);
     }
   } catch (err) {
     if (err instanceof ClientResponseError) {
-      console.error('clearAccount', err.data);
+      console.error("clearAccount", err.data);
     }
   } finally {
     loading.value = false;

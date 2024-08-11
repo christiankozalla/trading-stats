@@ -1,26 +1,26 @@
 <script setup lang="ts">
-import { ref, computed, nextTick } from 'vue';
-import Tabs from 'primevue/tabs';
-import TabList from 'primevue/tablist';
-import Tab from 'primevue/tab';
-import InputText from 'primevue/inputtext';
-import Button from 'primevue/button';
-import { useRouter } from 'vue-router';
-import { useLoaderStore } from '@/stores/loader';
-import { pb, type User } from '@/api-client';
-import { ClientResponseError } from 'pocketbase';
-import { useToast } from 'primevue/usetoast';
-import { useI18nStore } from '@/stores/i18n';
+import { ref, computed, nextTick } from "vue";
+import Tabs from "primevue/tabs";
+import TabList from "primevue/tablist";
+import Tab from "primevue/tab";
+import InputText from "primevue/inputtext";
+import Button from "primevue/button";
+import { useRouter } from "vue-router";
+import { useLoaderStore } from "@/stores/loader";
+import { pb, type User } from "@/api-client";
+import { ClientResponseError } from "pocketbase";
+import { useToast } from "primevue/usetoast";
+import { useI18nStore } from "@/stores/i18n";
 
 const router = useRouter();
 const loaderStore = useLoaderStore();
 const toast = useToast();
 const { t } = useI18nStore();
 
-type AuthTypes = 'login' | 'signup';
+type AuthTypes = "login" | "signup";
 
 const formErrors = ref<Record<string, string>>({});
-const authType = ref<AuthTypes>('signup');
+const authType = ref<AuthTypes>("signup");
 const validateEmail = (email: string | null): email is string =>
   email ? /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/.test(email) : false;
 
@@ -29,9 +29,9 @@ async function signup(event: Event) {
   formErrors.value = {};
 
   const formData = new FormData(event.target as HTMLFormElement);
-  const email = formData.get('email') as string | null;
-  const password = formData.get('password') as string | null;
-  const passwordConfirm = formData.get('passwordConfirm') as string | null;
+  const email = formData.get("email") as string | null;
+  const password = formData.get("password") as string | null;
+  const passwordConfirm = formData.get("passwordConfirm") as string | null;
   const validated = validateSignupData(email, password, passwordConfirm);
 
   if (validated.email && validated.password && validated.passwordConfirm) {
@@ -40,16 +40,16 @@ async function signup(event: Event) {
         loaderStore.startLoading();
 
         const userDataResponse = await pb
-          .collection('users')
+          .collection("users")
           .create<User>(new FormData(event.target as HTMLFormElement));
 
         if (userDataResponse) {
-          const hasBeenSent = await pb.collection('users').requestVerification(validated.email);
+          const hasBeenSent = await pb.collection("users").requestVerification(validated.email);
           if (hasBeenSent)
             toast.add({
-              severity: 'success',
-              summary: 'Signup Successful',
-              detail: 'Please verify your email address!',
+              severity: "success",
+              summary: "Signup Successful",
+              detail: "Please verify your email address!",
               life: 15000
             });
         }
@@ -60,8 +60,8 @@ async function signup(event: Event) {
       } catch (e) {
         if (e instanceof ClientResponseError) {
           toast.add({
-            severity: 'error',
-            summary: t('authentication.signup-failed'),
+            severity: "error",
+            summary: t("authentication.signup-failed"),
             detail: e.data.message,
             life: 5000
           });
@@ -78,8 +78,8 @@ async function login(event: Event, { redirectOnSuccess = true } = {}) {
   formErrors.value = {};
 
   const formData = new FormData(event.target as HTMLFormElement);
-  const email = formData.get('email') as string | null;
-  const password = formData.get('password') as string | null;
+  const email = formData.get("email") as string | null;
+  const password = formData.get("password") as string | null;
 
   const validated = validateLoginData(email, password);
 
@@ -89,17 +89,17 @@ async function login(event: Event, { redirectOnSuccess = true } = {}) {
         loaderStore.startLoading();
 
         const userDataResponse = await pb
-          .collection('users')
+          .collection("users")
           .authWithPassword<User>(validated.email, validated.password);
 
         if (userDataResponse && redirectOnSuccess) {
-          await router.push({ name: 'overview' });
+          await router.push({ name: "overview" });
         }
       } catch (e) {
         if (e instanceof ClientResponseError) {
           toast.add({
-            severity: 'error',
-            summary: t('authentication.login-failed'),
+            severity: "error",
+            summary: t("authentication.login-failed"),
             detail: `${e.data.message} Check email and password.`,
             life: 5000
           });
@@ -120,25 +120,25 @@ function validateSignupData(
   const isValidEmail = validateEmail(email);
 
   if (!email) {
-    formErrors.value.email = t('validation.email.empty');
+    formErrors.value.email = t("validation.email.empty");
   } else if (!isValidEmail) {
-    formErrors.value.email = t('validation.email.invalid');
+    formErrors.value.email = t("validation.email.invalid");
   } else {
     validated.email = email;
   }
   if (!password) {
-    formErrors.value.password = t('validation.password.empty');
+    formErrors.value.password = t("validation.password.empty");
   } else if (password.length < 8) {
-    formErrors.value.password = t('validation.password.short');
+    formErrors.value.password = t("validation.password.short");
   } else if (password.length > 72) {
-    formErrors.value.password = t('validation.password.long');
+    formErrors.value.password = t("validation.password.long");
   } else {
     validated.password = password;
   }
   if (!passwordConfirm) {
-    formErrors.value.passwordConfirm = t('validation.password.confirm');
+    formErrors.value.passwordConfirm = t("validation.password.confirm");
   } else if (password !== passwordConfirm) {
-    formErrors.value.passwordConfirm = t('validation.password.no-match');
+    formErrors.value.passwordConfirm = t("validation.password.no-match");
   } else {
     validated.passwordConfirm = passwordConfirm;
   }
@@ -150,18 +150,18 @@ function validateLoginData(email: string | null, password: string | null) {
   const isValidEmail = validateEmail(email);
 
   if (!email) {
-    formErrors.value.email = t('validation.email.empty');
+    formErrors.value.email = t("validation.email.empty");
   } else if (!isValidEmail) {
-    formErrors.value.email = t('validation.email.invalid');
+    formErrors.value.email = t("validation.email.invalid");
   } else {
     validated.email = email;
   }
   if (!password) {
-    formErrors.value.password = t('validation.password.empty');
+    formErrors.value.password = t("validation.password.empty");
   } else if (password.length < 8) {
-    formErrors.value.password = t('validation.password.short');
+    formErrors.value.password = t("validation.password.short");
   } else if (password.length > 72) {
-    formErrors.value.password = t('validation.password.long');
+    formErrors.value.password = t("validation.password.long");
   } else {
     validated.password = password;
   }
@@ -169,9 +169,9 @@ function validateLoginData(email: string | null, password: string | null) {
 }
 
 function onSubmit(event: Event) {
-  if (authType.value === 'login') {
+  if (authType.value === "login") {
     login(event);
-  } else if (authType.value === 'signup') {
+  } else if (authType.value === "signup") {
     signup(event);
   } else {
     throw Error('unknown auth type, neither "login" nor "signup"');
@@ -179,45 +179,45 @@ function onSubmit(event: Event) {
 }
 
 const headline = computed(() => {
-  if (authType.value === 'login') {
-    return t('authentication.headline-login');
-  } else if (authType.value === 'signup') {
-    return t('authentication.headline-signup');
+  if (authType.value === "login") {
+    return t("authentication.headline-login");
+  } else if (authType.value === "signup") {
+    return t("authentication.headline-signup");
   }
-  return '';
+  return "";
 });
 
 const passwordContextOpen = ref<boolean>(false);
 async function requestPasswordResetEmail(event: Event) {
   const formData = new FormData(event.target as HTMLFormElement);
   for (const entries of formData.entries()) {
-    console.log('entries', entries);
+    console.log("entries", entries);
   }
-  const email = formData.get('email') as string | null;
+  const email = formData.get("email") as string | null;
   if (!validateEmail(email)) {
     toast.add({
-      severity: 'error',
-      summary: t('validation.email.empty'),
+      severity: "error",
+      summary: t("validation.email.empty"),
       life: 10000
     });
     return;
   }
   try {
     loaderStore.startLoading();
-    const emailSent = await pb.collection('users').requestPasswordReset(email);
+    const emailSent = await pb.collection("users").requestPasswordReset(email);
     if (emailSent) {
       toast.add({
-        severity: 'success',
-        summary: t('authentication.password-reset.started'),
-        detail: t('authentication.password-reset.started-detail-2'),
+        severity: "success",
+        summary: t("authentication.password-reset.started"),
+        detail: t("authentication.password-reset.started-detail-2"),
         life: 5000
       });
     }
   } catch (e) {
     if (e instanceof ClientResponseError)
       toast.add({
-        severity: 'error',
-        summary: t('authentication.password-reset.error'),
+        severity: "error",
+        summary: t("authentication.password-reset.error"),
         detail: `${e.data.message} Check email and password.`,
         life: 5000
       });
@@ -230,7 +230,7 @@ const openPasswordResetContext = () => {
   passwordContextOpen.value = !passwordContextOpen.value;
   passwordContextOpen.value &&
     nextTick().then(() => {
-      document.getElementById('password-reset-email')?.focus();
+      document.getElementById("password-reset-email")?.focus();
     });
 };
 </script>

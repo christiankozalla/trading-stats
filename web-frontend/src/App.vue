@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { watch } from 'vue';
-import { RouterView, useRouter } from 'vue-router';
-import AppHeader from '@/components/AppHeader.vue';
-import Loader from '@/components/Loader.vue';
-import ScreenshotViewer from './components/ScreenshotViewer.vue';
-import { useTradingAccountsStore } from '@/stores/tradingAccounts';
-import { useScreenshotViewer } from './composables/useScreenshotViewer';
-import { isAuthenticated } from '@/api-client';
-import { supportedOrFallbackLocale } from './router/helpers';
+import { watch } from "vue";
+import AppHeader from "@/components/AppHeader.vue";
+import Loader from "@/components/Loader.vue";
+import ScreenshotViewer from "./components/ScreenshotViewer.vue";
+import { useTradingAccountsStore } from "@/stores/tradingAccounts";
+import { RouterView, useRouter } from "vue-router";
+import { useScreenshotViewer } from "./composables/useScreenshotViewer";
+import { isAuthenticated } from "@/api-client";
+import { supportedOrFallbackLocale } from "./router/helpers";
 
 const router = useRouter();
 
@@ -17,7 +17,7 @@ watch(isAuthenticated, async (newAuthStatus) => {
   if (newAuthStatus === false && router.currentRoute.value.meta.requiresAuth === true) {
     const chosenLocale = supportedOrFallbackLocale(router.currentRoute.value.params.locale);
     router.push({
-      name: 'login-signup',
+      name: "login-signup",
       params: { ...router.currentRoute.value.params, locale: chosenLocale }
     });
   }

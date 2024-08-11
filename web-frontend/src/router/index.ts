@@ -1,9 +1,9 @@
-import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router';
-import { pb } from '@/api-client';
-import { useI18nStore } from '@/stores/i18n';
-import { isSupportedLocale, supportedOrFallbackLocale } from './helpers';
+import { createRouter, createWebHistory, type RouteRecordRaw } from "vue-router";
+import { pb } from "@/api-client";
+import { useI18nStore } from "@/stores/i18n";
+import { isSupportedLocale, supportedOrFallbackLocale } from "./helpers";
 
-declare module 'vue-router' {
+declare module "vue-router" {
   interface RouteMeta {
     // original RouteMeta allows every prop Record<string ..., unknown>
     requiresAuth?: boolean;
@@ -12,45 +12,45 @@ declare module 'vue-router' {
 
 const routes: RouteRecordRaw[] = [
   {
-    path: '/:locale/', // could use regex pattern like: '/:locale(de|en)'
-    name: 'overview',
-    component: () => import('../views/Overview.vue'),
+    path: "/:locale/", // could use regex pattern like: '/:locale(de|en)'
+    name: "overview",
+    component: () => import("../views/Overview.vue"),
     meta: {
       requiresAuth: true
     }
   },
   {
-    path: '/:locale/import',
-    component: () => import('../views/Import.vue'),
+    path: "/:locale/import",
+    component: () => import("../views/Import.vue"),
     meta: {
       requiresAuth: true
     }
   },
   {
-    path: '/:locale/settings',
-    component: () => import('../views/Settings.vue'),
+    path: "/:locale/settings",
+    component: () => import("../views/Settings.vue"),
     meta: {
       requiresAuth: true
     }
   },
   {
-    path: '/:locale/login-signup',
-    name: 'login-signup',
-    component: () => import('../views/LoginSignup.vue'),
+    path: "/:locale/login-signup",
+    name: "login-signup",
+    component: () => import("../views/LoginSignup.vue"),
     meta: {
       requiresAuth: false
     }
   },
   {
-    path: '/:locale/public/:accountId/overview',
-    component: () => import('../views/PublicOverview.vue'),
+    path: "/:locale/public/:accountId/overview",
+    component: () => import("../views/PublicOverview.vue"),
     meta: {
       requiresAuth: false
     }
   },
   {
-    path: '/:locale/:pathMatch(.*)', // Catch all 404
-    component: () => import('../views/404.vue'),
+    path: "/:locale/:pathMatch(.*)", // Catch all 404
+    component: () => import("../views/404.vue"),
     meta: {
       requiresAuth: false
     }
@@ -85,7 +85,7 @@ router.beforeEach(async (to, _from, next) => {
     }
     next();
   } else {
-    console.log('should not happen!', localeParam);
+    console.log("should not happen!", localeParam);
     next();
   }
 });

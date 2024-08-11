@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import ProgressSpinner from 'primevue/progressspinner';
-import { useLoaderStore } from '@/stores/loader';
+import ProgressSpinner from "primevue/progressspinner";
+import { useLoaderStore } from "@/stores/loader";
 
 const loaderStore = useLoaderStore();
 </script>

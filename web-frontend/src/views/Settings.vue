@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { useRoute, useRouter } from 'vue-router';
-import Tabs from 'primevue/tabs';
-import TabList from 'primevue/tablist';
-import Tab from 'primevue/tab';
-import TabPanels from 'primevue/tabpanels';
-import TabPanel from 'primevue/tabpanel';
-import UserSettings from '@/components/UserSettings.vue';
-import TradingAccountsSettings from '@/components/TradingAccountsSettings.vue';
+import { useRoute, useRouter } from "vue-router";
+import Tabs from "primevue/tabs";
+import TabList from "primevue/tablist";
+import Tab from "primevue/tab";
+import TabPanels from "primevue/tabpanels";
+import TabPanel from "primevue/tabpanel";
+import UserSettings from "@/components/UserSettings.vue";
+import TradingAccountsSettings from "@/components/TradingAccountsSettings.vue";
 
 const route = useRoute();
 const router = useRouter();

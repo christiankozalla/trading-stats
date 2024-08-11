@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import { ref, type Ref, computed, onMounted, onUpdated } from 'vue';
-import Button from 'primevue/button';
-import DataTable from 'primevue/datatable';
-import Column from 'primevue/column';
-import Dialog from 'primevue/dialog';
-import { pb, type Screenshot as ScreenshotType } from '@/api-client';
-import { useI18nStore } from '@/stores/i18n';
-import Screenshot from '@/components/Screenshot.vue';
-import UploadScreenshot from '@/components/UploadScreenshot.vue';
-import { type usePaginatedCollection } from '@/composables/usePaginatedCollection';
-import { useScreenshotViewer } from '@/composables/useScreenshotViewer';
-import { useTradingAccountsStore } from '@/stores/tradingAccounts';
+import { ref, type Ref, computed, onMounted, onUpdated } from "vue";
+import Button from "primevue/button";
+import DataTable from "primevue/datatable";
+import Column from "primevue/column";
+import Dialog from "primevue/dialog";
+import { pb, type Screenshot as ScreenshotType } from "@/api-client";
+import { useI18nStore } from "@/stores/i18n";
+import Screenshot from "@/components/Screenshot.vue";
+import UploadScreenshot from "@/components/UploadScreenshot.vue";
+import { type usePaginatedCollection } from "@/composables/usePaginatedCollection";
+import { useScreenshotViewer } from "@/composables/useScreenshotViewer";
+import { useTradingAccountsStore } from "@/stores/tradingAccounts";
 
 const { t } = useI18nStore();
 const tradingAccountsStore = useTradingAccountsStore();
@@ -42,11 +42,11 @@ onUpdated(fetchAndUpdateScreenshots(screenshots));
 function fetchAndUpdateScreenshots(ref: Ref<ScreenshotsByDate>) {
   return () => {
     if (dateRange.value.min && dateRange.value.max) {
-      pb.collection('screenshots')
+      pb.collection("screenshots")
         .getList(undefined, undefined, {
           skipTotal: true,
           filter: pb.filter(
-            'account = {:accountId} && date >= {:startDate} && date <= {:endDate}',
+            "account = {:accountId} && date >= {:startDate} && date <= {:endDate}",
             {
               accountId: tradingAccountsStore.selected,
               startDate: new Date(dateRange.value.min),

@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import DataPanel from '@/components/DataPanel.vue';
-import { pb, type ProfitLoss } from '@/api-client';
-import { computed, onMounted, ref } from 'vue';
-import { useRoute } from 'vue-router';
+import DataPanel from "@/components/DataPanel.vue";
+import { pb, type ProfitLoss } from "@/api-client";
+import { computed, onMounted, ref } from "vue";
+import { useRoute } from "vue-router";
 import {
   Chart as ChartJS,
   Title,
@@ -13,10 +13,10 @@ import {
   CategoryScale,
   LinearScale,
   BarElement
-} from 'chart.js';
-import { Line, Bar, type ChartProps } from 'vue-chartjs';
-import { useLoaderStore } from '@/stores/loader';
-import { useI18nStore } from '@/stores/i18n';
+} from "chart.js";
+import { Line, Bar, type ChartProps } from "vue-chartjs";
+import { useLoaderStore } from "@/stores/loader";
+import { useI18nStore } from "@/stores/i18n";
 
 const { t } = useI18nStore();
 const loaderStore = useLoaderStore();
@@ -25,9 +25,9 @@ const route = useRoute();
 
 // helpers
 const sum = (array: number[]) => array.reduce((sum, curr) => sum + curr, 0);
-const displayMoney = (v?: number | null) => (!v ? 'No data' : `${v.toFixed(1)} $`);
+const displayMoney = (v?: number | null) => (!v ? "No data" : `${v.toFixed(1)} $`);
 const toISODate = (date: string | Date) => {
-  if (typeof date === 'string') {
+  if (typeof date === "string") {
     return new Date(date).toISOString().substring(0, 10);
   } else return date.toISOString().substring(0, 10);
 };
@@ -82,14 +82,14 @@ const isPublic = ref<boolean>(false);
 
 onMounted(() => {
   loaderStore.startLoading();
-  pb.collection('public_dashboard_permissions')
-    .getFirstListItem(`account = "${route.params.accountId}"`, { fields: 'is_trades_table_public' })
+  pb.collection("public_dashboard_permissions")
+    .getFirstListItem(`account = "${route.params.accountId}"`, { fields: "is_trades_table_public" })
     .then(({ is_trades_table_public }) => {
       isPublic.value = is_trades_table_public;
       if (is_trades_table_public) {
-        return pb.collection('profit_loss').getFullList({
+        return pb.collection("profit_loss").getFullList({
           filter: `account.id = "${route.params.accountId}"`,
-          sort: 'DateTime_close',
+          sort: "DateTime_close",
           accountId: route.params.accountId
         });
       }
@@ -110,11 +110,11 @@ type DateString = string;
 
 const pnlData = computed(() => {
   let total = 0;
-  const cumulative: ChartProps<'line'>['data'] = {
+  const cumulative: ChartProps<"line">["data"] = {
     labels: [],
     datasets: []
   };
-  const saldo: ChartProps<'bar'>['data'] = {
+  const saldo: ChartProps<"bar">["data"] = {
     labels: [],
     datasets: []
   };
@@ -135,13 +135,13 @@ const pnlData = computed(() => {
       }
     }
     cumulative.labels = Object.keys(cumulativeData);
-    cumulative.datasets.push({ label: 'Cumulative PnL $', data: Object.values(cumulativeData) });
+    cumulative.datasets.push({ label: "Cumulative PnL $", data: Object.values(cumulativeData) });
     saldo.labels = Object.keys(saldoData);
     const saldoBars = Object.values(saldoData).map(sum);
     saldo.datasets.push({
-      label: 'Daily Change PnL $',
+      label: "Daily Change PnL $",
       data: saldoBars,
-      backgroundColor: saldoBars.map((bar) => (bar >= 0 ? 'green' : 'red'))
+      backgroundColor: saldoBars.map((bar) => (bar >= 0 ? "green" : "red"))
     });
     weekly = groupDataByWeek(saldoData);
     avgPerDay = saldoBars.length ? total / saldoBars.length : null;

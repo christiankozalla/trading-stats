@@ -1,7 +1,7 @@
-import { defineStore } from 'pinia';
-import { ref, computed } from 'vue';
+import { defineStore } from "pinia";
+import { ref, computed } from "vue";
 
-const useLoaderStore = defineStore('loader', () => {
+const useLoaderStore = defineStore("loader", () => {
   const state = ref(0);
 
   function startLoading() {

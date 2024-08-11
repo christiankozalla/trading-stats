@@ -1,8 +1,8 @@
-import { onMounted } from 'vue';
-import type { Collections } from '@/api-client';
-import { useCollectionsStore } from '@/stores/collections';
-import { useTradingAccountsStore } from '@/stores/tradingAccounts';
-import { useLoaderStore } from '@/stores/loader';
+import { onMounted } from "vue";
+import type { Collections } from "@/api-client";
+import { useCollectionsStore } from "@/stores/collections";
+import { useTradingAccountsStore } from "@/stores/tradingAccounts";
+import { useLoaderStore } from "@/stores/loader";
 
 export function usePaginatedCollection(collectionId: Collections) {
   const collectionsStore = useCollectionsStore();

@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { computed, defineAsyncComponent } from 'vue';
-import Select from 'primevue/select';
-import LoaderInline from './LoaderInline.vue';
-import { useTradingAccountsStore } from '@/stores/tradingAccounts';
-import { useI18nStore } from '@/stores/i18n';
+import { computed, defineAsyncComponent } from "vue";
+import Select from "primevue/select";
+import LoaderInline from "./LoaderInline.vue";
+import { useTradingAccountsStore } from "@/stores/tradingAccounts";
+import { useI18nStore } from "@/stores/i18n";
 
 const TradingAccountCreator = defineAsyncComponent({
-  loader: () => import('@/components/TradingAccountCreator.vue'),
+  loader: () => import("@/components/TradingAccountCreator.vue"),
   loadingComponent: LoaderInline
 });
 
@@ -16,7 +16,7 @@ const { t } = useI18nStore();
 const options = computed(() => {
   return tradingAccountsStore.accounts?.length
     ? tradingAccountsStore.accounts
-    : [{ component: 'internal-trading-account-creator' }];
+    : [{ component: "internal-trading-account-creator" }];
 });
 
 const tradingAccountCreatorProps = computed(() =>
@@ -25,11 +25,11 @@ const tradingAccountCreatorProps = computed(() =>
     : {
         item: {
           props: {
-            'aria-selected': false,
-            'aria-disabled': true,
-            'aria-button': false
+            "aria-selected": false,
+            "aria-disabled": true,
+            "aria-button": false
           },
-          style: 'background-color: transparent; padding: 0'
+          style: "background-color: transparent; padding: 0"
         }
       }
 );

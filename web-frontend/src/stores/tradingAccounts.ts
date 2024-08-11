@@ -1,12 +1,12 @@
-import { defineStore } from 'pinia';
-import { computed, ref, watch } from 'vue';
-import { pb, isAuthenticated, type TradingAccount } from '@/api-client';
+import { defineStore } from "pinia";
+import { computed, ref, watch } from "vue";
+import { pb, isAuthenticated, type TradingAccount } from "@/api-client";
 
 type AccountId = string;
 
-const accountIdKey = 'selectedTradingAccountId';
+const accountIdKey = "selectedTradingAccountId";
 
-const useTradingAccountsStore = defineStore('tradingAccounts', () => {
+const useTradingAccountsStore = defineStore("tradingAccounts", () => {
   const state = ref<TradingAccount[]>([]);
   const accounts = computed(() => state.value);
   const selected = ref<AccountId>();
@@ -44,13 +44,13 @@ const useTradingAccountsStore = defineStore('tradingAccounts', () => {
   );
 
   async function revalidate() {
-    pb.collection('trading_accounts')
+    pb.collection("trading_accounts")
       .getFullList()
       .then((res) => {
         state.value = res;
       })
       .catch((e) => {
-        console.log('tradingAccounts error', e.data);
+        console.log("tradingAccounts error", e.data);
       });
   }
 

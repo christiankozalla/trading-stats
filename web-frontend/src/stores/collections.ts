@@ -1,17 +1,17 @@
-import { defineStore } from 'pinia';
-import { ref } from 'vue';
-import { useToast } from 'primevue/usetoast';
+import { defineStore } from "pinia";
+import { ref } from "vue";
+import { useToast } from "primevue/usetoast";
 import {
   type RecordListOptions,
   type ListResult,
   type RecordModel,
   ClientResponseError
-} from 'pocketbase';
-import { pb, type Collections } from '@/api-client';
-import { useLoaderStore } from './loader';
-import { useTradingAccountsStore } from './tradingAccounts';
+} from "pocketbase";
+import { pb, type Collections } from "@/api-client";
+import { useLoaderStore } from "./loader";
+import { useTradingAccountsStore } from "./tradingAccounts";
 
-const useCollectionsStore = defineStore('collections', () => {
+const useCollectionsStore = defineStore("collections", () => {
   const tradingAccountsStore = useTradingAccountsStore();
   const loaderStore = useLoaderStore();
   const toast = useToast();
@@ -42,7 +42,7 @@ const useCollectionsStore = defineStore('collections', () => {
         const list = await pb.collection(collectionId).getList(page, perPage, {
           ...options,
           // every filter passed by options will be overwritten
-          filter: pb.filter('account = {:accountId}', { accountId: tradingAcccountId })
+          filter: pb.filter("account = {:accountId}", { accountId: tradingAcccountId })
         });
         // make sure existing store collection data is from same account
         if (existing) {
@@ -63,11 +63,11 @@ const useCollectionsStore = defineStore('collections', () => {
 
         return state.value[collectionId];
       } catch (e) {
-        console.error('error fetching collection', collectionId, e);
+        console.error("error fetching collection", collectionId, e);
         if (e instanceof ClientResponseError) {
           toast.add({
-            severity: 'error',
-            summary: 'Failed to fetch collection',
+            severity: "error",
+            summary: "Failed to fetch collection",
             detail: e.data.message,
             life: 5000
           });

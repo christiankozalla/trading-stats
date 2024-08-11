@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { pb } from '@/api-client';
-import { ClientResponseError } from 'pocketbase';
-import { useToast } from 'primevue/usetoast';
-import { useI18nStore } from '@/stores/i18n';
-import InputText from 'primevue/inputtext';
-import Button from 'primevue/button';
+import { ref } from "vue";
+import { pb } from "@/api-client";
+import { ClientResponseError } from "pocketbase";
+import { useToast } from "primevue/usetoast";
+import { useI18nStore } from "@/stores/i18n";
+import InputText from "primevue/inputtext";
+import Button from "primevue/button";
 
 const toast = useToast();
 const { t } = useI18nStore();
@@ -15,19 +15,19 @@ async function requestPasswordReset() {
   try {
     if (pb.authStore.model?.email) {
       loading.value = true;
-      await pb.collection('users').requestPasswordReset(pb.authStore.model.email);
+      await pb.collection("users").requestPasswordReset(pb.authStore.model.email);
       toast.add({
-        severity: 'success',
-        summary: t('authentication.password-reset.started'),
-        detail: t('authentication.password-reset.started-detail'),
+        severity: "success",
+        summary: t("authentication.password-reset.started"),
+        detail: t("authentication.password-reset.started-detail"),
         life: 5000
       });
     }
   } catch (e) {
     if (e instanceof ClientResponseError)
       toast.add({
-        severity: 'error',
-        summary: 'Passwort-Reset Fehler',
+        severity: "error",
+        summary: "Passwort-Reset Fehler",
         detail: e.data.message,
         life: 5000
       });
@@ -40,18 +40,18 @@ async function updateUser(event: Event, field: string) {
   try {
     loading.value = true;
     const formData = new FormData(event.target as HTMLFormElement);
-    await pb.collection('users').update(pb.authStore.model?.id as string, formData);
+    await pb.collection("users").update(pb.authStore.model?.id as string, formData);
     toast.add({
-      severity: 'success',
-      summary: t('settings.update-success'),
+      severity: "success",
+      summary: t("settings.update-success"),
       detail: t(`settings.user.update-${field}-message`),
       life: 5000
     });
   } catch (err) {
     if (err instanceof ClientResponseError) {
       toast.add({
-        severity: 'error',
-        summary: t('settings.update-fail'),
+        severity: "error",
+        summary: t("settings.update-fail"),
         detail: err.data.message,
         life: 5000
       });

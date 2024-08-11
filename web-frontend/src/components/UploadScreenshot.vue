@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
-import InputText from 'primevue/inputtext';
-import Textarea from 'primevue/textarea';
-import Button from 'primevue/button';
-import { useToast } from 'primevue/usetoast';
-import { pb } from '@/api-client';
-import { useTradingAccountsStore } from '@/stores/tradingAccounts';
-import ImagePreview from '@/components/ImagePreview.vue';
-import { useI18nStore } from '@/stores/i18n';
+import { ref, computed } from "vue";
+import InputText from "primevue/inputtext";
+import Textarea from "primevue/textarea";
+import Button from "primevue/button";
+import { useToast } from "primevue/usetoast";
+import { pb } from "@/api-client";
+import { useTradingAccountsStore } from "@/stores/tradingAccounts";
+import ImagePreview from "@/components/ImagePreview.vue";
+import { useI18nStore } from "@/stores/i18n";
 
-const emit = defineEmits(['uploadSuccess']);
+const emit = defineEmits(["uploadSuccess"]);
 
 const { t } = useI18nStore();
 const toast = useToast();
@@ -39,22 +39,22 @@ async function uploadScreenshot(event: Event) {
 
   if (!tradingAccountsStore.selected) {
     toast.add({
-      severity: 'info',
-      summary: t('generic.trading-account-required'),
-      detail: t('generic.trading-account-required-description'),
+      severity: "info",
+      summary: t("generic.trading-account-required"),
+      detail: t("generic.trading-account-required-description"),
       life: 5000
     });
     return;
   }
 
-  formData.append('account', tradingAccountsStore.selected);
+  formData.append("account", tradingAccountsStore.selected);
   const response = await pb
-    .collection('screenshots')
+    .collection("screenshots")
     .create(formData)
     .catch((e) => {
       toast.add({
-        severity: 'error',
-        summary: 'Upload error',
+        severity: "error",
+        summary: "Upload error",
         detail: e.data.data?.image?.message || e.data.message,
         life: 10000
       });
@@ -62,17 +62,16 @@ async function uploadScreenshot(event: Event) {
 
   if (response) {
     toast.add({
-      severity: 'success',
-      summary: 'Upload successful',
-      detail: 'A screenshot record has been created.',
+      severity: "success",
+      summary: "Upload successful",
+      detail: "A screenshot record has been created.",
       life: 5000
     });
-
     (event.target as HTMLFormElement).reset();
     screenshots.value = undefined;
     loading.value = false;
 
-    emit('uploadSuccess');
+    emit("uploadSuccess");
   }
 }
 </script>

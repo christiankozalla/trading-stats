@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { reactive, computed } from 'vue';
-import { pb, type Screenshot } from '@/api-client';
+import { reactive, computed } from "vue";
+import { pb, type Screenshot } from "@/api-client";
 
 const props = defineProps<{
   record: Screenshot;
-  loading?: 'eager' | 'lazy';
+  loading?: "eager" | "lazy";
   thumb?: boolean;
 }>();
 
 const thumbSrc = computed(() =>
-  pb.files.getUrl(props.record, props.record.image, { thumb: '0x40' })
+  pb.files.getUrl(props.record, props.record.image, { thumb: "0x40" })
 );
 const imageSrc = computed(() => pb.files.getUrl(props.record, props.record.image));
 const src = computed(() => (props.thumb ? thumbSrc.value : imageSrc.value));
@@ -18,12 +18,12 @@ const hasComment = computed(() => !props.thumb && props.record?.comment);
 const imageClasses = reactive({
   clickable: props.thumb,
   viewer: !props.thumb,
-  'm-auto': !props.thumb && !props.record.comment
+  "m-auto": !props.thumb && !props.record.comment
 });
 const imageStyles = reactive({
   width: !props.thumb && props.record?.imageWidth ? `${props.record?.imageWidth}px` : undefined,
-  'max-height': '90vh',
-  'aspect-ratio':
+  "max-height": "90vh",
+  "aspect-ratio":
     props.record?.imageHeight && props.record?.imageWidth
       ? props.record?.imageWidth / props.record?.imageHeight
       : undefined

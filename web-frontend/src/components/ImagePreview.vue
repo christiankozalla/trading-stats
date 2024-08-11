@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed } from "vue";
 const props = defineProps<{ file?: File }>();
 
 const dataURI = computed(() => {
-  if (props.file?.type.startsWith('image/')) {
+  if (props.file?.type.startsWith("image/")) {
     return URL.createObjectURL(props.file);
   } else {
-    return '';
+    return "";
   }
 });
 </script>
