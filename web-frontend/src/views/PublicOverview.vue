@@ -94,16 +94,15 @@ onMounted(() => {
         });
       }
     })
-    .then(
-      (records) =>
-        (profitLoss.value = records?.map(
-          (record) =>
-            ({
-              ...record,
-              Date_close: toISODate(record.DateTime_close)
-            }) as ProfitLossExtended
-        ))
-    )
+    .then((records) => {
+      profitLoss.value = records?.map(
+        (record) =>
+          ({
+            ...record,
+            Date_close: toISODate(record.DateTime_close)
+          }) as ProfitLossExtended
+      );
+    })
     .finally(() => loaderStore.stopLoading());
 });
 
